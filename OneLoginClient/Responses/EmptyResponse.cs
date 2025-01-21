@@ -6,7 +6,7 @@ namespace OneLogin.Responses
     /// Response message containing the status of the request.
     /// </summary>
     [DataContract]
-    public class EmptyResponse : BaseStatusResponse
+    public class EmptyResponse
     {
     }
 }

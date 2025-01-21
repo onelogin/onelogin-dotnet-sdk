@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using OneLogin.Responses;
 using OneLogin.Types;
 
@@ -12,143 +13,187 @@ namespace OneLogin.Requests
     public class UpdateUserByIdRequest
     {
         /// <summary>
-        /// 
+        /// A username for the user.
         /// </summary>
-        [DataMember(Name = "company")]
-        public string Company { get; set; }
-
-        /// <summary>
-        /// The Department the user belongs to.
-        /// </summary>
-        [DataMember(Name = "department")]
-        public string Department { get; set; }
-
-        /// <summary>
-        /// ID of the directory (Active Directory, LDAP, for example) from which the user was created.
-        /// </summary>
-        [DataMember(Name = "directory_id")]
-        public string DirectoryId { get; set; }
-
-        /// <summary>
-        /// Synchronized from Active Directory.
-        /// </summary>
-        [DataMember(Name = "distinguished_name")]
-        public string DistinguishedName { get; set; }
-
-        /// <summary>
-        /// User’s email address, which he also uses to log in to OneLogin.
-        /// </summary>
-        [DataMember(Name = "email")]
-        public string Email { get; set; }
-
-        /// <summary>
-        /// External ID that can be used to uniquely identify the user in another system.
-        /// </summary>
-        [DataMember(Name = "external_id")]
-        public string ExternalId { get; set; }
-
-        /// <summary>
-        /// User’s first name.
-        /// </summary>
-        [DataMember(Name = "firstname")]
-        public string FirstName { get; set; }
-
-        /// <summary>
-        /// Group to which the user belongs.
-        /// </summary>
-        [DataMember(Name = "group_id")]
-        public int? GroupId { get; set; }
-
-        /// <summary>
-        /// Number of sequential invalid login attempts the user has made that is less than or equal to the Maximum invalid login attempts value defined on the Session page in OneLogin.
-        /// When this number reaches this value, the user account will be locked for the amount of time defined by the Lock effective period field on the Session page and this value will be reset to 0.
-        /// </summary>
-        [DataMember(Name = "invalid_login_attempts")]
-        public int? InvalidLoginAttempts { get; set; }
-
-        /// <summary>
-        /// User’s last name.
-        /// </summary>
-        [DataMember(Name = "lastname")]
-        public string LastName { get; set; }
-
-        /// <summary>
-        /// Represents a geographical, political, or cultural region. Some features may use the locale value to tailor the display of information, such as numbers, for the user based on locale-specific customs and conventions.
-        /// </summary>
-        [DataMember(Name = "locale_code")]
-        public string LocaleCode { get; set; }
-
-        /// <summary>
-        /// ID of the user’s manager in Active Directory.
-        /// </summary>
-        [DataMember(Name = "manager_ad_id")]
-        public string ManagerAdId { get; set; }
-
-        /// <summary>
-        /// ID of the user’s manager in Active Directory.
-        /// </summary>
-        [DataMember(Name = "manager_user_id")]
-        public string ManagerUserId { get; set; }
-
-        /// <summary>
-        /// Member of
-        /// </summary>
-        [DataMember(Name = "member_of")]
-        public string MemberOf { get; set; }
-
-        /// <summary>
-        /// Notes
-        /// </summary>
-        [DataMember(Name = "notes")]
-        public string Notes { get; set; }
-
-        /// <summary>
-        /// OpenID URL that can be configured in other applications that accept OpenID for sign-in.
-        /// </summary>
-        [DataMember(Name = "openid_name")]
-        public string OpenIdName { get; set; }
-
-        /// <summary>
-        /// User’s phone number.
-        /// </summary>
-        [DataMember(Name = "phone")]
-        public string Phone { get; set; }
-
-        /// <summary>
-        /// Synchronized from Active Directory.
-        /// </summary>
-        [DataMember(Name = "samaccountname")]
-        public string SamAccountName { get; set; }
-
-        /// <summary>
-        /// Synchronized from Active Directory.
-        /// </summary>
-        [DataMember(Name = "state")]
-        public State? State { get; set; }
-
-        /// <summary>
-        /// Synchronized from Active Directory.
-        /// </summary>
-        [DataMember(Name = "Status")]
-        public Status Status { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [DataMember(Name = "title")]
-        public string Title { get; set; }
-
-        /// <summary>
-        /// If the user’s directory is set to authenticate using a user name value, this is the value used to sign in.
-        /// </summary>
-        [DataMember(Name = "username")]
+        [JsonPropertyName("username")]
         public string Username { get; set; }
 
         /// <summary>
-        /// Synchronized from Active Directory.
+        /// A valid email address for the user.
         /// </summary>
-        [DataMember(Name = "userprincipalname")]
-        public string UserPrincipalName { get; set; }
+        [JsonPropertyName("email")]
+        public string Email { get; set; }
 
+        /// <summary>
+        /// The user's first name.
+        /// </summary>
+        [JsonPropertyName("firstname")]
+        public string Firstname { get; set; }
+
+        /// <summary>
+        /// The user's last name.
+        /// </summary>
+        [JsonPropertyName("lastname")]
+        public string Lastname { get; set; }
+
+        /// <summary>
+        /// The password to set for the user.
+        /// </summary>
+        [JsonPropertyName("password")]
+        public string Password { get; set; }
+
+        /// <summary>
+        /// Required if the password is being set. Confirms the password.
+        /// </summary>
+        [JsonPropertyName("password_confirmation")]
+        public string PasswordConfirmation { get; set; }
+
+        /// <summary>
+        /// The password algorithm used for hashing the password.
+        /// Supported values: "salt+sha256", "sha256+salt", "bcrypt".
+        /// </summary>
+        [JsonPropertyName("password_algorithm")]
+        public string PasswordAlgorithm { get; set; }
+
+        /// <summary>
+        /// The salt value that was used with the password algorithm (optional).
+        /// </summary>
+        [JsonPropertyName("salt")]
+        public string Salt { get; set; }
+
+        /// <summary>
+        /// The user's job title.
+        /// </summary>
+        [JsonPropertyName("title")]
+        public string Title { get; set; }
+
+        /// <summary>
+        /// The user's department.
+        /// </summary>
+        [JsonPropertyName("department")]
+        public string Department { get; set; }
+
+        /// <summary>
+        /// The company the user belongs to.
+        /// </summary>
+        [JsonPropertyName("company")]
+        public string Company { get; set; }
+
+        /// <summary>
+        /// Free text related to the user (e.g., notes or comments).
+        /// </summary>
+        [JsonPropertyName("comment")]
+        public string Comment { get; set; }
+
+        /// <summary>
+        /// The ID of the group in OneLogin to which the user will be assigned.
+        /// </summary>
+        [JsonPropertyName("group_id")]
+        public int? GroupId { get; set; }
+
+        /// <summary>
+        /// A list of OneLogin Role IDs that the user will be assigned to.
+        /// </summary>
+        [JsonPropertyName("role_ids")]
+        public List<int> RoleIds { get; set; }
+
+        /// <summary>
+        /// The user's phone number in E.164 format.
+        /// </summary>
+        [JsonPropertyName("phone")]
+        public string Phone { get; set; }
+
+        /// <summary>
+        /// The user's approval status. 
+        /// 0: Unapproved, 1: Approved, 2: Rejected, 3: Unlicensed.
+        /// </summary>
+        [JsonPropertyName("state")]
+        public int? State { get; set; }
+
+        /// <summary>
+        /// The user's activation status.
+        /// 0: Unactivated, 1: Active, 2: Suspended, 3: Locked, 4: Password expired,
+        /// 5: Awaiting password reset, 7: Password Pending, 8: Security questions required.
+        /// </summary>
+        [JsonPropertyName("status")]
+        public int? Status { get; set; }
+
+        /// <summary>
+        /// The ID of the OneLogin Directory to which the user will be assigned.
+        /// </summary>
+        [JsonPropertyName("directory_id")]
+        public int? DirectoryId { get; set; }
+
+        /// <summary>
+        /// The ID of the OneLogin Trusted IDP to which the user will be assigned.
+        /// </summary>
+        [JsonPropertyName("trusted_idp_id")]
+        public int? TrustedIdpId { get; set; }
+
+        /// <summary>
+        /// The ID of the user's manager in Active Directory.
+        /// </summary>
+        [JsonPropertyName("manager_ad_id")]
+        public int? ManagerAdId { get; set; }
+
+        /// <summary>
+        /// The OneLogin User ID for the user's manager.
+        /// </summary>
+        [JsonPropertyName("manager_user_id")]
+        public int? ManagerUserId { get; set; }
+
+        /// <summary>
+        /// The user's Active Directory username (SAMAccountName).
+        /// </summary>
+        [JsonPropertyName("samaccountname")]
+        public string Samaccountname { get; set; }
+
+        /// <summary>
+        /// The user's directory membership.
+        /// </summary>
+        [JsonPropertyName("member_of")]
+        public string MemberOf { get; set; }
+
+        /// <summary>
+        /// The user's principal name (UPN).
+        /// </summary>
+        [JsonPropertyName("userprincipalname")]
+        public string Userprincipalname { get; set; }
+
+        /// <summary>
+        /// The distinguished name of the user in the directory.
+        /// </summary>
+        [JsonPropertyName("distinguished_name")]
+        public string DistinguishedName { get; set; }
+
+        /// <summary>
+        /// The external ID of the user in an external directory.
+        /// </summary>
+        [JsonPropertyName("external_id")]
+        public string ExternalId { get; set; }
+
+        /// <summary>
+        /// The name configured for use in other applications that accept OpenID for sign-in.
+        /// </summary>
+        [JsonPropertyName("openid_name")]
+        public string OpenidName { get; set; }
+
+        /// <summary>
+        /// The number of invalid login attempts made by the user.
+        /// </summary>
+        [JsonPropertyName("invalid_login_attempts")]
+        public int? InvalidLoginAttempts { get; set; }
+
+        /// <summary>
+        /// The 2-character language locale for the user, such as "en" for English or "es" for Spanish.
+        /// </summary>
+        [JsonPropertyName("preferred_locale_code")]
+        public string PreferredLocaleCode { get; set; }
+
+        /// <summary>
+        /// Custom attributes configured for the user.
+        /// </summary>
+        [JsonPropertyName("custom_attributes")]
+        public Dictionary<string, object> CustomAttributes { get; set; }
     }
 }

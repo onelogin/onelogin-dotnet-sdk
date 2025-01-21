@@ -27,19 +27,19 @@ namespace OneLogin.Responses
         /// User’s email address, which they also use to log in to OneLogin.
         /// </summary>
         [JsonPropertyName("email")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         /// <summary>
         /// If the user’s directory is set to authenticate using a user name value, this is the value used to sign in.
         /// </summary>
         [JsonPropertyName("username")]
-        public string UserName { get; set; }
+        public string? UserName { get; set; }
 
         /// <summary>
         /// User’s first name.
         /// </summary>
         [JsonPropertyName("firstname")]
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
 
         /// <summary>
         /// Group to which the user belongs.
@@ -75,31 +75,31 @@ namespace OneLogin.Responses
         /// User’s last name.
         /// </summary>
         [JsonPropertyName("lastname")]
-        public string LastName { get; set; }
+        public string? LastName { get; set; }
 
         /// <summary>
         /// Date and time at which the user’s account will be unlocked.
         /// </summary>
         [JsonPropertyName("locked_until")]
-        public string LockedUntil { get; set; }
+        public string? LockedUntil { get; set; }
 
         /// <summary>
         /// Notes entered about the user.
         /// </summary>
         [JsonPropertyName("comment")]
-        public string Comment { get; set; }
+        public string? Comment { get; set; }
 
         /// <summary>
         /// OpenID URL that can be configured in other applications that accept OpenID for sign-in.
         /// </summary>
         [JsonPropertyName("openid_name")]
-        public string OpenIdName { get; set; }
+        public string? OpenIdName { get; set; }
 
         /// <summary>
         /// Represents a geographical, political, or cultural region.
         /// </summary>
         [JsonPropertyName("locale_code")]
-        public string LocaleCode { get; set; }
+        public string? LocaleCode { get; set; }
 
         /// <summary>
         /// Date and time at which the user’s password was last changed.
@@ -111,7 +111,7 @@ namespace OneLogin.Responses
         /// User’s phone number.
         /// </summary>
         [JsonPropertyName("phone")]
-        public string Phone { get; set; }
+        public string? Phone { get; set; }
 
         /// <summary>
         /// Determines the user’s ability to log in to OneLogin.
@@ -127,58 +127,58 @@ namespace OneLogin.Responses
         public DateTime UpdatedAt { get; set; }
 
         [JsonPropertyName("distinguished_name")]
-        public string DistinguishedName { get; set; }
+        public string? DistinguishedName { get; set; }
 
         [JsonPropertyName("external_id")]
-        public string ExternalId { get; set; }
+        public string? ExternalId { get; set; }
 
         [JsonPropertyName("directory_id")]
-        public string DirectoryId { get; set; }
+        public string? DirectoryId { get; set; }
 
         /// <summary>
         /// Synchronized from Active Directory.
         /// </summary>
         [JsonPropertyName("member_of")]
-        public string MemberOf { get; set; }
+        public string? MemberOf { get; set; }
 
         /// <summary>
         /// Synchronized from Active Directory.
         /// </summary>
         [JsonPropertyName("samaccountname")]
-        public string SamAccountName { get; set; }
+        public string? SamAccountName { get; set; }
 
         /// <summary>
         /// Synchronized from Active Directory.
         /// </summary>
         [JsonPropertyName("userprincipalname")]
-        public string UserPrincipalName { get; set; }
+        public string? UserPrincipalName { get; set; }
 
         /// <summary>
         /// ID of the user’s manager in Active Directory.
         /// </summary>
         [JsonPropertyName("manager_ad_id")]
-        public string ManagerAdId { get; set; }
+        public string? ManagerAdId { get; set; }
 
         [JsonPropertyName("manager_user_id")]
-        public string ManagerUserId { get; set; }
+        public string? ManagerUserId { get; set; }
 
         /// <summary>
         /// Role IDs to which the user is assigned.
         /// </summary>
         [JsonPropertyName("role_id")]
-        public List<int> RoleId { get; set; }
+        public List<int>? RoleId { get; set; }
 
         [JsonPropertyName("company")]
-        public string Company { get; set; }
+        public string? Company { get; set; }
 
         [JsonPropertyName("department")]
-        public string Department { get; set; }
+        public string? Department { get; set; }
 
         [JsonPropertyName("title")]
-        public string Title { get; set; }
+        public string? Title { get; set; }
 
         [JsonPropertyName("preferred_locale_code")]
-        public string PreferredLocaleCode { get; set; }
+        public string? PreferredLocaleCode { get; set; }
 
         /// <summary>
         /// Represents the user’s stage in a process (such as user account approval).
@@ -188,12 +188,12 @@ namespace OneLogin.Responses
         public State State { get; set; }
 
         [JsonPropertyName("trusted_idp_id")]
-        public string TrustedIdpId { get; set; }
+        public int? TrustedIdpId { get; set; }
 
         /// <summary>
         /// Provides a list of custom attribute fields (also known as custom user fields).
         /// </summary>
         [JsonPropertyName("custom_attributes")]
-        public Dictionary<string, string> CustomAttributes { get; set; }
+        public Dictionary<string, string>? CustomAttributes { get; set; }
     }
 }

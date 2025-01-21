@@ -1,127 +1,192 @@
 ﻿using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace OneLogin.Requests
 {
     /// <summary>
-    /// Set of fields to be sent when creating a user. https://developers.onelogin.com/api-docs/1/users/create-user
+    /// Set of fields to be sent when creating a user. https://developers.onelogin.com/api-docs/2/users/create-user
     /// </summary>
     [DataContract]
     public class CreateUserRequest
     {
         /// <summary>
-        /// User’s email address, which he also uses to log in to OneLogin.
+        /// Gets or sets the username for the user. This field is required.
         /// </summary>
-        [DataMember(Name = "email")]
-        public string Email { get; set; }
-
-        /// <summary>
-        /// If the user’s directory is set to authenticate using a user name value, this is the value used to sign in.
-        /// </summary>
-        [DataMember(Name = "username")]
+        [JsonPropertyName("username")]
         public string Username { get; set; }
 
         /// <summary>
-        /// 
+        /// Gets or sets the email address for the user. This field is required.
         /// </summary>
-        [DataMember(Name = "title")]
-        public string Title { get; set; }
+        [JsonPropertyName("email")]
+        public string Email { get; set; }
 
         /// <summary>
-        /// User’s first name.
+        /// Gets or sets the first name of the user. This field is optional.
         /// </summary>
-        [DataMember(Name = "firstname")]
-        public string FirstName { get; set; }
+        [JsonPropertyName("firstname")]
+        public string? Firstname { get; set; }
 
         /// <summary>
-        /// 
+        /// Gets or sets the last name of the user. This field is optional.
         /// </summary>
-        [DataMember(Name = "company")]
-        public string Company { get; set; }
+        [JsonPropertyName("lastname")]
+        public string? Lastname { get; set; }
 
         /// <summary>
-        /// The Department the user belongs to.
+        /// Gets or sets the password for the user. This field is optional.
         /// </summary>
-        [DataMember(Name = "department")]
-        public string Department { get; set; }
+        [JsonPropertyName("password")]
+        public string? Password { get; set; }
 
         /// <summary>
-        /// Group to which the user belongs.
+        /// Gets or sets the password confirmation for the user. This field is required if the password is set.
         /// </summary>
-        [DataMember(Name = "group_id")]
+        [JsonPropertyName("password_confirmation")]
+        public string? PasswordConfirmation { get; set; }
+
+        /// <summary>
+        /// Gets or sets the password algorithm used for hashing the password. This field is optional.
+        /// </summary>
+        [JsonPropertyName("password_algorithm")]
+        public string? PasswordAlgorithm { get; set; }
+
+        /// <summary>
+        /// Gets or sets the salt value used with the password algorithm. This field is optional.
+        /// </summary>
+        [JsonPropertyName("salt")]
+        public string? Salt { get; set; }
+
+        /// <summary>
+        /// Gets or sets the user's job title. This field is optional.
+        /// </summary>
+        [JsonPropertyName("title")]
+        public string? Title { get; set; }
+
+        /// <summary>
+        /// Gets or sets the user's department. This field is optional.
+        /// </summary>
+        [JsonPropertyName("department")]
+        public string? Department { get; set; }
+
+        /// <summary>
+        /// Gets or sets the user's company. This field is optional.
+        /// </summary>
+        [JsonPropertyName("company")]
+        public string? Company { get; set; }
+
+        /// <summary>
+        /// Gets or sets any free text related to the user. This field is optional.
+        /// </summary>
+        [JsonPropertyName("comment")]
+        public string? Comment { get; set; }
+
+        /// <summary>
+        /// Gets or sets the group ID to which the user will be assigned in OneLogin. This field is optional.
+        /// </summary>
+        [JsonPropertyName("group_id")]
         public int? GroupId { get; set; }
 
         /// <summary>
-        /// Number of sequential invalid login attempts the user has made that is less than or equal to the Maximum invalid login attempts value defined on the Session page in OneLogin.
-        /// When this number reaches this value, the user account will be locked for the amount of time defined by the Lock effective period field on the Session page and this value will be reset to 0.
+        /// Gets or sets the list of OneLogin Role IDs that the user will be assigned to. This field is optional.
         /// </summary>
-        [DataMember(Name = "invalid_login_attempts")]
-        public int? InvalidLoginAttempts { get; set; }
+        [JsonPropertyName("role_ids")]
+        public List<int>? RoleIds { get; set; }
 
         /// <summary>
-        /// User’s last name.
+        /// Gets or sets the user's phone number in E.164 format. This field is optional.
         /// </summary>
-        [DataMember(Name = "lastname")]
-        public string LastName { get; set; }
+        [JsonPropertyName("phone")]
+        public string? Phone { get; set; }
 
         /// <summary>
-        /// OpenID URL that can be configured in other applications that accept OpenID for sign-in.
+        /// Gets or sets the user's state (approval status). Optional values: 0 (Unapproved), 1 (Approved), etc.
         /// </summary>
-        [DataMember(Name = "openid_name")]
-        public string OpenIdName { get; set; }
+        [JsonPropertyName("state")]
+        public int? State { get; set; }
 
         /// <summary>
-        /// Represents a geographical, political, or cultural region. Some features may use the locale value to tailor the display of information, such as numbers, for the user based on locale-specific customs and conventions.
+        /// Gets or sets the user's status (activation status). Optional values: 0 (Unactivated), 1 (Active), etc.
         /// </summary>
-        [DataMember(Name = "locale_code")]
-        public string LocaleCode { get; set; }
+        [JsonPropertyName("status")]
+        public int? Status { get; set; }
 
         /// <summary>
-        /// User’s phone number.
+        /// Gets or sets the OneLogin Directory ID to which the user will be assigned. This field is optional.
         /// </summary>
-        [DataMember(Name = "phone")]
-        public string Phone { get; set; }
-
-        /// <summary>
-        /// Synchronized from Active Directory.
-        /// </summary>
-        [DataMember(Name = "distinguished_name")]
-        public string DistinguishedName { get; set; }
-
-        /// <summary>
-        /// External ID that can be used to uniquely identify the user in another system.
-        /// </summary>
-        [DataMember(Name = "external_id")]
-        public string ExternalId { get; set; }
-
-        /// <summary>
-        /// ID of the directory (Active Directory, LDAP, for example) from which the user was created.
-        /// </summary>
-        [DataMember(Name = "directory_id")]
+        [JsonPropertyName("directory_id")]
         public int? DirectoryId { get; set; }
 
         /// <summary>
-        /// Synchronized from Active Directory.
+        /// Gets or sets the OneLogin Trusted IDP ID to which the user will be assigned. This field is optional.
         /// </summary>
-        [DataMember(Name = "member_of")]
-        public string MemberOf { get; set; }
+        [JsonPropertyName("trusted_idp_id")]
+        public int? TrustedIdpId { get; set; }
 
         /// <summary>
-        /// Synchronized from Active Directory.
+        /// Gets or sets the Active Directory manager ID for the user. This field is optional.
         /// </summary>
-        [DataMember(Name = "samaccountname")]
-        public string SamAccountName { get; set; }
+        [JsonPropertyName("manager_ad_id")]
+        public int? ManagerAdId { get; set; }
 
         /// <summary>
-        /// Synchronized from Active Directory.
+        /// Gets or sets the OneLogin User ID for the user's manager. This field is optional.
         /// </summary>
-        [DataMember(Name = "userprincipalname")]
-        public string UserPrincipalName { get; set; }
+        [JsonPropertyName("manager_user_id")]
+        public int? ManagerUserId { get; set; }
 
         /// <summary>
-        /// ID of the user’s manager in Active Directory.
+        /// Gets or sets the user's Active Directory username (SAMAccountName). This field is optional.
         /// </summary>
-        [DataMember(Name = "manager_ad_id")]
-        public string ManagerAdId { get; set; }
+        [JsonPropertyName("samaccountname")]
+        public string? Samaccountname { get; set; }
 
+        /// <summary>
+        /// Gets or sets the user's directory membership. This field is optional.
+        /// </summary>
+        [JsonPropertyName("member_of")]
+        public string? MemberOf { get; set; }
+
+        /// <summary>
+        /// Gets or sets the principal name of the user. This field is optional.
+        /// </summary>
+        [JsonPropertyName("userprincipalname")]
+        public string? Userprincipalname { get; set; }
+
+        /// <summary>
+        /// Gets or sets the distinguished name of the user. This field is optional.
+        /// </summary>
+        [JsonPropertyName("distinguished_name")]
+        public string? DistinguishedName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the external ID for the user in an external directory. This field is optional.
+        /// </summary>
+        [JsonPropertyName("external_id")]
+        public string? ExternalId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the OpenID name for the user. This field is optional.
+        /// </summary>
+        [JsonPropertyName("openid_name")]
+        public string? OpenidName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the number of invalid login attempts made by the user. This field is optional.
+        /// </summary>
+        [JsonPropertyName("invalid_login_attempts")]
+        public int? InvalidLoginAttempts { get; set; }
+
+        /// <summary>
+        /// Gets or sets the 2-character language locale code for the user (e.g., "en" for English, "es" for Spanish). This field is optional.
+        /// </summary>
+        [JsonPropertyName("preferred_locale_code")]
+        public string? PreferredLocaleCode { get; set; }
+
+        /// <summary>
+        /// Gets or sets any custom attributes configured for the user. This field is optional.
+        /// </summary>
+        [JsonPropertyName("custom_attributes")]
+        public Dictionary<string, object>? CustomAttributes { get; set; }
     }
 }

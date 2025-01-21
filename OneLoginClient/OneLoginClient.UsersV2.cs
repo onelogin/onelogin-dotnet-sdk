@@ -7,47 +7,69 @@ namespace OneLogin
     {
         /// <summary>
         /// Get all of the users registered with Onelogin filtered by the given parameters.
-        /// https://developers.onelogin.com/api-docs/v2/users/get-users
+        /// https://developers.onelogin.com/api-docs/2/users/List-users
         /// </summary>
         /// <returns>Returns the serialized <see cref="UserResponse"/> as an asynchronous operation.</returns>
         public async Task<List<UserResponse>> ListUsers(
-        string? directoryId = null,
-        string? email = null,
-        string? externalId = null,
-        string? firstName = null,
-        string? managerAdId = null,
-        int? roleId = null,
-        string? samAccountName = null,
-        DateTime? since = null,
-        DateTime? until = null,
-        string? userName = null,
-        string? userPrincipalName = null)
+            string? directoryId = null,
+            string? email = null,
+            string? externalId = null,
+            string? firstName = null,
+            string? lastName = null,
+            int? roleId = null,
+            string? samAccountName = null,
+            DateTime? since = null,
+            DateTime? until = null,
+            string? userName = null,
+            string? userPrincipalName = null,
+            string? appId = null,
+            string? userIds = null, // Comma-separated list of OneLogin User IDs
+            Dictionary<string, string>? customAttributes = null, // custom attributes as a dictionary
+            string? fields = null // Comma-separated list of user attributes to return
+        )
         {
             // Create a dictionary with the parameters, ensuring we handle null values
             var parameters = new Dictionary<string, string?>
-        {
-            { "directory_id", directoryId },
-            { "email", email },
-            { "external_id", externalId },
-            { "firstname", firstName },
-            { "manager_ad_id", managerAdId },
-            { "role_id", roleId?.ToString() },
-            { "samaccountname", samAccountName },
-            { "since", since?.ToString("o") },  // Use "o" format specifier for DateTime (ISO 8601)
-            { "until", until?.ToString("o") },
-            { "username", userName },
-            { "userprincipalname", userPrincipalName }
-        };
+            {
+                { "directory_id", directoryId },
+                { "email", email },
+                { "external_id", externalId },
+                { "app_id", appId },
+                { "firstname", firstName },
+                { "lastname", lastName },
+                { "role_id", roleId?.ToString() },
+                { "samaccountname", samAccountName },
+                { "created_since", since?.ToString("o") },  // Use "o" format specifier for DateTime (ISO 8601)
+                { "updated_since", since?.ToString("o") },
+                { "created_until", until?.ToString("o") },
+                { "updated_until", until?.ToString("o") },
+                { "last_login_until", until?.ToString("o") },
+                { "last_login_since", since?.ToString("o") },  // Corrected to `since` for consistency
+                { "username", userName },
+                { "userprincipalname", userPrincipalName },
+                { "user_ids", userIds },  // Comma-separated list of user IDs
+                { "fields", fields }  // Comma-separated list of user attributes to return
+            };
+
+            // Handle custom attributes by adding them as key-value pairs with the "custom_attributes." prefix
+            if (customAttributes != null)
+            {
+                foreach (var attribute in customAttributes)
+                {
+                    parameters[$"custom_attributes.{attribute.Key}"] = attribute.Value;
+                }
+            }
+
+            // Removing any parameters that have a null value
+            parameters = parameters.Where(kvp => kvp.Value != null).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
             // Build the query string by filtering out null values and URL-encoding the key-value pairs
             var queryString = string.Join("&", parameters
-                .Where(kv => !string.IsNullOrEmpty(kv.Value))  // Ensure no null or empty values
-                .Select(kv => $"{Uri.EscapeDataString(kv.Key)}={Uri.EscapeDataString(kv.Value!)}"));  // Ensure values are URL-encoded
+                .Where(kv => !string.IsNullOrEmpty(kv.Value))
+                .Select(kv => $"{kv.Key}={kv.Value}"));  
 
-
-            // var url = $"{Endpointsv2.ONELOGIN_USERSv2}{(parameters.Any() ? "?" : "")}" + string.Join("&", parameters);
             // Construct the final URL with query parameters
-            var url = $"{Endpointsv2.ONELOGIN_USERSv2}{(string.IsNullOrEmpty(queryString) ? "" : "?" + queryString)}";
+            var url = $"{Endpointsv2.ONELOGIN_USERS}{(string.IsNullOrEmpty(queryString) ? "" : "?" + queryString)}";
 
             // Call the GetResource method to make the API request
             return await GetResource<List<UserResponse>>(url);
@@ -60,51 +82,30 @@ namespace OneLogin
         /// <returns></returns>
         public async Task<UserResponse> GetUserById(int userId)
         {
-            return await GetResource<UserResponse>($"{Endpointsv2.ONELOGIN_USERSv2}/{userId}");
+            return await GetResource<UserResponse>($"{Endpointsv2.ONELOGIN_USERS}/{userId}");
         }
 
         /// <summary>
         /// Get a list of apps accessible by a user, not including personal apps.
-        /// https://developers.onelogin.com/api-docs/1/users/get-apps-for-user
+        /// https://developers.onelogin.com/api-docs/2/users/get-apps-for-user
         /// </summary>
         /// <param name="userId">Set to the id of the user that you want to return.</param>
-        /// <returns></returns>
-        public async Task<GetAppsForUserResponse> GetAppsForUser(int userId)
+        /// <returns></returns>bh7
+        public async Task<List<GetUserAppsResponse>> GetUserApps(int userId)
         {
-            return await GetResource<GetAppsForUserResponse>($"{Endpointsv2.ONELOGIN_USERSv2}/{userId}/apps");
+            return await GetResource<List<GetUserAppsResponse>>($"{Endpointsv2.ONELOGIN_USERS}/{userId}/apps");
 
         }
-
-        /// <summary>
-        /// Get a list of role IDs that have been assigned to a user.
-        /// </summary>
-        /// <param name="userId">Set to the id of the user for which you want to return a list of assigned roles.</param>
-        /// <returns></returns>
-        public async Task<GetRolesForUser> GetRolesForUser(int userId)
-        {
-            return await GetResource<GetRolesForUser>($"{Endpointsv2.ONELOGIN_USERSv2}/{userId}/roles");
-        }
-
-        /// <summary>
-        /// Returns a list of all custom attribute fields (also known as custom user fields) that have been defined for your account.
-        /// </summary>
-        /// <returns></returns>
-        public async Task<GetCustomAttributesResponse> GetCustomAttributes()
-        {
-            return await GetResource<GetCustomAttributesResponse>($"{Endpointsv2.ONELOGIN_USERSv2}/custom_attributes");
-        }
-
 
         /// <summary>
         /// Creates a onelogin user account.
         /// </summary>
         /// <param name="request">The request object.</param>
         /// <returns></returns>
-        public async Task<CreateUserResponse> CreateUser(CreateUserRequestv2 request)
+        public async Task<UserResponse> CreateUser(CreateUserRequest request)
         {
-            return await PostResource<CreateUserResponse>(Endpointsv2.ONELOGIN_USERSv2, request);
+            return await PostResource<UserResponse>(Endpointsv2.ONELOGIN_USERS, request);
         }
-
 
         /// <summary>
         /// Updates a onelogin user account.
@@ -114,105 +115,7 @@ namespace OneLogin
         /// <returns></returns>
         public async Task<UserResponse> UpdateUserById(int userId, UpdateUserByIdRequest byIdRequest)
         {
-            return await PutResource<UserResponse>($"{Endpointsv2.ONELOGIN_USERSv2}/{userId}", byIdRequest);
-        }
-
-        /// <summary>
-        /// Assign one or more existing roles to a user.
-        /// </summary>
-        /// <param name="userId">Set to the id of the user to which you want to assign a role. If you don’t know the user’s id, use the Get Users API call to return all users and their id values.</param>
-        /// <param name="roleIds">An array of one or more role IDs. The IDs must be positive integers.</param>
-        /// <returns></returns>
-        public async Task<EmptyResponse> AssignRoleToUser(int userId, IEnumerable<int> roleIds)
-        {
-            var request = new AssignRoleToUserRequest { RoleIds = roleIds.ToList() };
-            return await PutResource<EmptyResponse>($"{Endpointsv2.ONELOGIN_USERSv2}/{userId}/add_roles", request);
-        }
-
-        /// <summary>
-        /// Remove one or more existing roles from a user. This API will not remove roles that were added to a user via mapping or provisioning.
-        /// </summary>
-        /// <param name="userId">Set to the id of the user for whom you want to remove a role. If you don’t know the user’s id, use the Get Users API call to return all users and their id values.</param>
-        /// <param name="roleIds">An array of one or more role IDs. The IDs must be positive integers.</param>
-        /// <returns></returns>
-        public async Task<EmptyResponse> RemoveRoleFromUser(int userId, IEnumerable<int> roleIds)
-        {
-            var request = new RemoveRoleFromUserRequest { RoleIds = roleIds.ToList() };
-            return await PutResource<EmptyResponse>($"{Endpointsv2.ONELOGIN_USERSv2}/{userId}/remove_roles", request);
-        }
-
-        /// <summary>
-        /// Initially set or subsequently change a user’s password.
-        /// Note that setting a user password using cleartext via this API is comparable to using our in-browser, form-based Change Password functionality on top of an encrypted channel.
-        /// Note also that when you set a password via this API, the password change must comply with your third-party user directory’s password policy for the user.
-        /// </summary>
-        /// <param name="userId">Set to the id of the user for which you want to set or reset a password. If you don’t know the user’s id, use the Get Users API call to return all users and their  id values.</param>
-        /// <param name="password">Set to the password value using cleartext.
-        /// Hashes are never stored as cleartext. They are stored securely using cryptographic hash. OneLogin continuously upgrades the strength of the hash. Ensure that the value meets the password strength requirements set for the account.
-        /// </param>
-        /// <param name="validatePolicy">Defaults to false. This will validate the password against the users OneLogin password policy.</param>
-        /// <returns></returns>
-        public async Task<EmptyResponse> SetPasswordByIdUsingCleartext(int userId, string password, bool validatePolicy = false)
-        {
-            var request = new SetPasswordByIdUsingCleartextRequest { Password = password, PasswordConfirmation = password, ValidatePolicy = validatePolicy };
-            return await PutResource<EmptyResponse>($"{Endpointsv2.ONELOGIN_USERSv2}/set_password_clear_text/{userId}", request);
-        }
-
-        /// <summary>
-        /// Initially set or subsequently change a user’s password.
-        /// Note that this API cannot verify that the password value supplied meets the password complexity requirements set for the user’s account.If this is a concern, and you use a third-party directory like AD or LDAP, you can use the cleartext version of this API, which can update the password in a third-party directory directly, and enforces the password complexity requirements of the third-party directory.
-        /// </summary>
-        /// <param name="userId">Set to the id of the user for which you want to set or reset a password. If you don’t know the user’s id, use the Get Users API call to return all users and their  id values.</param>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        public async Task<EmptyResponse> SetPasswordByIdUsingSaltAndSHA256(int userId, SetPasswordByIdUsingSaltAndSHA256 request)
-        {
-            return await PutResource<EmptyResponse>($"{Endpointsv2.ONELOGIN_USERSv2}/set_password_using_salt/{userId}", request);
-        }
-
-        /// <summary>
-        /// Set a custom attribute field (also known as a custom user field) value for a user.
-        /// The custom attribute field must exist for your account.For details about defining custom user fields in OneLogin, see Custom User Fields.
-        /// </summary>
-        /// <param name="userId">Set to the id of the user for whom you want to set custom attribute values. If you don’t know the user’s id, use the Get Users API call to return all users and their id values.</param>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        public async Task<EmptyResponse> SetCustomAttributeValue(int userId, SetCustomAttributeValueRequest request)
-        {
-            return await PutResource<EmptyResponse>($"{Endpointsv2.ONELOGIN_USERSv2}/{userId}/set_custom_attributes", request);
-        }
-
-        /// <summary>
-        /// Set the State for a user.
-        /// States describe a stage in a process(such as user account approval). User state determines the possible statuses a user account can be in.
-        /// </summary>
-        /// <param name="userId">Set to the id of the user whose state you want to update. </param>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        public async Task<EmptyResponse> SetUserState(int userId, SetUserStateRequest request)
-        {
-            return await PutResource<EmptyResponse>($"{Endpointsv2.ONELOGIN_USERSv2}/{userId}/set_state", request);
-        }
-
-        /// <summary>
-        /// Log a user out of any and all sessions.
-        /// </summary>
-        /// <param name="userId">Set to the id of the user that you want to log out. </param>
-        /// <returns></returns>
-        public async Task<EmptyResponse> LogUserOut(int userId)
-        {
-            return await PutResource<EmptyResponse>($"{Endpointsv2.ONELOGIN_USERSv2}/{userId}/logout", new {});
-        }
-
-        /// <summary>
-        /// Log a user out of any and all sessions.
-        /// </summary>
-        /// <param name="userId">Set to the id of the user that you want to log out. </param>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        public async Task<EmptyResponse> LockUserAccount(int userId, LockUserAccountRequest request)
-        {
-            return await PutResource<EmptyResponse>($"{Endpointsv2.ONELOGIN_USERSv2}/{userId}/lock_user", request);
+            return await PutResource<UserResponse>($"{Endpointsv2.ONELOGIN_USERS}/{userId}", byIdRequest);
         }
 
         /// <summary>
@@ -222,7 +125,56 @@ namespace OneLogin
         /// <returns></returns>
         public async Task<EmptyResponse> DeleteUserById(int userId)
         {
-            return await DeleteResource<EmptyResponse>($"{Endpointsv2.ONELOGIN_USERSv2}/{userId}");
+            return await DeleteResource<EmptyResponse>($"{Endpointsv2.ONELOGIN_USERS}/{userId}");
+        }
+
+        /// <summary>
+        /// Returns a list of all custom attribute fields (also known as custom user fields) that have been defined for your account.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<GetCustomAttributesResponse>> ListCustomAttributes()
+        {
+            return await GetResource<List<GetCustomAttributesResponse>>($"{Endpointsv2.ONELOGIN_USERS}/custom_attributes");
+        }
+
+        /// <summary>
+        /// Returns a list of all custom attribute fields (also known as custom user fields) that have been defined for your account.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<GetCustomAttributesResponse> GetCustomAttribute(int id)
+        {
+            return await GetResource<GetCustomAttributesResponse>($"{Endpointsv2.ONELOGIN_USERS}/custom_attributes/{id}");
+        }
+
+        /// <summary>
+        /// Creates a new custom attribute in OneLogin.
+        /// </summary>
+        /// <param name="request">The request object.</param>
+        /// <returns></returns>
+        public async Task<GetCustomAttributesResponse> CreateCustomAttribute(CreateCustomAttributesRequest request)
+        {
+            return await PostResource<GetCustomAttributesResponse>($"{Endpointsv2.ONELOGIN_USERS}/custom_attributes", request);
+        }
+
+        /// <summary>
+        /// update a custom attribute in OneLogin.
+        /// </summary>
+        /// <param name="id">Set to the id of the user for whom you want to set custom attribute values. If you don’t know the user’s id, use the Get Users API call to return all users and their id values.</param>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public async Task<GetCustomAttributesResponse> UpdateCustomAttributeValue(int id, CreateCustomAttributesRequest request)
+        {
+            return await PutResource<GetCustomAttributesResponse>($"{Endpointsv2.ONELOGIN_USERS}/custom_attributes/{id}", request);
+        }
+
+        /// <summary>
+        /// Use this call to delete a Custom attribute by ID.
+        /// </summary>
+        /// <param name="id">Set to the id of the attribute that you want to delete </param>
+        /// <returns></returns>
+        public async Task<EmptyResponse> DeleteCustomAttributeById(int id)
+        {
+            return await DeleteResource<EmptyResponse>($"{Endpointsv2.ONELOGIN_USERS}/custom_attributes/{id}");
         }
     }
 }

@@ -1,15 +1,12 @@
-﻿using System;
-using System.Runtime.Serialization;
-using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace OneLogin.Responses
 {
     /// <summary>
     /// Serialized response to generating a token.
-    /// <a href="https://developers.onelogin.com/api-docs/1/oauth20-tokens/generate-tokens">Documentation</a>
+    /// <a href="https://developers.onelogin.com/api-docs/2/oauth20-tokens/generate-tokens">Documentation</a>
     /// </summary>
     /// 
-    [DataContract]
     public class GenerateTokensResponse
     {
         /// <summary>
@@ -19,39 +16,39 @@ namespace OneLogin.Responses
         /// <summary>
         /// Provides the requested access token. You can use this token to call our resource APIs.
         /// </summary>
-        [DataMember(Name = "access_token")]
+        [JsonPropertyName("access_token")]
         public string? AccessToken { get; set; }
 
         /// <summary>
         /// Time at which the access token was generated.
         /// </summary>
-        [DataMember(Name = "created_at")]
+        [JsonPropertyName("created_at")]
         public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>
         /// Indicates that the generated access token expires in 36,000 seconds, 600 minutes, or 10 hours.
-        /// An expired access token cannot be used to make resource API calls, but it can still be used along with its associated <a href="https://developers.onelogin.com/api-docs/1/oauth20-tokens/refresh-tokens">Refresh Token</a> to call the Refresh Tokens API.
+        /// An expired access token cannot be used to make resource API calls, but it can still be used along with its associated <a href="https://developers.onelogin.com/api-docs/2/oauth20-tokens/refresh-tokens">Refresh Token</a> to call the Refresh Tokens API.
         /// </summary>
-        [DataMember(Name = "expires_in")]
+        [JsonPropertyName("expires_in")]
         public long ExpiresIn { get; set; }
 
         /// <summary>
         /// Provides the refresh token that is uniquely paired with the access token. You can use this token to request a refresh to its associated access token.
-        /// For more information about refreshing access tokens, see <a href="https://developers.onelogin.com/api-docs/1/oauth20-tokens/refresh-tokens">Refresh Token</a>.
+        /// For more information about refreshing access tokens, see <a href="https://developers.onelogin.com/api-docs/2/oauth20-tokens/refresh-tokens">Refresh Token</a>.
         /// </summary>
-        [DataMember(Name = "refresh_token")]
+        [JsonPropertyName("refresh_token")]
         public string? RefreshToken { get; set; }
 
         /// <summary>
         /// Indicates that the generated access token is a bearer token.
         /// </summary>
-        [DataMember(Name = "token_type")]
+        [JsonPropertyName("token_type")]
         public string? TokenType { get; set; }
 
         /// <summary>
         /// Account ID associated with the API credentials used to generate the token.
         /// </summary>
-        [DataMember(Name = "account_id")]
+        [JsonPropertyName("account_id")]
         public long AccountId { get; set; }
     }
 }

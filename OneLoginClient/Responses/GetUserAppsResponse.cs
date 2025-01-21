@@ -1,6 +1,4 @@
-﻿using System.Runtime.Serialization;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+﻿using System.Text.Json.Serialization;
 using OneLogin.Types;
 
 namespace OneLogin.Responses
@@ -10,56 +8,56 @@ namespace OneLogin.Responses
     /// To get a list of apps accessible by a user to embed in your company intranet, for example, see Get Apps to Embed for a User.
     /// https://developers.onelogin.com/api-docs/1/users/get-apps-for-user
     /// </summary>
-    [DataContract]
-    public class GetAppsForUserResponse : BaseResponse<UserApps>
-    {
-
-    }
-
-    [DataContract]
-    public class UserApps
-    {
+    public class GetUserAppsResponse
+    { 
         /// <summary>
         /// ID of the app that can be accessed by the user.
         /// </summary>
-        [DataMember(Name = "id")]
+        [JsonPropertyName("id")]
         public int Id { get; set; }
 
         /// <summary>
         /// Name of the application.
         /// </summary>
-        [DataMember(Name = "name")]
-        public string Name { get; set; }
+        [JsonPropertyName("name")]
+        public string? Name { get; set; }
 
         /// <summary>
         /// URL to the app’s icon.
         /// </summary>
-        [DataMember(Name = "icon")]
-        public string Icon { get; set; }
+        [JsonPropertyName("icon_url")]
+        public string? Iconurl { get; set; }
 
         /// <summary>
-        /// Indicates whether a username and password has been stored on the login for the app and user.
+        /// The user status like enabled.
         /// </summary>
-        [DataMember(Name = "provisioned")]
-        [JsonConverter(typeof(StringEnumConverter))]
-        public ProvisionedTypes? Provisioned { get; set; }
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        [JsonPropertyName("provisioning_status")]
+        public ProvisioningStatus? ProvisioningStatus { get; set; }
+
+        /// <summary>
+        /// The state of the user.
+        /// </summary>
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        [JsonPropertyName("provisioning_state")]
+        public ProvisioningState? ProvisioningState { get; set; }
 
         /// <summary>
         /// Indicates whether the app requires the OneLogin browser extension to login.
         /// </summary>
-        [DataMember(Name = "extension")]
+        [JsonPropertyName("extension")]
         public bool Extension { get; set; }
 
         /// <summary>
         /// User’s ID in the app. For example, in one app the user’s ID may be  georgia.wong@company.com, but in another it may be georgia.wong.
         /// </summary>
-        [DataMember(Name = "login_id")]
-        public string LoginId { get; set; }
+        [JsonPropertyName("login_id")]
+        public long LoginId { get; set; }
 
         /// <summary>
         /// Indicates whether the app is a user’s provisioning enabled app.
         /// </summary>
-        [DataMember(Name = "provisioning_enabled")]
-        public bool provisioning_enabled { get; set; }
+        [JsonPropertyName("provisioning_enabled")]
+        public bool Provisioning_enabled { get; set; }
     }
 }

@@ -1,25 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
+﻿using System.Net.Http.Headers;
 using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using OneLogin.Responses;
 
 namespace OneLogin
 {
     /// <summary>
-    /// A client class to access the onelogin API /1
-    /// https://developers.onelogin.com/api-docs/1/getting-started/dev-overview
+    /// A client class to access the onelogin API /2
+    /// https://developers.onelogin.com/api-docs/2/getting-started/dev-overview
     /// </summary>
     public partial class OneLoginClient
     {
         private readonly string _clientId;
         private readonly string _clientSecret;
         private readonly string _region;
-        private static HttpClient _client;
-        private static readonly List<string> ValidRegions = new List<string> { "us", "eu" };
+        private static HttpClient? _client;
+        private static readonly List<string> ValidRegions = ["us", "eu"];
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OneLoginClient"/> class.
@@ -48,7 +45,7 @@ namespace OneLogin
         /// Generate an access token and refresh token that you can use to call our resource APIs.
         /// For an overview of the authorization flow, see Authorizing Resource API Calls.
         /// Once generated, an access token is valid for 10 hours.
-        /// <a href="https://developers.onelogin.com/api-docs/1/oauth20-tokens/generate-tokens-2">Documentation</a>.
+        /// <a href="https://developers.onelogin.com/api-docs/2/oauth20-tokens/generate-tokens-2">Documentation</a>.
         /// </summary>
         /// <returns>Returns the serialized <see cref="GenerateTokensResponse"/> as an asynchronous operation.</returns>
         public async Task<GenerateTokensResponse> GenerateTokens()
@@ -60,7 +57,7 @@ namespace OneLogin
             var base64EncodedCredentials = Convert.ToBase64String(Encoding.UTF8.GetBytes(credentials));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", base64EncodedCredentials);
 
-            var content = new StringContent(JsonConvert.SerializeObject(new { grant_type = "client_credentials" }));
+            var content = new StringContent(JsonSerializer.Serialize(new { grant_type = "client_credentials" }));
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Post,
@@ -74,55 +71,6 @@ namespace OneLogin
 
             var response = client.SendAsync(request);
             return await ParseHttpResponse<GenerateTokensResponse>(response);
-        }
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="pages"></param>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public async Task<List<T>> GetNextPages<T>(T source, int? pages = null) where T : IPageable
-        {
-            var results = new List<T>();
-            var isTrue = Uri.IsWellFormedUriString(source.Pagination.NextLink, UriKind.Absolute);
-            var pageCount = 1;
-            var nextLink = source.Pagination.NextLink;
-            while (isTrue && pageCount <= pages)
-            {
-                var result = await GetResource<T>(nextLink);
-                results.Add(result);
-                nextLink = result.Pagination.NextLink;
-                isTrue = Uri.IsWellFormedUriString(nextLink, UriKind.Absolute);
-                pageCount++;
-            }
-
-            return results;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="pages"></param>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public async Task<List<T>> GetPreviousPages<T>(T source, int? pages = null) where T : IPageable
-        {
-            var results = new List<T>();
-            var isTrue = Uri.IsWellFormedUriString(source.Pagination.PreviousLink, UriKind.Absolute);
-            var pageCount = 1;
-            while (isTrue && pageCount <= pages)
-            {
-                var result = await GetResource<T>(source.Pagination.PreviousLink);
-                results.Add(result);
-                isTrue = Uri.IsWellFormedUriString(result.Pagination.PreviousLink, UriKind.Absolute);
-                pageCount++;
-            }
-
-            return results;
         }
 
         private async Task<T> GetResource<T>(string url)
@@ -152,9 +100,9 @@ namespace OneLogin
             if (request == null) throw new ArgumentNullException(nameof(request));
             if (string.IsNullOrWhiteSpace(url)) { throw new ArgumentException(nameof(url)); }
 
-            var content = new StringContent(JsonConvert.SerializeObject(request, settings: new JsonSerializerSettings
+            var content = new StringContent(JsonSerializer.Serialize(request, options: new JsonSerializerOptions
             {
-                NullValueHandling = NullValueHandling.Ignore
+                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
             }));
             var httpRequest = new HttpRequestMessage
             {
@@ -178,10 +126,11 @@ namespace OneLogin
             if (request == null) throw new ArgumentNullException(nameof(request));
             if (string.IsNullOrWhiteSpace(url)) { throw new ArgumentException(nameof(url)); }
 
-            var content = new StringContent(JsonConvert.SerializeObject(request, settings: new JsonSerializerSettings
+            var content = new StringContent(JsonSerializer.Serialize(request, options: new JsonSerializerOptions
             {
-                NullValueHandling = NullValueHandling.Ignore
+                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
             }));
+
             var httpRequest = new HttpRequestMessage
             {
                 Method = HttpMethod.Put,
@@ -206,15 +155,16 @@ namespace OneLogin
             return await ParseHttpResponse<T>(client.DeleteAsync(url));
         }
 
-        private async Task<T> ParseHttpResponse<T>(Task<HttpResponseMessage> taskResponse)
+        private static async Task<T> ParseHttpResponse<T>(Task<HttpResponseMessage> taskResponse)
         {
             var response = await taskResponse;
             var responseBody = await response.Content.ReadAsStringAsync();
             if (string.IsNullOrWhiteSpace(responseBody))
             {
-                throw new JsonSerializationException("No message to deserialize.");
+                Console.WriteLine("Error: The file is empty or invalid.");
             }
-            return JsonConvert.DeserializeObject<T>(responseBody);
+
+            return JsonSerializer.Deserialize<T>(responseBody);
         }
     }
 }
