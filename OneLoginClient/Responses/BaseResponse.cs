@@ -9,7 +9,7 @@ namespace OneLogin.Responses
     /// <typeparam name="T"></typeparam>
     /// <inheritdoc cref="BaseStatusResponse" />
     [DataContract]
-    public abstract class BaseResponse<T> : BaseStatusResponse
+    public abstract class BaseResponse<T>
     {
         /// <summary>
         /// Collection of data returned by the API service.

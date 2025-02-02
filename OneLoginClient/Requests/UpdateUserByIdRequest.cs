@@ -1,7 +1,4 @@
-﻿using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
-using OneLogin.Responses;
-using OneLogin.Types;
+﻿using System.Text.Json.Serialization;
 
 namespace OneLogin.Requests
 {
@@ -9,7 +6,6 @@ namespace OneLogin.Requests
     /// Request to authenticate a one-time password (OTP) code provided by a multifactor authentication (MFA) device.
     /// If this is the first time that the OTP device has been confirmed, then the device will be updated to have a state of enabled.
     /// </summary>
-    [DataContract]
     public class UpdateUserByIdRequest
     {
         /// <summary>
