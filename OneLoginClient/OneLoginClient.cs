@@ -87,6 +87,11 @@
             }
 
             var token = await GenerateTokens();
+            if (token?.Data?.AccessToken == null)
+            {
+                throw new UnauthorizedAccessException("Unauthorized");
+            }
+
             var client = new HttpClient { BaseAddress = new Uri(Endpointsv2.BaseApi.Replace("<us_or_eu>", _region)) };
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.Data.AccessToken);
             return _client = client;
