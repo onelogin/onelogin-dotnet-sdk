@@ -1,10 +1,4 @@
-﻿using System.Net.Http.Headers;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using OneLogin.Responses;
-
-namespace OneLogin
+﻿namespace OneLogin
 {
     /// <summary>
     /// A client class to access the onelogin API /2
@@ -84,6 +78,7 @@ namespace OneLogin
                 return new ApiResponse<T>(new BaseErrorResponse { Message = ex.Message });
             }
         }
+
         private async Task<HttpClient> GetClient()
         {
             if (_client != null)

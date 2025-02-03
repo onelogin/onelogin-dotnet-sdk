@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using OneLogin.Types;
+﻿using OneLogin.Types;
 
 namespace OneLogin.Responses
 {

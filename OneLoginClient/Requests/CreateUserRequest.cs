@@ -1,12 +1,9 @@
-﻿using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
-
+﻿
 namespace OneLogin.Requests
 {
     /// <summary>
     /// Set of fields to be sent when creating a user. https://developers.onelogin.com/api-docs/2/users/create-user
     /// </summary>
-    [DataContract]
     public class CreateUserRequest
     {
         /// <summary>
