@@ -29,45 +29,52 @@ namespace OneLogin
             string? fields = null // Comma-separated list of user attributes to return
         )
         {
-            var parameters = new Dictionary<string, string?>
-           {
-                { "directory_id", directoryId },
-                { "email", email },
-                { "external_id", externalId },
-                { "app_id", appId },
-                { "firstname", firstName },
-                { "lastname", lastName },
-                { "role_id", roleId?.ToString() },
-                { "samaccountname", samAccountName },
-                { "created_since", since?.ToString("o") },  // Use "o" format specifier for DateTime (ISO 8601)
-                { "updated_since", since?.ToString("o") },
-                { "created_until", until?.ToString("o") },
-                { "updated_until", until?.ToString("o") },
-                { "last_login_until", until?.ToString("o") },
-                { "last_login_since", since?.ToString("o") },  // Corrected to `since` for consistency
-                { "username", userName },
-                { "userprincipalname", userPrincipalName },
-                { "user_ids", userIds },  // Comma-separated list of user IDs
-                { "fields", fields }  // Comma-separated list of user attributes to return
-           };
-
-            if (customAttributes != null)
+            try
             {
-                foreach (var attribute in customAttributes)
+                var parameters = new Dictionary<string, string?>
+                    {
+                        { "directory_id", directoryId },
+                        { "email", email },
+                        { "external_id", externalId },
+                        { "app_id", appId },
+                        { "firstname", firstName },
+                        { "lastname", lastName },
+                        { "role_id", roleId?.ToString() },
+                        { "samaccountname", samAccountName },
+                        { "created_since", since?.ToString("o") },  // Use "o" format specifier for DateTime (ISO 8601)
+                        { "updated_since", since?.ToString("o") },
+                        { "created_until", until?.ToString("o") },
+                        { "updated_until", until?.ToString("o") },
+                        { "last_login_until", until?.ToString("o") },
+                        { "last_login_since", since?.ToString("o") },  // Corrected to `since` for consistency
+                        { "username", userName },
+                        { "userprincipalname", userPrincipalName },
+                        { "user_ids", userIds },  // Comma-separated list of user IDs
+                        { "fields", fields }  // Comma-separated list of user attributes to return
+                    };
+
+                if (customAttributes != null)
                 {
-                    parameters[$"custom_attributes.{attribute.Key}"] = attribute.Value;
+                    foreach (var attribute in customAttributes)
+                    {
+                        parameters[$"custom_attributes.{attribute.Key}"] = attribute.Value;
+                    }
                 }
+
+                parameters = parameters.Where(kvp => kvp.Value != null).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+                var queryString = string.Join("&", parameters
+                    .Where(kv => !string.IsNullOrEmpty(kv.Value))
+                    .Select(kv => $"{kv.Key}={kv.Value}"));
+
+                var url = $"{Endpointsv2.ONELOGIN_USERS}{(string.IsNullOrEmpty(queryString) ? "" : "?" + queryString)}";
+
+                return await GetResource<List<UserResponse>>(url);
             }
-
-            parameters = parameters.Where(kvp => kvp.Value != null).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-
-            var queryString = string.Join("&", parameters
-                .Where(kv => !string.IsNullOrEmpty(kv.Value))
-                .Select(kv => $"{kv.Key}={kv.Value}"));
-
-            var url = $"{Endpointsv2.ONELOGIN_USERS}{(string.IsNullOrEmpty(queryString) ? "" : "?" + queryString)}";
-
-            return await GetResource<List<UserResponse>>(url);
+            catch (Exception ex)
+            {
+                return new ApiResponse<List<UserResponse>>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+            }
         }
 
         /// <summary>
@@ -77,7 +84,14 @@ namespace OneLogin
         /// <returns></returns>
         public async Task<ApiResponse<UserResponse>> GetUserById(int userId)
         {
-            return await GetResource<UserResponse>($"{Endpointsv2.ONELOGIN_USERS}/{userId}");
+            try
+            {
+                return await GetResource<UserResponse>($"{Endpointsv2.ONELOGIN_USERS}/{userId}");
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<UserResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+            }
         }
 
         /// <summary>
@@ -88,8 +102,14 @@ namespace OneLogin
         /// <returns></returns>
         public async Task<ApiResponse<List<GetUserAppsResponse>>> GetUserApps(int userId)
         {
-            return await GetResource<List<GetUserAppsResponse>>($"{Endpointsv2.ONELOGIN_USERS}/{userId}/apps");
-
+            try
+            {
+                return await GetResource<List<GetUserAppsResponse>>($"{Endpointsv2.ONELOGIN_USERS}/{userId}/apps");
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<List<GetUserAppsResponse>>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+            }
         }
 
         /// <summary>
@@ -99,7 +119,14 @@ namespace OneLogin
         /// <returns></returns>
         public async Task<ApiResponse<UserResponse>> CreateUser(CreateUserRequest request)
         {
-            return await PostResource<UserResponse>(Endpointsv2.ONELOGIN_USERS, request);
+            try
+            {
+                return await PostResource<UserResponse>(Endpointsv2.ONELOGIN_USERS, request);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<UserResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+            }
         }
 
         /// <summary>
@@ -110,7 +137,14 @@ namespace OneLogin
         /// <returns></returns>
         public async Task<ApiResponse<UserResponse>> UpdateUserById(int userId, UpdateUserByIdRequest byIdRequest)
         {
-            return await PutResource<UserResponse>($"{Endpointsv2.ONELOGIN_USERS}/{userId}", byIdRequest);
+            try
+            {
+                return await PutResource<UserResponse>($"{Endpointsv2.ONELOGIN_USERS}/{userId}", byIdRequest);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<UserResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+            }
         }
 
         /// <summary>
@@ -120,7 +154,14 @@ namespace OneLogin
         /// <returns></returns>
         public async Task<ApiResponse<EmptyResponse>> DeleteUserById(int userId)
         {
-            return await DeleteResource<EmptyResponse>($"{Endpointsv2.ONELOGIN_USERS}/{userId}");
+            try
+            {
+                return await DeleteResource<EmptyResponse>($"{Endpointsv2.ONELOGIN_USERS}/{userId}");
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<EmptyResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+            }
         }
 
         /// <summary>
@@ -129,7 +170,14 @@ namespace OneLogin
         /// <returns></returns>
         public async Task<ApiResponse<List<GetCustomAttributesResponse>>> ListCustomAttributes()
         {
-            return await GetResource<List<GetCustomAttributesResponse>>($"{Endpointsv2.ONELOGIN_USERS}/custom_attributes");
+            try
+            {
+                return await GetResource<List<GetCustomAttributesResponse>>($"{Endpointsv2.ONELOGIN_USERS}/custom_attributes");
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<List<GetCustomAttributesResponse>>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+            }
         }
 
         /// <summary>
@@ -138,7 +186,14 @@ namespace OneLogin
         /// <returns></returns>
         public async Task<ApiResponse<GetCustomAttributesResponse>> GetCustomAttribute(int id)
         {
-            return await GetResource<GetCustomAttributesResponse>($"{Endpointsv2.ONELOGIN_USERS}/custom_attributes/{id}");
+            try
+            {
+                return await GetResource<GetCustomAttributesResponse>($"{Endpointsv2.ONELOGIN_USERS}/custom_attributes/{id}");
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<GetCustomAttributesResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+            }
         }
 
         /// <summary>
@@ -148,7 +203,14 @@ namespace OneLogin
         /// <returns></returns>
         public async Task<ApiResponse<GetCustomAttributesResponse>> CreateCustomAttribute(CreateCustomAttributesRequest request)
         {
-            return await PostResource<GetCustomAttributesResponse>($"{Endpointsv2.ONELOGIN_USERS}/custom_attributes", request);
+            try
+            {
+                return await PostResource<GetCustomAttributesResponse>($"{Endpointsv2.ONELOGIN_USERS}/custom_attributes", request);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<GetCustomAttributesResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+            }
         }
 
         /// <summary>
@@ -159,7 +221,14 @@ namespace OneLogin
         /// <returns></returns>
         public async Task<ApiResponse<GetCustomAttributesResponse>> UpdateCustomAttributeValue(int id, CreateCustomAttributesRequest request)
         {
-            return await PutResource<GetCustomAttributesResponse>($"{Endpointsv2.ONELOGIN_USERS}/custom_attributes/{id}", request);
+            try
+            {
+                return await PutResource<GetCustomAttributesResponse>($"{Endpointsv2.ONELOGIN_USERS}/custom_attributes/{id}", request);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<GetCustomAttributesResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+            }
         }
 
         /// <summary>
@@ -169,7 +238,14 @@ namespace OneLogin
         /// <returns></returns>
         public async Task<ApiResponse<EmptyResponse>> DeleteCustomAttributeById(int id)
         {
-            return await DeleteResource<EmptyResponse>($"{Endpointsv2.ONELOGIN_USERS}/custom_attributes/{id}");
+            try
+            {
+                return await DeleteResource<EmptyResponse>($"{Endpointsv2.ONELOGIN_USERS}/custom_attributes/{id}");
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<EmptyResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+            }
         }
     }
 }

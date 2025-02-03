@@ -43,32 +43,46 @@ namespace OneLogin
         /// <returns>Returns the serialized <see cref="GenerateTokensResponse"/> as an asynchronous operation.</returns>
         public async Task<ApiResponse<GenerateTokensResponse>> GenerateTokens()
         {
-            var client = new HttpClient();
-
-            var credentials = $"{_clientId}:{_clientSecret}";
-            var base64EncodedCredentials = Convert.ToBase64String(Encoding.UTF8.GetBytes(credentials));
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", base64EncodedCredentials);
-
-            var content = new StringContent(JsonSerializer.Serialize(new { grant_type = "client_credentials" }));
-            var request = new HttpRequestMessage
+            try
             {
-                Method = HttpMethod.Post,
-                RequestUri = new Uri(Endpointsv2.Token.Replace("<us_or_eu>", _region)),
-                Content = content
-            };
+                var client = new HttpClient();
 
-            request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                var credentials = $"{_clientId}:{_clientSecret}";
+                var base64EncodedCredentials = Convert.ToBase64String(Encoding.UTF8.GetBytes(credentials));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", base64EncodedCredentials);
 
-            var response = client.SendAsync(request);
-            return await ParseHttpResponse<GenerateTokensResponse>(response);
+                var content = new StringContent(JsonSerializer.Serialize(new { grant_type = "client_credentials" }));
+                var request = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Post,
+                    RequestUri = new Uri(Endpointsv2.Token.Replace("<us_or_eu>", _region)),
+                    Content = content
+                };
+
+                request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                var response = client.SendAsync(request);
+                return await ParseHttpResponse<GenerateTokensResponse>(response);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<GenerateTokensResponse>(new BaseErrorResponse { Message = ex.Message });
+            }
         }
 
         private async Task<ApiResponse<T>> GetResource<T>(string url)
         {
-            if (string.IsNullOrWhiteSpace(url)) { throw new ArgumentException(nameof(url)); }
+            try
+            {
+                if (string.IsNullOrWhiteSpace(url)) { throw new ArgumentException(nameof(url)); }
 
-            var client = await GetClient();
-            return await ParseHttpResponse<T>(client.GetAsync(url));
+                var client = await GetClient();
+                return await ParseHttpResponse<T>(client.GetAsync(url));
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<T>(new BaseErrorResponse { Message = ex.Message });
+            }
         }
         private async Task<HttpClient> GetClient()
         {
@@ -85,80 +99,108 @@ namespace OneLogin
 
         private async Task<ApiResponse<T>> PostResource<T>(string url, object request)
         {
-            if (request == null) throw new ArgumentNullException(nameof(request));
-            if (string.IsNullOrWhiteSpace(url)) { throw new ArgumentException(nameof(url)); }
-
-            var content = new StringContent(JsonSerializer.Serialize(request, options: new JsonSerializerOptions
+            try
             {
-                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-            }));
-            var httpRequest = new HttpRequestMessage
-            {
-                Method = HttpMethod.Post,
-                RequestUri = new Uri(url, UriKind.Relative),
-                Content = content
-            };
-            //We add the Content-Type Header like this because otherwise dotnet
-            //adds the utf-8 charset extension to it which is not compatible with OneLogin
-            httpRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                if (request == null) throw new ArgumentNullException(nameof(request));
+                if (string.IsNullOrWhiteSpace(url)) { throw new ArgumentException(nameof(url)); }
 
-            var client = await GetClient();
-            var response = client.SendAsync(httpRequest);
-            return await ParseHttpResponse<T>(response);
+                var content = new StringContent(JsonSerializer.Serialize(request, options: new JsonSerializerOptions
+                {
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                }));
+                var httpRequest = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Post,
+                    RequestUri = new Uri(url, UriKind.Relative),
+                    Content = content
+                };
+                //We add the Content-Type Header like this because otherwise dotnet
+                //adds the utf-8 charset extension to it which is not compatible with OneLogin
+                httpRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                var client = await GetClient();
+                var response = client.SendAsync(httpRequest);
+                return await ParseHttpResponse<T>(response);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<T>(new BaseErrorResponse { Message = ex.Message });
+            }
         }
 
         private async Task<ApiResponse<T>> PutResource<T>(string url, object request)
         {
-            if (request == null) throw new ArgumentNullException(nameof(request));
-            if (string.IsNullOrWhiteSpace(url)) { throw new ArgumentException(nameof(url)); }
-
-            var content = new StringContent(JsonSerializer.Serialize(request, options: new JsonSerializerOptions
+            try
             {
-                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-            }));
+                if (request == null) throw new ArgumentNullException(nameof(request));
+                if (string.IsNullOrWhiteSpace(url)) { throw new ArgumentException(nameof(url)); }
 
-            var httpRequest = new HttpRequestMessage
+                var content = new StringContent(JsonSerializer.Serialize(request, options: new JsonSerializerOptions
+                {
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                }));
+
+                var httpRequest = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Put,
+                    RequestUri = new Uri(url, UriKind.Relative),
+                    Content = content
+                };
+
+                httpRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                var client = await GetClient();
+                var response = client.SendAsync(httpRequest);
+                return await ParseHttpResponse<T>(response);
+            }
+            catch (Exception ex)
             {
-                Method = HttpMethod.Put,
-                RequestUri = new Uri(url, UriKind.Relative),
-                Content = content
-            };
-
-            httpRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
-            var client = await GetClient();
-            var response = client.SendAsync(httpRequest);
-            return await ParseHttpResponse<T>(response);
+                return new ApiResponse<T>(new BaseErrorResponse { Message = ex.Message });
+            }
         }
 
         private async Task<ApiResponse<T>> DeleteResource<T>(string url)
         {
-            if (string.IsNullOrWhiteSpace(url)) { throw new ArgumentException(nameof(url)); }
+            try
+            {
+                if (string.IsNullOrWhiteSpace(url)) { throw new ArgumentException(nameof(url)); }
 
-            var client = await GetClient();
-            return await ParseHttpResponse<T>(client.DeleteAsync(url));
+                var client = await GetClient();
+                return await ParseHttpResponse<T>(client.DeleteAsync(url));
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<T>(new BaseErrorResponse { Message = ex.Message });
+            }
         }
 
         private static async Task<ApiResponse<T>> ParseHttpResponse<T>(Task<HttpResponseMessage> taskResponse)
         {
-            var response = await taskResponse;
-            var responseBody = await response.Content.ReadAsStringAsync();
+            try
+            {
+                var response = await taskResponse;
+                var responseBody = await response.Content.ReadAsStringAsync();
 
-            if (string.IsNullOrWhiteSpace(responseBody))
-            {
-                return new ApiResponse<T>();
+                if (string.IsNullOrWhiteSpace(responseBody))
+                {
+                    return new ApiResponse<T>();
+                }
+                else if (response.IsSuccessStatusCode)
+                {
+                    // Assuming the response body contains data when it's a 200 status code.
+                    T? data = JsonSerializer.Deserialize<T>(responseBody);
+                    return new ApiResponse<T>(data);
+                }
+                else
+                {
+                    // Handle error responses like 400.
+                    var status = JsonSerializer.Deserialize<BaseErrorResponse>(responseBody);
+                    return new ApiResponse<T>(status);
+                }
             }
-            else if (response.IsSuccessStatusCode)
+            catch (Exception ex)
             {
-                // Assuming the response body contains data when it's a 200 status code.
-                T? data = JsonSerializer.Deserialize<T>(responseBody);
-                return new ApiResponse<T>(data);
-            }
-            else
-            {
-                // Handle error responses like 400.
-                var status = JsonSerializer.Deserialize<BaseErrorResponse>(responseBody);
-                return new ApiResponse<T>(status);
+                return new ApiResponse<T>(new BaseErrorResponse { Message = ex.Message });
             }
         }
 
