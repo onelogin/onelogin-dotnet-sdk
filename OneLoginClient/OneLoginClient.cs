@@ -24,13 +24,6 @@ namespace OneLogin
         /// <param name="clientId">The client id to connect with.</param>
         /// <param name="clientSecret">The client secret to connect with.</param>
         /// <param name="region"></param>
-        /// <example>
-        /// <code>
-        /// var client = new OneLoginClient("client id", "client secret")
-        /// </code>
-        /// </example>
-        /// <exception cref="System.ArgumentNullException">clientId</exception>
-        /// <exception cref="System.ArgumentNullException">clientSecret</exception>
         public OneLoginClient(string clientId, string clientSecret, string region = "us")
         {
             if (string.IsNullOrWhiteSpace(clientId)) throw new ArgumentNullException(nameof(clientSecret));
@@ -85,7 +78,6 @@ namespace OneLogin
             }
 
             var token = await GenerateTokens();
-            //token.EnsureSuccess();
             var client = new HttpClient { BaseAddress = new Uri(Endpointsv2.BaseApi.Replace("<us_or_eu>", _region)) };
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.Data.AccessToken);
             return _client = client;
@@ -98,7 +90,7 @@ namespace OneLogin
 
             var content = new StringContent(JsonSerializer.Serialize(request, options: new JsonSerializerOptions
             {
-                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
             }));
             var httpRequest = new HttpRequestMessage
             {
@@ -122,7 +114,7 @@ namespace OneLogin
 
             var content = new StringContent(JsonSerializer.Serialize(request, options: new JsonSerializerOptions
             {
-                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
             }));
 
             var httpRequest = new HttpRequestMessage
@@ -147,12 +139,16 @@ namespace OneLogin
             return await ParseHttpResponse<T>(client.DeleteAsync(url));
         }
 
-        private async Task<ApiResponse<T>> ParseHttpResponse<T>(Task<HttpResponseMessage> taskResponse)
+        private static async Task<ApiResponse<T>> ParseHttpResponse<T>(Task<HttpResponseMessage> taskResponse)
         {
             var response = await taskResponse;
             var responseBody = await response.Content.ReadAsStringAsync();
 
-            if (response.IsSuccessStatusCode)
+            if (string.IsNullOrWhiteSpace(responseBody))
+            {
+                return new ApiResponse<T>();
+            }
+            else if (response.IsSuccessStatusCode)
             {
                 // Assuming the response body contains data when it's a 200 status code.
                 T? data = JsonSerializer.Deserialize<T>(responseBody);
