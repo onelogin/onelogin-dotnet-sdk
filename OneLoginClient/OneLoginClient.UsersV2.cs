@@ -6,8 +6,8 @@
         /// Get all of the users registered with Onelogin filtered by the given parameters.
         /// https://developers.onelogin.com/api-docs/2/users/List-users
         /// </summary>
-        /// <returns>Returns the serialized<see cref = "UserResponse" /> as an asynchronous operation.</returns>
-        public async Task<ApiResponse<List<UserResponse>>> ListUsers(
+        /// <returns>Returns the serialized<see cref = "GetUserResponse" /> as an asynchronous operation.</returns>
+        public async Task<ApiResponse<List<GetUserResponse>>> ListUsers(
             string? directoryId = null,
             string? email = null,
             string? externalId = null,
@@ -65,11 +65,11 @@
 
                 var url = $"{Endpointsv2.ONELOGIN_USERS}{(string.IsNullOrEmpty(queryString) ? "" : "?" + queryString)}";
 
-                return await GetResource<List<UserResponse>>(url);
+                return await GetResource<List<GetUserResponse>>(url);
             }
             catch (Exception ex)
             {
-                return new ApiResponse<List<UserResponse>>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+                return new ApiResponse<List<GetUserResponse>>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
             }
         }
 
@@ -78,15 +78,15 @@
         /// </summary>
         /// <param name = "userId" > the id of the user that you want to return.</param>
         /// <returns></returns>
-        public async Task<ApiResponse<UserResponse>> GetUserById(int userId)
+        public async Task<ApiResponse<GetUserResponse>> GetUserById(int userId)
         {
             try
             {
-                return await GetResource<UserResponse>($"{Endpointsv2.ONELOGIN_USERS}/{userId}");
+                return await GetResource<GetUserResponse>($"{Endpointsv2.ONELOGIN_USERS}/{userId}");
             }
             catch (Exception ex)
             {
-                return new ApiResponse<UserResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+                return new ApiResponse<GetUserResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
             }
         }
 
@@ -113,15 +113,15 @@
         /// </summary>
         /// <param name="request">The request object.</param>
         /// <returns></returns>
-        public async Task<ApiResponse<UserResponse>> CreateUser(CreateUserRequest request)
+        public async Task<ApiResponse<GetUserResponse>> CreateUser(CreateUserRequest request)
         {
             try
             {
-                return await PostResource<UserResponse>(Endpointsv2.ONELOGIN_USERS, request);
+                return await PostResource<GetUserResponse>(Endpointsv2.ONELOGIN_USERS, request);
             }
             catch (Exception ex)
             {
-                return new ApiResponse<UserResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+                return new ApiResponse<GetUserResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
             }
         }
 
@@ -131,15 +131,15 @@
         /// <param name="userId">Set to the id of the user which you want to update.</param>
         /// <param name="byIdRequest">The request object.</param>
         /// <returns></returns>
-        public async Task<ApiResponse<UserResponse>> UpdateUserById(int userId, UpdateUserByIdRequest byIdRequest)
+        public async Task<ApiResponse<GetUserResponse>> UpdateUserById(int userId, UpdateUserByIdRequest byIdRequest)
         {
             try
             {
-                return await PutResource<UserResponse>($"{Endpointsv2.ONELOGIN_USERS}/{userId}", byIdRequest);
+                return await PutResource<GetUserResponse>($"{Endpointsv2.ONELOGIN_USERS}/{userId}", byIdRequest);
             }
             catch (Exception ex)
             {
-                return new ApiResponse<UserResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+                return new ApiResponse<GetUserResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
             }
         }
 

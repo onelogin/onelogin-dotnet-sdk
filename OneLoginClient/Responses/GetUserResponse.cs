@@ -1,5 +1,4 @@
-﻿using OneLogin.Types;
-
+﻿
 namespace OneLogin.Responses
 {
     /// <summary>
@@ -8,7 +7,7 @@ namespace OneLogin.Responses
     /// <summary>
     /// A user of the OneLogin platform.
     /// </summary>
-    public class UserResponse
+    public class GetUserResponse
     {
         /// <summary>
         /// Date and time at which the user’s status was set to 1 (active).
