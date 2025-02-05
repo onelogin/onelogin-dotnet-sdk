@@ -159,14 +159,42 @@
             }
         }
 
-        private async Task<ApiResponse<T>> DeleteResource<T>(string url)
+        private async Task<ApiResponse<T>> DeleteResource<T>(string url, object? request = null)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(url)) { throw new ArgumentException(nameof(url)); }
 
                 var client = await GetClient();
-                return await ParseHttpResponse<T>(client.DeleteAsync(url));
+                HttpRequestMessage httpRequest;
+
+                if (request != null)
+                {
+                    var content = new StringContent(JsonSerializer.Serialize(request, options: new JsonSerializerOptions
+                    {
+                        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                    }));
+
+                    httpRequest = new HttpRequestMessage
+                    {
+                        Method = HttpMethod.Delete,
+                        RequestUri = new Uri(url, UriKind.Relative),
+                        Content = content
+                    };
+
+                    httpRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                }
+                else
+                {
+                    httpRequest = new HttpRequestMessage
+                    {
+                        Method = HttpMethod.Delete,
+                        RequestUri = new Uri(url, UriKind.Relative)
+                    };
+                }
+
+                var response = client.SendAsync(httpRequest);
+                return await ParseHttpResponse<T>(response);
             }
             catch (Exception ex)
             {

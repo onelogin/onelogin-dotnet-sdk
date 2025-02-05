@@ -19,5 +19,10 @@
         /// </summary>
         public const string ONELOGIN_USERS = "users";
 
+        /// <summary>
+        /// https://api.<us_or_eu>.onelogin.com/api/2/roles
+        /// </summary>
+        public const string ONELOGIN_ROLES = "roles";
+
     }
 }
