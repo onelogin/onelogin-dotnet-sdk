@@ -1,7 +1,4 @@
-﻿
-using System.IO;
-
-namespace OneLogin
+﻿namespace OneLogin
 {
     public partial class OneLoginClient
     {
@@ -91,17 +88,18 @@ namespace OneLogin
         /// </summary>
         /// <param name="roleId">Set to the id of the role that you want to return</param>
         /// <returns></returns>
-        public async Task<ApiResponse<GetIdResponse>> SetRoleApps(int roleId, List<int> request)
+        public async Task<ApiResponse<List<GetIdResponse>>> SetRoleApps(int roleId, List<int> request)
         {
             try
             {
-                return await PutResource<GetIdResponse>($"{Endpointsv2.ONELOGIN_ROLES}/{roleId}/apps",request);
+                return await PutResource<List<GetIdResponse>>($"{Endpointsv2.ONELOGIN_ROLES}/{roleId}/apps",request);
             }
             catch (Exception ex)
             {
-                return new ApiResponse<GetIdResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+                return new ApiResponse<List<GetIdResponse>>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
             }
         }
+
         /// <summary>
         /// This call returns a list of users assigned to a specific role and can include users who aren’t currently assigned to the role..
         /// </summary>
@@ -118,15 +116,15 @@ namespace OneLogin
         /// <param name="roleId">Set to the id of the role that you want to return</param>
         /// <param name="userIds">Set user_id values in array, for example: [123, 456, 678].</param>
         /// <returns></returns>
-        public async Task<ApiResponse<GetIdResponse>> AddRoleUsers(int roleId, List<int> userIds)
+        public async Task<ApiResponse<List<GetIdResponse>>> AddRoleUsers(int roleId, List<int> userIds)
         {
             try
             {
-                return await PostResource<GetIdResponse>($"{Endpointsv2.ONELOGIN_ROLES}/{roleId}/users", userIds);
+                return await PostResource<List<GetIdResponse>>($"{Endpointsv2.ONELOGIN_ROLES}/{roleId}/users", userIds);
             }
             catch (Exception ex)
             {
-                return new ApiResponse<GetIdResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+                return new ApiResponse<List<GetIdResponse>>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
             }
         }
 
@@ -180,15 +178,15 @@ namespace OneLogin
         /// <param name="roleId">Set to the id of the role that you want to return</param>
         /// <param name="userIds">Set user_id values in array, for example: [123, 456, 678].</param>
         /// <returns></returns>
-        public async Task<ApiResponse<GetIdResponse>> AddRoleAdmins(int roleId, List<int> userIds)
+        public async Task<ApiResponse<List<GetIdResponse>>> AddRoleAdmins(int roleId, List<int> userIds)
         {
             try
             {
-                return await PostResource<GetIdResponse>($"{Endpointsv2.ONELOGIN_ROLES}/{roleId}/users", userIds);
+                return await PostResource<List<GetIdResponse>>($"{Endpointsv2.ONELOGIN_ROLES}/{roleId}/admins", userIds);
             }
             catch (Exception ex)
             {
-                return new ApiResponse<GetIdResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+                return new ApiResponse<List<GetIdResponse>>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
             }
         }
 
@@ -202,7 +200,7 @@ namespace OneLogin
         {
             try
             {
-                return await DeleteResource<EmptyResponse>($"{Endpointsv2.ONELOGIN_ROLES}/{roleId}/users", userIds);
+                return await DeleteResource<EmptyResponse>($"{Endpointsv2.ONELOGIN_ROLES}/{roleId}/admins", userIds);
             }
             catch (Exception ex)
             {
@@ -210,4 +208,5 @@ namespace OneLogin
             }
         }
     }
-}
+  }
+ 
