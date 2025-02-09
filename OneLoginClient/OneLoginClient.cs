@@ -64,6 +64,44 @@
             }
         }
 
+        /// <summary>
+        /// Revoke an access token and refresh token pair..
+        /// <a href="https://developers.onelogin.com/api-docs/2/oauth20-tokens/revoke-tokens">Documentation</a>.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ApiResponse<RevokeTokenReponse>> RevokeToken()
+        {
+            try
+            {
+                var client = new HttpClient();
+
+                var credentials = $"{_clientId}:{_clientSecret}";
+                var base64EncodedCredentials = Convert.ToBase64String(Encoding.UTF8.GetBytes(credentials));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", base64EncodedCredentials);
+
+                var token = await GenerateTokens();
+                if (token?.Data?.AccessToken == null)
+                {
+                    throw new UnauthorizedAccessException("Unauthorized");
+                }
+                var content = new StringContent(JsonSerializer.Serialize(new { access_token = $"{token.Data.AccessToken}" }));
+                var request = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Post,
+                    RequestUri = new Uri(Endpointsv2.RevokeToken.Replace("<us_or_eu>", _region)),
+                    Content = content
+                };
+
+                request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                var response = client.SendAsync(request);
+                return await ParseHttpResponse<RevokeTokenReponse>(response);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<RevokeTokenReponse>(new BaseErrorResponse { Message = ex.Message });
+            }
+        }
         private async Task<ApiResponse<T>> GetResource<T>(string url)
         {
             try

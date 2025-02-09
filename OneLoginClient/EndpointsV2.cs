@@ -10,6 +10,7 @@
         /// https://api.<region>.onelogin.com/auth/oauth2/v2/token
         /// </summary>
         public const string Token = OneLoginApiBase + "auth/oauth2/v2/token/";
+        public const string RevokeToken = OneLoginApiBase + "auth/oauth2/revoke/";
         public const string API = "api/";
         public const string ApiVersion = "2/";
         public const string BaseApi = OneLoginApiBase + API + ApiVersion;
