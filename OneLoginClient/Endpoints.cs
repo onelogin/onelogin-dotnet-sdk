@@ -28,5 +28,10 @@
         /// </summary>
         public const string ONELOGIN_RATELIMIT = "auth/rate_limit";
 
+        /// <summary>
+        /// https://api.<us_or_eu>.onelogin.com/api/1/groups
+        /// </summary>
+        public const string ONELOGIN_GROUPS = "groups";
+
     }
 }

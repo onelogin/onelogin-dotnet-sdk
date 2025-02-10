@@ -108,7 +108,7 @@ namespace OneLogin
         {
             try
             {
-                return await GetResource<GetRateLimitResponse>($"{Endpoints.ONELOGIN_RATELIMIT}",Endpoints.BaseApiWithOutVersion);
+                return await GetResource<GetRateLimitResponse>($"{Endpoints.ONELOGIN_RATELIMIT}", Endpoints.BaseApiWithOutVersion);
             }
             catch (Exception ex)
             {
@@ -117,7 +117,7 @@ namespace OneLogin
         }
 
         #region Private methods 
-        private async Task<ApiResponse<T>> GetResource<T>(string url,string baseApiVersion)
+        private async Task<ApiResponse<T>> GetResource<T>(string url, string baseApiVersion)
         {
             try
             {
