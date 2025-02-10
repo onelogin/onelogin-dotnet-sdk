@@ -1,4 +1,5 @@
-﻿namespace OneLogin
+﻿
+namespace OneLogin
 {
     /// <summary>
     /// A client class to access the onelogin API /2
@@ -49,7 +50,7 @@
                 var request = new HttpRequestMessage
                 {
                     Method = HttpMethod.Post,
-                    RequestUri = new Uri(Endpointsv2.Token.Replace("<us_or_eu>", _region)),
+                    RequestUri = new Uri(Endpoints.Token.Replace("<us_or_eu>", _region)),
                     Content = content
                 };
 
@@ -64,13 +65,65 @@
             }
         }
 
-        private async Task<ApiResponse<T>> GetResource<T>(string url)
+        /// <summary>
+        /// Revoke an access token and refresh token pair..
+        /// <a href="https://developers.onelogin.com/api-docs/2/oauth20-tokens/revoke-tokens">Documentation</a>.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ApiResponse<RevokeTokenReponse>> RevokeToken()
+        {
+            try
+            {
+                var client = new HttpClient();
+
+                var credentials = $"{_clientId}:{_clientSecret}";
+                var base64EncodedCredentials = Convert.ToBase64String(Encoding.UTF8.GetBytes(credentials));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", base64EncodedCredentials);
+
+                var token = await GenerateTokens();
+                if (token?.Data?.AccessToken == null)
+                {
+                    throw new UnauthorizedAccessException("Unauthorized");
+                }
+                var content = new StringContent(JsonSerializer.Serialize(new { access_token = $"{token.Data.AccessToken}" }));
+                var request = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Post,
+                    RequestUri = new Uri(Endpoints.RevokeToken.Replace("<us_or_eu>", _region)),
+                    Content = content
+                };
+
+                request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                var response = client.SendAsync(request);
+                return await ParseHttpResponse<RevokeTokenReponse>(response);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<RevokeTokenReponse>(new BaseErrorResponse { Message = ex.Message });
+            }
+        }
+
+        public async Task<ApiResponse<GetRateLimitResponse>> GetRateLimit()
+        {
+            try
+            {
+                return await GetResource<GetRateLimitResponse>($"{Endpoints.ONELOGIN_RATELIMIT}",Endpoints.BaseApiWithOutVersion);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<GetRateLimitResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+            }
+        }
+
+        #region Private methods 
+        private async Task<ApiResponse<T>> GetResource<T>(string url,string baseApiVersion)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(url)) { throw new ArgumentException(nameof(url)); }
 
-                var client = await GetClient();
+                var client = await GetClient(baseApiVersion);
                 return await ParseHttpResponse<T>(client.GetAsync(url));
             }
             catch (Exception ex)
@@ -79,9 +132,9 @@
             }
         }
 
-        private async Task<HttpClient> GetClient()
+        private async Task<HttpClient> GetClient(string baseApiVersion)
         {
-            if (_client != null)
+            if (_client != null && baseApiVersion.Contains(_client.BaseAddress.AbsolutePath))
             {
                 return _client;
             }
@@ -92,12 +145,12 @@
                 throw new UnauthorizedAccessException("Unauthorized");
             }
 
-            var client = new HttpClient { BaseAddress = new Uri(Endpointsv2.BaseApi.Replace("<us_or_eu>", _region)) };
+            var client = new HttpClient { BaseAddress = new Uri(baseApiVersion.Replace("<us_or_eu>", _region)) };
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.Data.AccessToken);
             return _client = client;
         }
 
-        private async Task<ApiResponse<T>> PostResource<T>(string url, object request)
+        private async Task<ApiResponse<T>> PostResource<T>(string url, object request, string baseApiVersion)
         {
             try
             {
@@ -118,7 +171,7 @@
                 //adds the utf-8 charset extension to it which is not compatible with OneLogin
                 httpRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-                var client = await GetClient();
+                var client = await GetClient(baseApiVersion);
                 var response = client.SendAsync(httpRequest);
                 return await ParseHttpResponse<T>(response);
             }
@@ -128,7 +181,7 @@
             }
         }
 
-        private async Task<ApiResponse<T>> PutResource<T>(string url, object request)
+        private async Task<ApiResponse<T>> PutResource<T>(string url, object request, string baseApiVersion)
         {
             try
             {
@@ -149,7 +202,7 @@
 
                 httpRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-                var client = await GetClient();
+                var client = await GetClient(baseApiVersion);
                 var response = client.SendAsync(httpRequest);
                 return await ParseHttpResponse<T>(response);
             }
@@ -159,14 +212,42 @@
             }
         }
 
-        private async Task<ApiResponse<T>> DeleteResource<T>(string url)
+        private async Task<ApiResponse<T>> DeleteResource<T>(string url, string baseApiVersion, object? request = null)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(url)) { throw new ArgumentException(nameof(url)); }
 
-                var client = await GetClient();
-                return await ParseHttpResponse<T>(client.DeleteAsync(url));
+                var client = await GetClient(baseApiVersion);
+                HttpRequestMessage httpRequest;
+
+                if (request != null)
+                {
+                    var content = new StringContent(JsonSerializer.Serialize(request, options: new JsonSerializerOptions
+                    {
+                        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                    }));
+
+                    httpRequest = new HttpRequestMessage
+                    {
+                        Method = HttpMethod.Delete,
+                        RequestUri = new Uri(url, UriKind.Relative),
+                        Content = content
+                    };
+
+                    httpRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                }
+                else
+                {
+                    httpRequest = new HttpRequestMessage
+                    {
+                        Method = HttpMethod.Delete,
+                        RequestUri = new Uri(url, UriKind.Relative)
+                    };
+                }
+
+                var response = client.SendAsync(httpRequest);
+                return await ParseHttpResponse<T>(response);
             }
             catch (Exception ex)
             {
@@ -204,5 +285,6 @@
             }
         }
 
+        #endregion Private Methods
     }
 }
