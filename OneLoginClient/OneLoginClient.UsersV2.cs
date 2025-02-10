@@ -7,7 +7,7 @@
         /// https://developers.onelogin.com/api-docs/2/users/List-users
         /// </summary>
         /// <returns>Returns the serialized<see cref = "GetUserResponse" /> as an asynchronous operation.</returns>
-        public async Task<ApiResponse<List<GetUserResponse>>> ListUsers(
+        public async Task<ApiResponse<List<ListUserResponse>>> ListUsers(
             string? directoryId = null,
             string? email = null,
             string? externalId = null,
@@ -65,11 +65,11 @@
 
                 var url = $"{Endpointsv2.ONELOGIN_USERS}{(string.IsNullOrEmpty(queryString) ? "" : "?" + queryString)}";
 
-                return await GetResource<List<GetUserResponse>>(url);
+                return await GetResource<List<ListUserResponse>>(url);
             }
             catch (Exception ex)
             {
-                return new ApiResponse<List<GetUserResponse>>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+                return new ApiResponse<List<ListUserResponse>>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
             }
         }
 
