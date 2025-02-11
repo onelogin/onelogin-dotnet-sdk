@@ -3,15 +3,15 @@
     public class RoleRequest
     {
         [JsonPropertyName("name")]
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
         [JsonPropertyName("apps")]
-        public List<int> Apps { get; set; }
+        public List<int>? Apps { get; set; }
 
         [JsonPropertyName("users")]
-        public List<int> Users { get; set; }
+        public List<int>? Users { get; set; }
 
         [JsonPropertyName("admins")]
-        public List<int> Admins { get; set; }
+        public List<int>? Admins { get; set; }
     }
 }

@@ -2,8 +2,8 @@
 namespace OneLogin.Requests
 {
     /// <summary>
-    /// Request to authenticate a one-time password (OTP) code provided by a multifactor authentication (MFA) device.
-    /// If this is the first time that the OTP device has been confirmed, then the device will be updated to have a state of enabled.
+    /// Set of fields to be sent when Updating a user.
+    /// https://developers.onelogin.com/api-docs/2/users/update-user
     /// </summary>
     public class UpdateUserByIdRequest
     {
@@ -11,74 +11,74 @@ namespace OneLogin.Requests
         /// A username for the user.
         /// </summary>
         [JsonPropertyName("username")]
-        public string Username { get; set; }
+        public string? Username { get; set; }
 
         /// <summary>
         /// A valid email address for the user.
         /// </summary>
         [JsonPropertyName("email")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         /// <summary>
         /// The user's first name.
         /// </summary>
         [JsonPropertyName("firstname")]
-        public string Firstname { get; set; }
+        public string? Firstname { get; set; }
 
         /// <summary>
         /// The user's last name.
         /// </summary>
         [JsonPropertyName("lastname")]
-        public string Lastname { get; set; }
+        public string? Lastname { get; set; }
 
         /// <summary>
         /// The password to set for the user.
         /// </summary>
         [JsonPropertyName("password")]
-        public string Password { get; set; }
+        public string? Password { get; set; }
 
         /// <summary>
         /// Required if the password is being set. Confirms the password.
         /// </summary>
         [JsonPropertyName("password_confirmation")]
-        public string PasswordConfirmation { get; set; }
+        public string? PasswordConfirmation { get; set; }
 
         /// <summary>
         /// The password algorithm used for hashing the password.
         /// Supported values: "salt+sha256", "sha256+salt", "bcrypt".
         /// </summary>
         [JsonPropertyName("password_algorithm")]
-        public string PasswordAlgorithm { get; set; }
+        public string? PasswordAlgorithm { get; set; }
 
         /// <summary>
         /// The salt value that was used with the password algorithm (optional).
         /// </summary>
         [JsonPropertyName("salt")]
-        public string Salt { get; set; }
+        public string? Salt { get; set; }
 
         /// <summary>
         /// The user's job title.
         /// </summary>
         [JsonPropertyName("title")]
-        public string Title { get; set; }
+        public string? Title { get; set; }
 
         /// <summary>
         /// The user's department.
         /// </summary>
         [JsonPropertyName("department")]
-        public string Department { get; set; }
+        public string? Department { get; set; }
 
         /// <summary>
         /// The company the user belongs to.
         /// </summary>
         [JsonPropertyName("company")]
-        public string Company { get; set; }
+        public string? Company { get; set; }
 
         /// <summary>
         /// Free text related to the user (e.g., notes or comments).
         /// </summary>
         [JsonPropertyName("comment")]
-        public string Comment { get; set; }
+        public string? Comment { get; set; }
 
         /// <summary>
         /// The ID of the group in OneLogin to which the user will be assigned.
@@ -90,13 +90,13 @@ namespace OneLogin.Requests
         /// A list of OneLogin Role IDs that the user will be assigned to.
         /// </summary>
         [JsonPropertyName("role_ids")]
-        public List<int> RoleIds { get; set; }
+        public List<int>? RoleIds { get; set; }
 
         /// <summary>
         /// The user's phone number in E.164 format.
         /// </summary>
         [JsonPropertyName("phone")]
-        public string Phone { get; set; }
+        public string? Phone { get; set; }
 
         /// <summary>
         /// The user's approval status. 
@@ -141,37 +141,37 @@ namespace OneLogin.Requests
         /// The user's Active Directory username (SAMAccountName).
         /// </summary>
         [JsonPropertyName("samaccountname")]
-        public string Samaccountname { get; set; }
+        public string? Samaccountname { get; set; }
 
         /// <summary>
         /// The user's directory membership.
         /// </summary>
         [JsonPropertyName("member_of")]
-        public string MemberOf { get; set; }
+        public string? MemberOf { get; set; }
 
         /// <summary>
         /// The user's principal name (UPN).
         /// </summary>
         [JsonPropertyName("userprincipalname")]
-        public string Userprincipalname { get; set; }
+        public string? Userprincipalname { get; set; }
 
         /// <summary>
         /// The distinguished name of the user in the directory.
         /// </summary>
         [JsonPropertyName("distinguished_name")]
-        public string DistinguishedName { get; set; }
+        public string? DistinguishedName { get; set; }
 
         /// <summary>
         /// The external ID of the user in an external directory.
         /// </summary>
         [JsonPropertyName("external_id")]
-        public string ExternalId { get; set; }
+        public string? ExternalId { get; set; }
 
         /// <summary>
         /// The name configured for use in other applications that accept OpenID for sign-in.
         /// </summary>
         [JsonPropertyName("openid_name")]
-        public string OpenidName { get; set; }
+        public string? OpenidName { get; set; }
 
         /// <summary>
         /// The number of invalid login attempts made by the user.
@@ -183,12 +183,12 @@ namespace OneLogin.Requests
         /// The 2-character language locale for the user, such as "en" for English or "es" for Spanish.
         /// </summary>
         [JsonPropertyName("preferred_locale_code")]
-        public string PreferredLocaleCode { get; set; }
+        public string? PreferredLocaleCode { get; set; }
 
         /// <summary>
         /// Custom attributes configured for the user.
         /// </summary>
         [JsonPropertyName("custom_attributes")]
-        public Dictionary<string, object> CustomAttributes { get; set; }
+        public Dictionary<string, object>? CustomAttributes { get; set; }
     }
 }

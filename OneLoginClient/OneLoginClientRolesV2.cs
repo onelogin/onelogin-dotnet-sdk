@@ -1,5 +1,8 @@
 ﻿namespace OneLogin
 {
+    /// <summary>
+    /// OneLogin Client for Roles V2
+    /// </summary>
     public partial class OneLoginClient
     {
         /// <summary>
@@ -9,7 +12,7 @@
         /// <returns></returns>
         public async Task<ApiResponse<GetRoleResponse>> GetRole(int id)
         {
-            return await GetResource<GetRoleResponse>($"{Endpointsv2.ONELOGIN_ROLES}/{id}");
+            return await GetResource<GetRoleResponse>($"{Endpoints.ONELOGIN_ROLES}/{id}", Endpoints.BaseApi2);
         }
 
         /// <summary>
@@ -18,7 +21,7 @@
         /// <returns></returns>
         public async Task<ApiResponse<List<GetRoleResponse>>> ListRoles()
         {
-            return await GetResource<List<GetRoleResponse>>($"{Endpointsv2.ONELOGIN_ROLES}");
+            return await GetResource<List<GetRoleResponse>>($"{Endpoints.ONELOGIN_ROLES}", Endpoints.BaseApi2);
         }
 
         /// <summary>
@@ -26,15 +29,15 @@
         /// </summary>
         /// <param name="request">The request object.</param>
         /// <returns></returns>
-        public async Task<ApiResponse<CreateUpdateRoleResponse>> CreateRoles(RoleRequest request)
+        public async Task<ApiResponse<GetIdResponse>> CreateRoles(RoleRequest request)
         {
             try
             {
-                return await PostResource<CreateUpdateRoleResponse>(Endpointsv2.ONELOGIN_ROLES, request);
+                return await PostResource<GetIdResponse>(Endpoints.ONELOGIN_ROLES, request, Endpoints.BaseApi2);
             }
             catch (Exception ex)
             {
-                return new ApiResponse<CreateUpdateRoleResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+                return new ApiResponse<GetIdResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
             }
         }
 
@@ -44,15 +47,15 @@
         /// <param name="roleId">id of the role.</param>
         /// <param name="request">The request object.</param>
         /// <returns></returns>
-        public async Task<ApiResponse<CreateUpdateRoleResponse>> UpdateRoleById(int roleId, RoleRequest request)
+        public async Task<ApiResponse<GetIdResponse>> UpdateRoleById(int roleId, RoleRequest request)
         {
             try
             {
-                return await PutResource<CreateUpdateRoleResponse>($"{Endpointsv2.ONELOGIN_ROLES}/{roleId}", request);
+                return await PutResource<GetIdResponse>($"{Endpoints.ONELOGIN_ROLES}/{roleId}", request, Endpoints.BaseApi2);
             }
             catch (Exception ex)
             {
-                return new ApiResponse<CreateUpdateRoleResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+                return new ApiResponse<GetIdResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
             }
         }
 
@@ -65,7 +68,7 @@
         {
             try
             {
-                return await DeleteResource<EmptyResponse>($"{Endpointsv2.ONELOGIN_ROLES}/{roleId}");
+                return await DeleteResource<EmptyResponse>($"{Endpoints.ONELOGIN_ROLES}/{roleId}", Endpoints.BaseApi2);
             }
             catch (Exception ex)
             {
@@ -80,7 +83,7 @@
         /// <returns></returns>
         public async Task<ApiResponse<List<GetRoleAppsResponse>>> ListRoleApps(int roleId, GetRoleAppsRequest request)
         {
-            return await GetResource<List<GetRoleAppsResponse>>($"{Endpointsv2.ONELOGIN_ROLES}/{roleId}/apps");
+            return await GetResource<List<GetRoleAppsResponse>>($"{Endpoints.ONELOGIN_ROLES}/{roleId}/apps", Endpoints.BaseApi2);
         }
 
         /// <summary>
@@ -92,7 +95,7 @@
         {
             try
             {
-                return await PutResource<List<GetIdResponse>>($"{Endpointsv2.ONELOGIN_ROLES}/{roleId}/apps",request);
+                return await PutResource<List<GetIdResponse>>($"{Endpoints.ONELOGIN_ROLES}/{roleId}/apps",request, Endpoints.BaseApi2);
             }
             catch (Exception ex)
             {
@@ -107,7 +110,7 @@
         /// <returns></returns>
         public async Task<ApiResponse<List<GetRoleUsersAdminResponse>>> ListRoleUsers(int roleId)
         {
-            return await GetResource<List<GetRoleUsersAdminResponse>>($"{Endpointsv2.ONELOGIN_ROLES}/{roleId}/users");
+            return await GetResource<List<GetRoleUsersAdminResponse>>($"{Endpoints.ONELOGIN_ROLES}/{roleId}/users", Endpoints.BaseApi2);
         }
 
         /// <summary>
@@ -120,7 +123,7 @@
         {
             try
             {
-                return await PostResource<List<GetIdResponse>>($"{Endpointsv2.ONELOGIN_ROLES}/{roleId}/users", userIds);
+                return await PostResource<List<GetIdResponse>>($"{Endpoints.ONELOGIN_ROLES}/{roleId}/users", userIds, Endpoints.BaseApi2);
             }
             catch (Exception ex)
             {
@@ -138,7 +141,7 @@
         {
             try
             {
-                return await DeleteResource<EmptyResponse>($"{Endpointsv2.ONELOGIN_ROLES}/{roleId}/users", userIds);
+                return await DeleteResource<EmptyResponse>($"{Endpoints.ONELOGIN_ROLES}/{roleId}/users", Endpoints.BaseApi2,userIds);
             }
             catch (Exception ex)
             {
@@ -164,12 +167,12 @@
                 .Select(kv => $"{kv.Key}={kv.Value}") // Format each parameter as key=value
                 .ToList();
             var queryString = string.Join("&", parameters);
-            var url = $"{Endpointsv2.ONELOGIN_ROLES}/{roleId}/admins";
+            var url = $"{Endpoints.ONELOGIN_ROLES}/{roleId}/admins";
             if (!string.IsNullOrEmpty(queryString))
             {
                 url += "?" + queryString; // Append the query string if there are any parameters
             }
-            return await GetResource<List<GetRoleUsersAdminResponse>>(url);
+            return await GetResource<List<GetRoleUsersAdminResponse>>(url, Endpoints.BaseApi2);
         }
 
         /// <summary>
@@ -182,7 +185,7 @@
         {
             try
             {
-                return await PostResource<List<GetIdResponse>>($"{Endpointsv2.ONELOGIN_ROLES}/{roleId}/admins", userIds);
+                return await PostResource<List<GetIdResponse>>($"{Endpoints.ONELOGIN_ROLES}/{roleId}/admins", userIds, Endpoints.BaseApi2);
             }
             catch (Exception ex)
             {
@@ -200,7 +203,7 @@
         {
             try
             {
-                return await DeleteResource<EmptyResponse>($"{Endpointsv2.ONELOGIN_ROLES}/{roleId}/admins", userIds);
+                return await DeleteResource<EmptyResponse>($"{Endpoints.ONELOGIN_ROLES}/{roleId}/admins", Endpoints.BaseApi2, userIds);
             }
             catch (Exception ex)
             {

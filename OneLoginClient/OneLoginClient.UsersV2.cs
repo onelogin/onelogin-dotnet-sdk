@@ -22,7 +22,8 @@
             string? appId = null,
             string? userIds = null, // Comma-separated list of OneLogin User IDs
             Dictionary<string, string>? customAttributes = null, // custom attributes as a dictionary
-            string? fields = null // Comma-separated list of user attributes to return
+            string? fields = null, // Comma-separated list of user attributes to return
+            int? limit = null
         )
         {
             try
@@ -46,7 +47,8 @@
                         { "username", userName },
                         { "userprincipalname", userPrincipalName },
                         { "user_ids", userIds },  // Comma-separated list of user IDs
-                        { "fields", fields }  // Comma-separated list of user attributes to return
+                        { "fields", fields },  // Comma-separated list of user attributes to return
+                        { "limit", limit?.ToString() }
                     };
 
                 if (customAttributes != null)
@@ -63,9 +65,9 @@
                     .Where(kv => !string.IsNullOrEmpty(kv.Value))
                     .Select(kv => $"{kv.Key}={kv.Value}"));
 
-                var url = $"{Endpointsv2.ONELOGIN_USERS}{(string.IsNullOrEmpty(queryString) ? "" : "?" + queryString)}";
+                var url = $"{Endpoints.ONELOGIN_USERS}{(string.IsNullOrEmpty(queryString) ? "" : "?" + queryString)}";
 
-                return await GetResource<List<ListUserResponse>>(url);
+                return await GetResource<List<ListUserResponse>>(url, Endpoints.BaseApi2);
             }
             catch (Exception ex)
             {
@@ -82,7 +84,7 @@
         {
             try
             {
-                return await GetResource<GetUserResponse>($"{Endpointsv2.ONELOGIN_USERS}/{userId}");
+                return await GetResource<GetUserResponse>($"{Endpoints.ONELOGIN_USERS}/{userId}", Endpoints.BaseApi2);
             }
             catch (Exception ex)
             {
@@ -100,7 +102,7 @@
         {
             try
             {
-                return await GetResource<List<GetUserAppsResponse>>($"{Endpointsv2.ONELOGIN_USERS}/{userId}/apps");
+                return await GetResource<List<GetUserAppsResponse>>($"{Endpoints.ONELOGIN_USERS}/{userId}/apps", Endpoints.BaseApi2);
             }
             catch (Exception ex)
             {
@@ -117,7 +119,7 @@
         {
             try
             {
-                return await PostResource<GetUserResponse>(Endpointsv2.ONELOGIN_USERS, request);
+                return await PostResource<GetUserResponse>(Endpoints.ONELOGIN_USERS, request, Endpoints.BaseApi2);
             }
             catch (Exception ex)
             {
@@ -135,7 +137,7 @@
         {
             try
             {
-                return await PutResource<GetUserResponse>($"{Endpointsv2.ONELOGIN_USERS}/{userId}", byIdRequest);
+                return await PutResource<GetUserResponse>($"{Endpoints.ONELOGIN_USERS}/{userId}", byIdRequest, Endpoints.BaseApi2);
             }
             catch (Exception ex)
             {
@@ -152,7 +154,7 @@
         {
             try
             {
-                return await DeleteResource<EmptyResponse>($"{Endpointsv2.ONELOGIN_USERS}/{userId}");
+                return await DeleteResource<EmptyResponse>($"{Endpoints.ONELOGIN_USERS}/{userId}", Endpoints.BaseApi2);
             }
             catch (Exception ex)
             {
@@ -168,7 +170,7 @@
         {
             try
             {
-                return await GetResource<List<GetCustomAttributesResponse>>($"{Endpointsv2.ONELOGIN_USERS}/custom_attributes");
+                return await GetResource<List<GetCustomAttributesResponse>>($"{Endpoints.ONELOGIN_USERS}/custom_attributes", Endpoints.BaseApi2);
             }
             catch (Exception ex)
             {
@@ -184,7 +186,7 @@
         {
             try
             {
-                return await GetResource<GetCustomAttributesResponse>($"{Endpointsv2.ONELOGIN_USERS}/custom_attributes/{id}");
+                return await GetResource<GetCustomAttributesResponse>($"{Endpoints.ONELOGIN_USERS}/custom_attributes/{id}", Endpoints.BaseApi2);
             }
             catch (Exception ex)
             {
@@ -197,11 +199,11 @@
         /// </summary>
         /// <param name="request">The request object.</param>
         /// <returns></returns>
-        public async Task<ApiResponse<GetCustomAttributesResponse>> CreateCustomAttribute(CreateCustomAttributesRequest request)
+        public async Task<ApiResponse<GetCustomAttributesResponse>> CreateCustomAttribute(CreateUpdateCustomAttributesRequest request)
         {
             try
             {
-                return await PostResource<GetCustomAttributesResponse>($"{Endpointsv2.ONELOGIN_USERS}/custom_attributes", request);
+                return await PostResource<GetCustomAttributesResponse>($"{Endpoints.ONELOGIN_USERS}/custom_attributes", request, Endpoints.BaseApi2);
             }
             catch (Exception ex)
             {
@@ -215,11 +217,11 @@
         /// <param name="id">Set to the id of the user for whom you want to set custom attribute values. If you don’t know the user’s id, use the Get Users API call to return all users and their id values.</param>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<ApiResponse<GetCustomAttributesResponse>> UpdateCustomAttributeValue(int id, CreateCustomAttributesRequest request)
+        public async Task<ApiResponse<GetCustomAttributesResponse>> UpdateCustomAttributeValue(int id, CreateUpdateCustomAttributesRequest request)
         {
             try
             {
-                return await PutResource<GetCustomAttributesResponse>($"{Endpointsv2.ONELOGIN_USERS}/custom_attributes/{id}", request);
+                return await PutResource<GetCustomAttributesResponse>($"{Endpoints.ONELOGIN_USERS}/custom_attributes/{id}", request, Endpoints.BaseApi2);
             }
             catch (Exception ex)
             {
@@ -236,7 +238,7 @@
         {
             try
             {
-                return await DeleteResource<EmptyResponse>($"{Endpointsv2.ONELOGIN_USERS}/custom_attributes/{id}");
+                return await DeleteResource<EmptyResponse>($"{Endpoints.ONELOGIN_USERS}/custom_attributes/{id}", Endpoints.BaseApi2);
             }
             catch (Exception ex)
             {

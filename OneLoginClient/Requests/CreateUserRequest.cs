@@ -2,7 +2,8 @@
 namespace OneLogin.Requests
 {
     /// <summary>
-    /// Set of fields to be sent when creating a user. https://developers.onelogin.com/api-docs/2/users/create-user
+    /// Set of fields to be sent when creating a user. 
+    /// https://developers.onelogin.com/api-docs/2/users/create-user
     /// </summary>
     public class CreateUserRequest
     {
@@ -10,13 +11,13 @@ namespace OneLogin.Requests
         /// Gets or sets the username for the user. This field is required.
         /// </summary>
         [JsonPropertyName("username")]
-        public string Username { get; set; }
+        public required string Username { get; set; }
 
         /// <summary>
         /// Gets or sets the email address for the user. This field is required.
         /// </summary>
         [JsonPropertyName("email")]
-        public string Email { get; set; }
+        public required string Email { get; set; }
 
         /// <summary>
         /// Gets or sets the first name of the user. This field is optional.

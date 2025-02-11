@@ -34,12 +34,4 @@
         public int? Id { get; set; }
     }
 
-    public class CreateUpdateRoleResponse
-    {
-        /// <summary>
-        /// The ID off the role.
-        /// </summary>
-        [JsonPropertyName("id")]
-        public int? Id { get; set; }
-    }
 }

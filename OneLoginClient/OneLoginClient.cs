@@ -1,4 +1,5 @@
-﻿namespace OneLogin
+﻿
+namespace OneLogin
 {
     /// <summary>
     /// A client class to access the onelogin API /2
@@ -49,7 +50,7 @@
                 var request = new HttpRequestMessage
                 {
                     Method = HttpMethod.Post,
-                    RequestUri = new Uri(Endpointsv2.Token.Replace("<us_or_eu>", _region)),
+                    RequestUri = new Uri(Endpoints.Token.Replace("<us_or_eu>", _region)),
                     Content = content
                 };
 
@@ -88,7 +89,7 @@
                 var request = new HttpRequestMessage
                 {
                     Method = HttpMethod.Post,
-                    RequestUri = new Uri(Endpointsv2.RevokeToken.Replace("<us_or_eu>", _region)),
+                    RequestUri = new Uri(Endpoints.RevokeToken.Replace("<us_or_eu>", _region)),
                     Content = content
                 };
 
@@ -102,13 +103,15 @@
                 return new ApiResponse<RevokeTokenReponse>(new BaseErrorResponse { Message = ex.Message });
             }
         }
-        private async Task<ApiResponse<T>> GetResource<T>(string url)
+
+        #region Private methods 
+        private async Task<ApiResponse<T>> GetResource<T>(string url,string baseApiVersion)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(url)) { throw new ArgumentException(nameof(url)); }
 
-                var client = await GetClient();
+                var client = await GetClient(baseApiVersion);
                 return await ParseHttpResponse<T>(client.GetAsync(url));
             }
             catch (Exception ex)
@@ -117,9 +120,9 @@
             }
         }
 
-        private async Task<HttpClient> GetClient()
+        private async Task<HttpClient> GetClient(string baseApiVersion)
         {
-            if (_client != null)
+            if (_client != null && baseApiVersion.Contains(_client.BaseAddress.AbsolutePath))
             {
                 return _client;
             }
@@ -130,12 +133,12 @@
                 throw new UnauthorizedAccessException("Unauthorized");
             }
 
-            var client = new HttpClient { BaseAddress = new Uri(Endpointsv2.BaseApi.Replace("<us_or_eu>", _region)) };
+            var client = new HttpClient { BaseAddress = new Uri(baseApiVersion.Replace("<us_or_eu>", _region)) };
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.Data.AccessToken);
             return _client = client;
         }
 
-        private async Task<ApiResponse<T>> PostResource<T>(string url, object request)
+        private async Task<ApiResponse<T>> PostResource<T>(string url, object request, string baseApiVersion)
         {
             try
             {
@@ -156,7 +159,7 @@
                 //adds the utf-8 charset extension to it which is not compatible with OneLogin
                 httpRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-                var client = await GetClient();
+                var client = await GetClient(baseApiVersion);
                 var response = client.SendAsync(httpRequest);
                 return await ParseHttpResponse<T>(response);
             }
@@ -166,7 +169,7 @@
             }
         }
 
-        private async Task<ApiResponse<T>> PutResource<T>(string url, object request)
+        private async Task<ApiResponse<T>> PutResource<T>(string url, object request, string baseApiVersion)
         {
             try
             {
@@ -187,7 +190,7 @@
 
                 httpRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-                var client = await GetClient();
+                var client = await GetClient(baseApiVersion);
                 var response = client.SendAsync(httpRequest);
                 return await ParseHttpResponse<T>(response);
             }
@@ -197,13 +200,13 @@
             }
         }
 
-        private async Task<ApiResponse<T>> DeleteResource<T>(string url, object? request = null)
+        private async Task<ApiResponse<T>> DeleteResource<T>(string url, string baseApiVersion, object? request = null)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(url)) { throw new ArgumentException(nameof(url)); }
 
-                var client = await GetClient();
+                var client = await GetClient(baseApiVersion);
                 HttpRequestMessage httpRequest;
 
                 if (request != null)
@@ -276,5 +279,6 @@
             }
         }
 
+        #endregion Private Methods
     }
 }
