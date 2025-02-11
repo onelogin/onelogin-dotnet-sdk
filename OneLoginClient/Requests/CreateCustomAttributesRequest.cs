@@ -2,16 +2,17 @@
 namespace OneLogin.Requests
 {
     /// <summary>
-    /// Returns a list of all custom attribute fields (also known as custom user fields) that have been defined for your account.
+    /// Set of fields to be sent when creating and updating custom attributes.
     /// https://developers.onelogin.com/api-docs/2/users/create-custom-attribute
+    /// https://developers.onelogin.com/api-docs/2/users/update-custom-attribute
     /// </summary>
-    public class CreateCustomAttributesRequest
+    public class CreateUpdateCustomAttributesRequest
     {
         /// <summary>
         /// Gets or sets the user field details.
         /// </summary>
         [JsonPropertyName("user_field")]
-        public UserField UserField { get; set; }
+        public required UserField UserField { get; set; }
     }
     /// <summary>
     /// Represents the details of a user field, such as the name and shortname.
@@ -22,12 +23,12 @@ namespace OneLogin.Requests
         /// Gets or sets the name of the custom field.
         /// </summary>
         [JsonPropertyName("name")]
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the short name of the custom field.
         /// </summary>
         [JsonPropertyName("shortname")]
-        public string Shortname { get; set; }
+        public required string Shortname { get; set; }
     }
 }

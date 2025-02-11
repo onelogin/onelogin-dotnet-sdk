@@ -1,7 +1,7 @@
 ﻿namespace OneLogin.Types
 {
     /// <summary>
-    /// Indicates whether a username and password has been stored on the login for the app and user.
+    /// If provisioning is enabled this indicates the state of provisioning for the given user.
     /// </summary>
     public enum ProvisioningState
     {

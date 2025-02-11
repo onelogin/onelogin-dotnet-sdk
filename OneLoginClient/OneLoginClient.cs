@@ -104,18 +104,6 @@ namespace OneLogin
             }
         }
 
-        public async Task<ApiResponse<GetRateLimitResponse>> GetRateLimit()
-        {
-            try
-            {
-                return await GetResource<GetRateLimitResponse>($"{Endpoints.ONELOGIN_RATELIMIT}",Endpoints.BaseApiWithOutVersion);
-            }
-            catch (Exception ex)
-            {
-                return new ApiResponse<GetRateLimitResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
-            }
-        }
-
         #region Private methods 
         private async Task<ApiResponse<T>> GetResource<T>(string url,string baseApiVersion)
         {
