@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using OneLogin.Types;
-
+﻿
 namespace OneLogin.Responses
 {
     /// <summary>
@@ -9,7 +7,7 @@ namespace OneLogin.Responses
     /// <summary>
     /// A user of the OneLogin platform.
     /// </summary>
-    public class UserResponse
+    public class ListUserResponse
     {
         /// <summary>
         /// Date and time at which the user’s status was set to 1 (active).
@@ -84,24 +82,6 @@ namespace OneLogin.Responses
         public string? LockedUntil { get; set; }
 
         /// <summary>
-        /// Notes entered about the user.
-        /// </summary>
-        [JsonPropertyName("comment")]
-        public string? Comment { get; set; }
-
-        /// <summary>
-        /// OpenID URL that can be configured in other applications that accept OpenID for sign-in.
-        /// </summary>
-        [JsonPropertyName("openid_name")]
-        public string? OpenIdName { get; set; }
-
-        /// <summary>
-        /// Represents a geographical, political, or cultural region.
-        /// </summary>
-        [JsonPropertyName("locale_code")]
-        public string? LocaleCode { get; set; }
-
-        /// <summary>
         /// Date and time at which the user’s password was last changed.
         /// </summary>
         [JsonPropertyName("password_changed_at")]
@@ -112,13 +92,6 @@ namespace OneLogin.Responses
         /// </summary>
         [JsonPropertyName("phone")]
         public string? Phone { get; set; }
-
-        /// <summary>
-        /// Determines the user’s ability to log in to OneLogin.
-        /// </summary>
-        [JsonConverter(typeof(JsonStringEnumConverter))]
-        [JsonPropertyName("status")]
-        public StatusType? Status { get; set; }
 
         /// <summary>
         /// Date and time at which the user’s information was last updated.
@@ -153,47 +126,8 @@ namespace OneLogin.Responses
         [JsonPropertyName("userprincipalname")]
         public string? UserPrincipalName { get; set; }
 
-        /// <summary>
-        /// ID of the user’s manager in Active Directory.
-        /// </summary>
-        [JsonPropertyName("manager_ad_id")]
-        public string? ManagerAdId { get; set; }
-
-        [JsonPropertyName("manager_user_id")]
-        public string? ManagerUserId { get; set; }
-
-        /// <summary>
-        /// Role IDs to which the user is assigned.
-        /// </summary>
-        [JsonPropertyName("role_id")]
-        public List<int>? RoleId { get; set; }
-
-        [JsonPropertyName("company")]
-        public string? Company { get; set; }
-
-        [JsonPropertyName("department")]
-        public string? Department { get; set; }
-
-        [JsonPropertyName("title")]
-        public string? Title { get; set; }
-
         [JsonPropertyName("preferred_locale_code")]
         public string? PreferredLocaleCode { get; set; }
 
-        /// <summary>
-        /// Represents the user’s stage in a process (such as user account approval).
-        /// </summary>
-        [JsonConverter(typeof(JsonStringEnumConverter))]
-        [JsonPropertyName("state")]
-        public State State { get; set; }
-
-        [JsonPropertyName("trusted_idp_id")]
-        public int? TrustedIdpId { get; set; }
-
-        /// <summary>
-        /// Provides a list of custom attribute fields (also known as custom user fields).
-        /// </summary>
-        [JsonPropertyName("custom_attributes")]
-        public Dictionary<string, string>? CustomAttributes { get; set; }
     }
 }

@@ -1,7 +1,4 @@
-﻿using OneLogin.Requests;
-using OneLogin.Responses;
-
-namespace OneLogin
+﻿namespace OneLogin
 {
     public partial class OneLoginClient
     {
@@ -9,8 +6,8 @@ namespace OneLogin
         /// Get all of the users registered with Onelogin filtered by the given parameters.
         /// https://developers.onelogin.com/api-docs/2/users/List-users
         /// </summary>
-        /// <returns>Returns the serialized <see cref="UserResponse"/> as an asynchronous operation.</returns>
-        public async Task<List<UserResponse>> ListUsers(
+        /// <returns>Returns the serialized<see cref = "GetUserResponse" /> as an asynchronous operation.</returns>
+        public async Task<ApiResponse<List<ListUserResponse>>> ListUsers(
             string? directoryId = null,
             string? email = null,
             string? externalId = null,
@@ -25,76 +22,92 @@ namespace OneLogin
             string? appId = null,
             string? userIds = null, // Comma-separated list of OneLogin User IDs
             Dictionary<string, string>? customAttributes = null, // custom attributes as a dictionary
-            string? fields = null // Comma-separated list of user attributes to return
+            string? fields = null, // Comma-separated list of user attributes to return
+            int? limit = null
         )
         {
-            // Create a dictionary with the parameters, ensuring we handle null values
-            var parameters = new Dictionary<string, string?>
+            try
             {
-                { "directory_id", directoryId },
-                { "email", email },
-                { "external_id", externalId },
-                { "app_id", appId },
-                { "firstname", firstName },
-                { "lastname", lastName },
-                { "role_id", roleId?.ToString() },
-                { "samaccountname", samAccountName },
-                { "created_since", since?.ToString("o") },  // Use "o" format specifier for DateTime (ISO 8601)
-                { "updated_since", since?.ToString("o") },
-                { "created_until", until?.ToString("o") },
-                { "updated_until", until?.ToString("o") },
-                { "last_login_until", until?.ToString("o") },
-                { "last_login_since", since?.ToString("o") },  // Corrected to `since` for consistency
-                { "username", userName },
-                { "userprincipalname", userPrincipalName },
-                { "user_ids", userIds },  // Comma-separated list of user IDs
-                { "fields", fields }  // Comma-separated list of user attributes to return
-            };
+                var parameters = new Dictionary<string, string?>
+                    {
+                        { "directory_id", directoryId },
+                        { "email", email },
+                        { "external_id", externalId },
+                        { "app_id", appId },
+                        { "firstname", firstName },
+                        { "lastname", lastName },
+                        { "role_id", roleId?.ToString() },
+                        { "samaccountname", samAccountName },
+                        { "created_since", since?.ToString("o") },  // Use "o" format specifier for DateTime (ISO 8601)
+                        { "updated_since", since?.ToString("o") },
+                        { "created_until", until?.ToString("o") },
+                        { "updated_until", until?.ToString("o") },
+                        { "last_login_until", until?.ToString("o") },
+                        { "last_login_since", since?.ToString("o") },  // Corrected to `since` for consistency
+                        { "username", userName },
+                        { "userprincipalname", userPrincipalName },
+                        { "user_ids", userIds },  // Comma-separated list of user IDs
+                        { "fields", fields },  // Comma-separated list of user attributes to return
+                        { "limit", limit?.ToString() }
+                    };
 
-            // Handle custom attributes by adding them as key-value pairs with the "custom_attributes." prefix
-            if (customAttributes != null)
-            {
-                foreach (var attribute in customAttributes)
+                if (customAttributes != null)
                 {
-                    parameters[$"custom_attributes.{attribute.Key}"] = attribute.Value;
+                    foreach (var attribute in customAttributes)
+                    {
+                        parameters[$"custom_attributes.{attribute.Key}"] = attribute.Value;
+                    }
                 }
+
+                parameters = parameters.Where(kvp => kvp.Value != null).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+                var queryString = string.Join("&", parameters
+                    .Where(kv => !string.IsNullOrEmpty(kv.Value))
+                    .Select(kv => $"{kv.Key}={kv.Value}"));
+
+                var url = $"{Endpoints.ONELOGIN_USERS}{(string.IsNullOrEmpty(queryString) ? "" : "?" + queryString)}";
+
+                return await GetResource<List<ListUserResponse>>(url, Endpoints.BaseApi2);
             }
-
-            // Removing any parameters that have a null value
-            parameters = parameters.Where(kvp => kvp.Value != null).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-
-            // Build the query string by filtering out null values and URL-encoding the key-value pairs
-            var queryString = string.Join("&", parameters
-                .Where(kv => !string.IsNullOrEmpty(kv.Value))
-                .Select(kv => $"{kv.Key}={kv.Value}"));  
-
-            // Construct the final URL with query parameters
-            var url = $"{Endpointsv2.ONELOGIN_USERS}{(string.IsNullOrEmpty(queryString) ? "" : "?" + queryString)}";
-
-            // Call the GetResource method to make the API request
-            return await GetResource<List<UserResponse>>(url);
+            catch (Exception ex)
+            {
+                return new ApiResponse<List<ListUserResponse>>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+            }
         }
 
         /// <summary>
         /// Get the Onelogin user.
         /// </summary>
-        /// <param name="userId">the id of the user that you want to return.</param>
+        /// <param name = "userId" > the id of the user that you want to return.</param>
         /// <returns></returns>
-        public async Task<UserResponse> GetUserById(int userId)
+        public async Task<ApiResponse<GetUserResponse>> GetUserById(int userId)
         {
-            return await GetResource<UserResponse>($"{Endpointsv2.ONELOGIN_USERS}/{userId}");
+            try
+            {
+                return await GetResource<GetUserResponse>($"{Endpoints.ONELOGIN_USERS}/{userId}", Endpoints.BaseApi2);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<GetUserResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+            }
         }
 
         /// <summary>
         /// Get a list of apps accessible by a user, not including personal apps.
         /// https://developers.onelogin.com/api-docs/2/users/get-apps-for-user
         /// </summary>
-        /// <param name="userId">Set to the id of the user that you want to return.</param>
-        /// <returns></returns>bh7
-        public async Task<List<GetUserAppsResponse>> GetUserApps(int userId)
+        /// <param name = "userId" > Set to the id of the user that you want to return.</param>
+        /// <returns></returns>
+        public async Task<ApiResponse<List<GetUserAppsResponse>>> GetUserApps(int userId)
         {
-            return await GetResource<List<GetUserAppsResponse>>($"{Endpointsv2.ONELOGIN_USERS}/{userId}/apps");
-
+            try
+            {
+                return await GetResource<List<GetUserAppsResponse>>($"{Endpoints.ONELOGIN_USERS}/{userId}/apps", Endpoints.BaseApi2);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<List<GetUserAppsResponse>>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+            }
         }
 
         /// <summary>
@@ -102,9 +115,16 @@ namespace OneLogin
         /// </summary>
         /// <param name="request">The request object.</param>
         /// <returns></returns>
-        public async Task<UserResponse> CreateUser(CreateUserRequest request)
+        public async Task<ApiResponse<GetUserResponse>> CreateUser(CreateUserRequest request)
         {
-            return await PostResource<UserResponse>(Endpointsv2.ONELOGIN_USERS, request);
+            try
+            {
+                return await PostResource<GetUserResponse>(Endpoints.ONELOGIN_USERS, request, Endpoints.BaseApi2);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<GetUserResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+            }
         }
 
         /// <summary>
@@ -113,9 +133,16 @@ namespace OneLogin
         /// <param name="userId">Set to the id of the user which you want to update.</param>
         /// <param name="byIdRequest">The request object.</param>
         /// <returns></returns>
-        public async Task<UserResponse> UpdateUserById(int userId, UpdateUserByIdRequest byIdRequest)
+        public async Task<ApiResponse<GetUserResponse>> UpdateUserById(int userId, UpdateUserByIdRequest byIdRequest)
         {
-            return await PutResource<UserResponse>($"{Endpointsv2.ONELOGIN_USERS}/{userId}", byIdRequest);
+            try
+            {
+                return await PutResource<GetUserResponse>($"{Endpoints.ONELOGIN_USERS}/{userId}", byIdRequest, Endpoints.BaseApi2);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<GetUserResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+            }
         }
 
         /// <summary>
@@ -123,27 +150,48 @@ namespace OneLogin
         /// </summary>
         /// <param name="userId">Set to the id of the user that you want to log out. </param>
         /// <returns></returns>
-        public async Task<EmptyResponse> DeleteUserById(int userId)
+        public async Task<ApiResponse<EmptyResponse>> DeleteUserById(int userId)
         {
-            return await DeleteResource<EmptyResponse>($"{Endpointsv2.ONELOGIN_USERS}/{userId}");
+            try
+            {
+                return await DeleteResource<EmptyResponse>($"{Endpoints.ONELOGIN_USERS}/{userId}", Endpoints.BaseApi2);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<EmptyResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+            }
+        }
+
+        /// <summary>
+        /// Returns a list of all custom attribute fields(also known as custom user fields) that have been defined for your account.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ApiResponse<List<GetCustomAttributesResponse>>> ListCustomAttributes()
+        {
+            try
+            {
+                return await GetResource<List<GetCustomAttributesResponse>>($"{Endpoints.ONELOGIN_USERS}/custom_attributes", Endpoints.BaseApi2);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<List<GetCustomAttributesResponse>>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+            }
         }
 
         /// <summary>
         /// Returns a list of all custom attribute fields (also known as custom user fields) that have been defined for your account.
         /// </summary>
         /// <returns></returns>
-        public async Task<List<GetCustomAttributesResponse>> ListCustomAttributes()
+        public async Task<ApiResponse<GetCustomAttributesResponse>> GetCustomAttribute(int id)
         {
-            return await GetResource<List<GetCustomAttributesResponse>>($"{Endpointsv2.ONELOGIN_USERS}/custom_attributes");
-        }
-
-        /// <summary>
-        /// Returns a list of all custom attribute fields (also known as custom user fields) that have been defined for your account.
-        /// </summary>
-        /// <returns></returns>
-        public async Task<GetCustomAttributesResponse> GetCustomAttribute(int id)
-        {
-            return await GetResource<GetCustomAttributesResponse>($"{Endpointsv2.ONELOGIN_USERS}/custom_attributes/{id}");
+            try
+            {
+                return await GetResource<GetCustomAttributesResponse>($"{Endpoints.ONELOGIN_USERS}/custom_attributes/{id}", Endpoints.BaseApi2);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<GetCustomAttributesResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+            }
         }
 
         /// <summary>
@@ -151,9 +199,16 @@ namespace OneLogin
         /// </summary>
         /// <param name="request">The request object.</param>
         /// <returns></returns>
-        public async Task<GetCustomAttributesResponse> CreateCustomAttribute(CreateCustomAttributesRequest request)
+        public async Task<ApiResponse<GetCustomAttributesResponse>> CreateCustomAttribute(CreateUpdateCustomAttributesRequest request)
         {
-            return await PostResource<GetCustomAttributesResponse>($"{Endpointsv2.ONELOGIN_USERS}/custom_attributes", request);
+            try
+            {
+                return await PostResource<GetCustomAttributesResponse>($"{Endpoints.ONELOGIN_USERS}/custom_attributes", request, Endpoints.BaseApi2);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<GetCustomAttributesResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+            }
         }
 
         /// <summary>
@@ -162,9 +217,16 @@ namespace OneLogin
         /// <param name="id">Set to the id of the user for whom you want to set custom attribute values. If you don’t know the user’s id, use the Get Users API call to return all users and their id values.</param>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<GetCustomAttributesResponse> UpdateCustomAttributeValue(int id, CreateCustomAttributesRequest request)
+        public async Task<ApiResponse<GetCustomAttributesResponse>> UpdateCustomAttributeValue(int id, CreateUpdateCustomAttributesRequest request)
         {
-            return await PutResource<GetCustomAttributesResponse>($"{Endpointsv2.ONELOGIN_USERS}/custom_attributes/{id}", request);
+            try
+            {
+                return await PutResource<GetCustomAttributesResponse>($"{Endpoints.ONELOGIN_USERS}/custom_attributes/{id}", request, Endpoints.BaseApi2);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<GetCustomAttributesResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+            }
         }
 
         /// <summary>
@@ -172,9 +234,16 @@ namespace OneLogin
         /// </summary>
         /// <param name="id">Set to the id of the attribute that you want to delete </param>
         /// <returns></returns>
-        public async Task<EmptyResponse> DeleteCustomAttributeById(int id)
+        public async Task<ApiResponse<EmptyResponse>> DeleteCustomAttributeById(int id)
         {
-            return await DeleteResource<EmptyResponse>($"{Endpointsv2.ONELOGIN_USERS}/custom_attributes/{id}");
+            try
+            {
+                return await DeleteResource<EmptyResponse>($"{Endpoints.ONELOGIN_USERS}/custom_attributes/{id}", Endpoints.BaseApi2);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<EmptyResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+            }
         }
     }
 }

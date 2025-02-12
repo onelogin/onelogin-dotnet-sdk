@@ -1,12 +1,10 @@
-﻿using System.Text.Json.Serialization;
-using OneLogin.Types;
+﻿using OneLogin.Types;
 
 namespace OneLogin.Responses
 {
     /// <summary>
-    /// Get a list of apps accessible by a user, not including personal apps.
-    /// To get a list of apps accessible by a user to embed in your company intranet, for example, see Get Apps to Embed for a User.
-    /// https://developers.onelogin.com/api-docs/1/users/get-apps-for-user
+    /// get a list of apps that are assigned to a given user.
+    /// https://developers.onelogin.com/api-docs/2/users/get-user-apps
     /// </summary>
     public class GetUserAppsResponse
     { 

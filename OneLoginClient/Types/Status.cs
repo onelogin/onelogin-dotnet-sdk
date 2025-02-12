@@ -1,48 +1,19 @@
 ﻿namespace OneLogin.Types
 {
     /// <summary>
-    /// Determines the user’s ability to log in to OneLogin.
     /// </summary>
-    public enum StatusType
+    public class Status
     {
-        /// <summary>
-        /// Unactivated
-        /// </summary>
-        Unactivated = 0,
+        [JsonPropertyName("error")]
+        public bool Error { get; set; }
 
-        /// <summary>
-        ///  Active Only. users assigned this status can log in to OneLogin.
-        /// </summary>
-        ActiveOnly = 1,
+        [JsonPropertyName("code")]
+        public int Code { get; set; }
 
-        /// <summary>
-        /// Suspended
-        /// </summary>
-        Suspended = 2,
+        [JsonPropertyName("type")]
+        public string Type { get; set; }
 
-        /// <summary>
-        /// Locked
-        /// </summary>
-        Locked = 3,
-
-        /// <summary>
-        /// Password expired
-        /// </summary>
-        PasswordExpired = 4,
-
-        /// <summary>
-        /// Awaiting password reset. The user is required to reset their password
-        /// </summary>
-        AwaitingPasswordReset = 5,
-
-        /// <summary>
-        /// Password Pending. The user has not yet set a password
-        /// </summary>
-        PasswordPending = 7,
-
-        /// <summary>
-        /// Security questions required. The user has not yet set their security questions
-        /// </summary>
-        SecurityQuestionsRequired = 8
+        [JsonPropertyName("message")]
+        public string Message { get; set; }
     }
 }

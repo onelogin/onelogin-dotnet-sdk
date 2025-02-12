@@ -1,10 +1,10 @@
-﻿
-namespace OneLogin.Responses
+﻿namespace OneLogin.Responses
 {
     /// <summary>
     /// Response message containing the status of the request.
     /// </summary>
-    public class EmptyResponse
+    public class RevokeTokenReponse : BaseStatusResponse
     {
+
     }
 }

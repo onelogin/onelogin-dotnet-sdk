@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
+﻿
 namespace OneLogin.Responses
 {
     /// <summary>
@@ -50,5 +49,6 @@ namespace OneLogin.Responses
         /// </summary>
         [JsonPropertyName("account_id")]
         public long AccountId { get; set; }
+
     }
 }
