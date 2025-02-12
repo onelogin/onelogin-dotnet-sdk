@@ -249,12 +249,14 @@ namespace OneLogin
             {
                 var response = await taskResponse;
                 var responseBody = await response.Content.ReadAsStringAsync();
+                
 
                 if (string.IsNullOrWhiteSpace(responseBody))
                 {
                     return new ApiResponse<T>();
                 }
-                else if (response.IsSuccessStatusCode)
+                else 
+                if (response.IsSuccessStatusCode)
                 {
                     // Assuming the response body contains data when it's a 200 status code.
                     T? data = JsonSerializer.Deserialize<T>(responseBody);
@@ -262,8 +264,12 @@ namespace OneLogin
                 }
                 else
                 {
+                    var options = new JsonSerializerOptions
+                    {
+                        Converters = { new BaseErrorResponseConverter() }
+                    };
                     // Handle error responses like 400.
-                    var status = JsonSerializer.Deserialize<BaseErrorResponse>(responseBody);
+                    var status = JsonSerializer.Deserialize<BaseErrorResponse>(responseBody, options);
                     return new ApiResponse<T>(status);
                 }
             }

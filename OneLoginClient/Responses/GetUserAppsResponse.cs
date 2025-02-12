@@ -1,6 +1,4 @@
-﻿using OneLogin.Types;
-
-namespace OneLogin.Responses
+﻿namespace OneLogin.Responses
 {
     /// <summary>
     /// get a list of apps that are assigned to a given user.
