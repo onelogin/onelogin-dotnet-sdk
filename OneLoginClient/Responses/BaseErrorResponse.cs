@@ -34,12 +34,25 @@ namespace OneLogin.Responses
                     case "error":
                         myClass.Name = property.Value.GetString();
                         break;
-                    case "description":  // Apply the condition here
+                    case "description":
                         myClass.Message = property.Value.GetString();
                         break;
                     case "status":
                         myClass.StatusCode = property.Value.GetInt32();
                         break;
+                    case "statusCode":
+                        myClass.StatusCode = property.Value.GetInt32();
+                        break;
+                    case "message":
+                        myClass.Message = property.Value.GetString();
+                        break;
+                    case "name":
+                        myClass.Name = property.Value.GetString();
+                        break;
+                    case "field":
+                        myClass.Field = property.Value.GetString();
+                        break;
+
                 }
             }
 

@@ -27,5 +27,15 @@
         /// </summary>
         public const string ONELOGIN_ROLES = "roles";
 
+        /// <summary>
+        /// https://api.<us_or_eu>.onelogin.com/api/2/connectors
+        /// </summary>
+        public const string ONELOGIN_CONNECTORS = "connectors";
+
+        /// <summary>
+        /// https://api.<us_or_eu>.onelogin.com/api/2/apps
+        /// </summary>
+        public const string ONELOGIN_APPS = "apps";
+
     }
 }
