@@ -95,7 +95,7 @@
         {
             try
             {
-                return await PutResource<List<GetIdResponse>>($"{Endpoints.ONELOGIN_ROLES}/{roleId}/apps",request, Endpoints.BaseApi2);
+                return await PutResource<List<GetIdResponse>>($"{Endpoints.ONELOGIN_ROLES}/{roleId}/apps", request, Endpoints.BaseApi2);
             }
             catch (Exception ex)
             {
@@ -137,11 +137,11 @@
         /// <param name="roleId">Set to the id of the user that you want to log out. </param>
         /// <param name="userIds">Set user_id values in array, for example: [123, 456, 678] </param>
         /// <returns></returns>
-        public async Task<ApiResponse<EmptyResponse>> DeleteRoleUsers(int roleId,List<int> userIds)
+        public async Task<ApiResponse<EmptyResponse>> DeleteRoleUsers(int roleId, List<int> userIds)
         {
             try
             {
-                return await DeleteResource<EmptyResponse>($"{Endpoints.ONELOGIN_ROLES}/{roleId}/users", Endpoints.BaseApi2,userIds);
+                return await DeleteResource<EmptyResponse>($"{Endpoints.ONELOGIN_ROLES}/{roleId}/users", Endpoints.BaseApi2, userIds);
             }
             catch (Exception ex)
             {
@@ -199,7 +199,7 @@
         /// <param name="roleId">Set to the id of the user that you want to log out. </param>
         /// <param name="userIds">Set user_id values in array, for example: [123, 456, 678] </param>
         /// <returns></returns>
-        public async Task<ApiResponse<EmptyResponse>> DeleteRoleAdmins(int roleId,List<int> userIds)
+        public async Task<ApiResponse<EmptyResponse>> DeleteRoleAdmins(int roleId, List<int> userIds)
         {
             try
             {
@@ -211,5 +211,4 @@
             }
         }
     }
-  }
- 
+}
