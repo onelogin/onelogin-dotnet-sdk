@@ -37,5 +37,10 @@
         /// </summary>
         public const string ONELOGIN_APPS = "apps";
 
+        /// <summary>
+        /// https://api.<us_or_eu>.onelogin.com/api/2/reports
+        /// </summary>
+        public const string ONELOGIN_REPORTS = "reports";
+
     }
 }
