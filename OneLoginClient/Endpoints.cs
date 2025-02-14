@@ -47,5 +47,10 @@
         /// </summary>
         public const string ONELOGIN_SAMLASSERTIONS = "saml-assertions";
 
+        /// <summary>
+        /// https://api.<us_or_eu>.onelogin.com/api/2/smart-mfa
+        /// </summary>
+        public const string ONELOGIN_SMARTMFA = "smart-mfa";
+
     }
 }

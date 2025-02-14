@@ -1,7 +1,4 @@
 ﻿
-using OneLogin.Request;
-using OneLogin.Response;
-
 namespace OneLogin
 {
     public partial class OneLoginClient
