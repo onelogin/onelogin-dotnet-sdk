@@ -1,6 +1,4 @@
 ﻿
-using System.Diagnostics.Metrics;
-
 namespace OneLogin
 {
     public partial class OneLoginClient
@@ -13,15 +11,15 @@ namespace OneLogin
         /// </summary>
         /// <param name="request">The request object.</param>
         /// <returns></returns>
-        public async Task<ApiResponse<GenerateSAMLAssertionResponse>> ValidateUserViaSms(GenerateSAMLAssertionRequest request)
+        public async Task<ApiResponse<SmartMFAResponse>> ValidateUserViaSms(SmartMFARequest request)
         {
             try
             {
-                return await PostResource<GenerateSAMLAssertionResponse>($"{Endpoints.ONELOGIN_SMARTMFA}", request, Endpoints.BaseApi2);
+                return await PostResource<SmartMFAResponse>($"{Endpoints.ONELOGIN_SMARTMFA}", request, Endpoints.BaseApi2);
             }
             catch (Exception ex)
             {
-                return new ApiResponse<GenerateSAMLAssertionResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+                return new ApiResponse<SmartMFAResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
             }
         }
 
@@ -33,34 +31,33 @@ namespace OneLogin
         /// </summary>
         /// <param name="request">The request object.</param>
         /// <returns></returns>
-        public async Task<ApiResponse<VerifyFactorResponse>> ValidateUserViaEmail(VerifyFactorRequest request)
+        public async Task<ApiResponse<SmartMFAResponse>> ValidateUserViaEmail(SmartMFAEmailRequest request)
         {
             try
             {
-                return await PostResource<VerifyFactorResponse>($"{Endpoints.ONELOGIN_SMARTMFA}", request, Endpoints.BaseApi2);
+                return await PostResource<SmartMFAResponse>($"{Endpoints.ONELOGIN_SMARTMFA}", request, Endpoints.BaseApi2);
             }
             catch (Exception ex)
             {
-                return new ApiResponse<VerifyFactorResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+                return new ApiResponse<SmartMFAResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
             }
         }
 
         /// <summary>
-        /// Verify a one-time password (OTP) value, provided for a second factor, when multi-factor authentication (MFA) is required for SAML authentication.
-        /// This API is used in close conjunction with the Generate SAML Assertion API when MFA is required
-        /// https://developers.onelogin.com/api-docs/2/saml-assertions/verify-factor
+        /// Use this API to verify a MFA token that has been sent to a user as a result of the Validate a User request
+        /// https://developers.onelogin.com/api-docs/2/smart-mfa/verify-token
         /// </summary>
         /// <param name="request">The request object.</param>
         /// <returns></returns>
-        public async Task<ApiResponse<VerifyFactorResponse>> VerifyToken(VerifyFactorRequest request)
+        public async Task<ApiResponse<EmptyResponse>> VerifyToken(VerifyMFATokenRequest request)
         {
             try
             {
-                return await PostResource<VerifyFactorResponse>($"{Endpoints.ONELOGIN_SMARTMFA}/verify", request, Endpoints.BaseApi2);
+                return await PostResource<EmptyResponse>($"{Endpoints.ONELOGIN_SMARTMFA}/verify", request, Endpoints.BaseApi2);
             }
             catch (Exception ex)
             {
-                return new ApiResponse<VerifyFactorResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+                return new ApiResponse<EmptyResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
             }
         }
     }
