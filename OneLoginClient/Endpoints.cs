@@ -42,5 +42,10 @@
         /// </summary>
         public const string ONELOGIN_REPORTS = "reports";
 
+        /// <summary>
+        /// https://api.<us_or_eu>.onelogin.com/api/2/saml-assertions
+        /// </summary>
+        public const string ONELOGIN_SAMLASSERTIONS = "saml-assertions";
+
     }
 }
