@@ -67,7 +67,7 @@
 
                 var url = $"{Endpoints.ONELOGIN_USERS}{(string.IsNullOrEmpty(queryString) ? "" : "?" + queryString)}";
 
-                return await GetResource<List<ListUserResponse>>(url, Endpoints.BaseApi2);
+                return await GetResource<List<ListUserResponse>>(url, Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -84,7 +84,7 @@
         {
             try
             {
-                return await GetResource<GetUserResponse>($"{Endpoints.ONELOGIN_USERS}/{userId}", Endpoints.BaseApi2);
+                return await GetResource<GetUserResponse>($"{Endpoints.ONELOGIN_USERS}/{userId}", Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -102,7 +102,7 @@
         {
             try
             {
-                return await GetResource<List<GetUserAppsResponse>>($"{Endpoints.ONELOGIN_USERS}/{userId}/apps", Endpoints.BaseApi2);
+                return await GetResource<List<GetUserAppsResponse>>($"{Endpoints.ONELOGIN_USERS}/{userId}/apps", Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -119,7 +119,7 @@
         {
             try
             {
-                return await PostResource<GetUserResponse>(Endpoints.ONELOGIN_USERS, request, Endpoints.BaseApi2);
+                return await PostResource<GetUserResponse>(Endpoints.ONELOGIN_USERS, request, Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -137,7 +137,7 @@
         {
             try
             {
-                return await PutResource<GetUserResponse>($"{Endpoints.ONELOGIN_USERS}/{userId}", byIdRequest, Endpoints.BaseApi2);
+                return await PutResource<GetUserResponse>($"{Endpoints.ONELOGIN_USERS}/{userId}", byIdRequest, Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -154,7 +154,7 @@
         {
             try
             {
-                return await DeleteResource<EmptyResponse>($"{Endpoints.ONELOGIN_USERS}/{userId}", Endpoints.BaseApi2);
+                return await DeleteResource<EmptyResponse>($"{Endpoints.ONELOGIN_USERS}/{userId}", Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -170,7 +170,7 @@
         {
             try
             {
-                return await GetResource<List<GetCustomAttributesResponse>>($"{Endpoints.ONELOGIN_USERS}/custom_attributes", Endpoints.BaseApi2);
+                return await GetResource<List<GetCustomAttributesResponse>>($"{Endpoints.ONELOGIN_USERS}/custom_attributes", Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -186,7 +186,7 @@
         {
             try
             {
-                return await GetResource<GetCustomAttributesResponse>($"{Endpoints.ONELOGIN_USERS}/custom_attributes/{id}", Endpoints.BaseApi2);
+                return await GetResource<GetCustomAttributesResponse>($"{Endpoints.ONELOGIN_USERS}/custom_attributes/{id}", Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -203,7 +203,7 @@
         {
             try
             {
-                return await PostResource<GetCustomAttributesResponse>($"{Endpoints.ONELOGIN_USERS}/custom_attributes", request, Endpoints.BaseApi2);
+                return await PostResource<GetCustomAttributesResponse>($"{Endpoints.ONELOGIN_USERS}/custom_attributes", request, Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -221,7 +221,7 @@
         {
             try
             {
-                return await PutResource<GetCustomAttributesResponse>($"{Endpoints.ONELOGIN_USERS}/custom_attributes/{id}", request, Endpoints.BaseApi2);
+                return await PutResource<GetCustomAttributesResponse>($"{Endpoints.ONELOGIN_USERS}/custom_attributes/{id}", request, Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -238,7 +238,7 @@
         {
             try
             {
-                return await DeleteResource<EmptyResponse>($"{Endpoints.ONELOGIN_USERS}/custom_attributes/{id}", Endpoints.BaseApi2);
+                return await DeleteResource<EmptyResponse>($"{Endpoints.ONELOGIN_USERS}/custom_attributes/{id}", Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {

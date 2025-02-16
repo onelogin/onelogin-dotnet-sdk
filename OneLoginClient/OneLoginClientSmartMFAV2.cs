@@ -15,7 +15,7 @@ namespace OneLogin
         {
             try
             {
-                return await PostResource<SmartMFAResponse>($"{Endpoints.ONELOGIN_SMARTMFA}", request, Endpoints.BaseApi2);
+                return await PostResource<SmartMFAResponse>($"{Endpoints.ONELOGIN_SMARTMFA}", request, Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -35,7 +35,7 @@ namespace OneLogin
         {
             try
             {
-                return await PostResource<SmartMFAResponse>($"{Endpoints.ONELOGIN_SMARTMFA}", request, Endpoints.BaseApi2);
+                return await PostResource<SmartMFAResponse>($"{Endpoints.ONELOGIN_SMARTMFA}", request, Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -53,7 +53,7 @@ namespace OneLogin
         {
             try
             {
-                return await PostResource<EmptyResponse>($"{Endpoints.ONELOGIN_SMARTMFA}/verify", request, Endpoints.BaseApi2);
+                return await PostResource<EmptyResponse>($"{Endpoints.ONELOGIN_SMARTMFA}/verify", request, Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {

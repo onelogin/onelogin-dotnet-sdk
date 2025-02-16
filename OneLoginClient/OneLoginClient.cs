@@ -9,24 +9,23 @@ namespace OneLogin
     {
         private readonly string _clientId;
         private readonly string _clientSecret;
-        private readonly string _region;
+        private readonly string _api_domain;
         private static HttpClient? _client;
-        private static readonly List<string> ValidRegions = ["us", "eu"];
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OneLoginClient"/> class.
         /// </summary>
         /// <param name="clientId">The client id to connect with.</param>
         /// <param name="clientSecret">The client secret to connect with.</param>
-        /// <param name="region"></param>
-        public OneLoginClient(string clientId, string clientSecret, string region = "us")
+        /// <param name="api_domain"></param>
+        public OneLoginClient(string clientId, string clientSecret, string api_domain)
         {
             if (string.IsNullOrWhiteSpace(clientId)) throw new ArgumentNullException(nameof(clientSecret));
             if (string.IsNullOrWhiteSpace(clientSecret)) throw new ArgumentNullException(nameof(clientSecret));
-            if (!ValidRegions.Contains(region)) throw new ArgumentException("Invalid region code", nameof(region));
+            if (string.IsNullOrWhiteSpace(api_domain)) throw new ArgumentNullException(nameof(api_domain));
             _clientId = clientId;
             _clientSecret = clientSecret;
-            _region = region;
+            _api_domain = "https://" + api_domain;
         }
 
         /// <summary>
@@ -50,7 +49,7 @@ namespace OneLogin
                 var request = new HttpRequestMessage
                 {
                     Method = HttpMethod.Post,
-                    RequestUri = new Uri(Endpoints.Token.Replace("<us_or_eu>", _region)),
+                    RequestUri = new Uri(_api_domain + Endpoints.Token),
                     Content = content
                 };
 
@@ -89,7 +88,7 @@ namespace OneLogin
                 var request = new HttpRequestMessage
                 {
                     Method = HttpMethod.Post,
-                    RequestUri = new Uri(Endpoints.RevokeToken.Replace("<us_or_eu>", _region)),
+                    RequestUri = new Uri(_api_domain + Endpoints.RevokeToken),
                     Content = content
                 };
 
@@ -105,14 +104,15 @@ namespace OneLogin
         }
 
         #region Private methods 
-        private async Task<ApiResponse<T>> GetResource<T>(string url,string baseApiVersion)
+        private async Task<ApiResponse<T>> GetResource<T>(string url, string baseApiVersion)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(url)) { throw new ArgumentException(nameof(url)); }
 
                 var client = await GetClient(baseApiVersion);
-                return await ParseHttpResponse<T>(client.GetAsync(url));
+                var fullUrl = _api_domain + baseApiVersion + url;
+                return await ParseHttpResponse<T>(client.GetAsync(fullUrl));
             }
             catch (Exception ex)
             {
@@ -133,7 +133,7 @@ namespace OneLogin
                 throw new UnauthorizedAccessException("Unauthorized");
             }
 
-            var client = new HttpClient { BaseAddress = new Uri(baseApiVersion.Replace("<us_or_eu>", _region)) };
+            var client = new HttpClient { BaseAddress = new Uri(_api_domain + baseApiVersion) };
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.Data.AccessToken);
             return _client = client;
         }
@@ -144,6 +144,7 @@ namespace OneLogin
             {
                 if (request == null) throw new ArgumentNullException(nameof(request));
                 if (string.IsNullOrWhiteSpace(url)) { throw new ArgumentException(nameof(url)); }
+                var fullUrl = _api_domain + baseApiVersion + url;
 
                 var content = new StringContent(JsonSerializer.Serialize(request, options: new JsonSerializerOptions
                 {
@@ -152,7 +153,7 @@ namespace OneLogin
                 var httpRequest = new HttpRequestMessage
                 {
                     Method = HttpMethod.Post,
-                    RequestUri = new Uri(url, UriKind.Relative),
+                    RequestUri = new Uri(fullUrl, UriKind.Absolute),
                     Content = content
                 };
                 //We add the Content-Type Header like this because otherwise dotnet
@@ -175,6 +176,7 @@ namespace OneLogin
             {
                 if (request == null) throw new ArgumentNullException(nameof(request));
                 if (string.IsNullOrWhiteSpace(url)) { throw new ArgumentException(nameof(url)); }
+                var fullUrl = _api_domain + baseApiVersion + url;
 
                 var content = new StringContent(JsonSerializer.Serialize(request, options: new JsonSerializerOptions
                 {
@@ -184,7 +186,7 @@ namespace OneLogin
                 var httpRequest = new HttpRequestMessage
                 {
                     Method = HttpMethod.Put,
-                    RequestUri = new Uri(url, UriKind.Relative),
+                    RequestUri = new Uri(fullUrl, UriKind.Absolute),
                     Content = content
                 };
 
@@ -208,6 +210,7 @@ namespace OneLogin
 
                 var client = await GetClient(baseApiVersion);
                 HttpRequestMessage httpRequest;
+                var fullUrl = _api_domain + baseApiVersion + url;
 
                 if (request != null)
                 {
@@ -219,7 +222,7 @@ namespace OneLogin
                     httpRequest = new HttpRequestMessage
                     {
                         Method = HttpMethod.Delete,
-                        RequestUri = new Uri(url, UriKind.Relative),
+                        RequestUri = new Uri(fullUrl, UriKind.Absolute),
                         Content = content
                     };
 
@@ -249,13 +252,13 @@ namespace OneLogin
             {
                 var response = await taskResponse;
                 var responseBody = await response.Content.ReadAsStringAsync();
-                
+
 
                 if (string.IsNullOrWhiteSpace(responseBody))
                 {
                     return new ApiResponse<T>();
                 }
-                else 
+                else
                 if (response.IsSuccessStatusCode)
                 {
                     // Assuming the response body contains data when it's a 200 status code.
