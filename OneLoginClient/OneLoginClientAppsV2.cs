@@ -42,7 +42,7 @@ namespace OneLogin
                 var url = $"{Endpoints.ONELOGIN_CONNECTORS}{(string.IsNullOrEmpty(queryString) ? "" : "?" + queryString)}";
 
                 // Make the request to the API
-                return await GetResource<List<ConnectorResponse>>(url, Endpoints.BaseApi2);
+                return await GetResource<List<ConnectorResponse>>(url, Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -86,7 +86,7 @@ namespace OneLogin
                 var url = $"{Endpoints.ONELOGIN_APPS}{(string.IsNullOrEmpty(queryString) ? "" : "?" + queryString)}";
 
                 // Make the request to the API
-                return await GetResource<List<ListAppResponse>>(url, Endpoints.BaseApi2);
+                return await GetResource<List<ListAppResponse>>(url, Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -105,7 +105,7 @@ namespace OneLogin
         {
             try
             {
-                return await GetResource<GetAppResponse>($"{Endpoints.ONELOGIN_APPS}/{appId}", Endpoints.BaseApi2);
+                return await GetResource<GetAppResponse>($"{Endpoints.ONELOGIN_APPS}/{appId}", Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -122,7 +122,7 @@ namespace OneLogin
         {
             try
             {
-                return await GetResource<GetAppResponse>($"{Endpoints.ONELOGIN_APPS}/{appId}/users", Endpoints.BaseApi2);
+                return await GetResource<GetAppResponse>($"{Endpoints.ONELOGIN_APPS}/{appId}/users", Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -139,7 +139,7 @@ namespace OneLogin
         {
             try
             {
-                return await PostResource<GetIdResponse>(Endpoints.ONELOGIN_APPS, request, Endpoints.BaseApi2);
+                return await PostResource<GetIdResponse>(Endpoints.ONELOGIN_APPS, request, Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -157,7 +157,7 @@ namespace OneLogin
         {
             try
             {
-                return await PutResource<GetIdResponse>($"{Endpoints.ONELOGIN_APPS}/{appId}", request, Endpoints.BaseApi2);
+                return await PutResource<GetIdResponse>($"{Endpoints.ONELOGIN_APPS}/{appId}", request, Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -174,7 +174,7 @@ namespace OneLogin
         {
             try
             {
-                return await DeleteResource<EmptyResponse>($"{Endpoints.ONELOGIN_APPS}/{appId}", Endpoints.BaseApi2);
+                return await DeleteResource<EmptyResponse>($"{Endpoints.ONELOGIN_APPS}/{appId}", Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -193,7 +193,7 @@ namespace OneLogin
         {
             try
             {
-                return await DeleteResource<EmptyResponse>($"{Endpoints.ONELOGIN_APPS}/{appId}/parameters/{parameter_id}", Endpoints.BaseApi2);
+                return await DeleteResource<EmptyResponse>($"{Endpoints.ONELOGIN_APPS}/{appId}/parameters/{parameter_id}", Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {

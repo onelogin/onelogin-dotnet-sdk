@@ -12,7 +12,7 @@
         /// <returns></returns>
         public async Task<ApiResponse<GetRoleResponse>> GetRole(int id)
         {
-            return await GetResource<GetRoleResponse>($"{Endpoints.ONELOGIN_ROLES}/{id}", Endpoints.BaseApi2);
+            return await GetResource<GetRoleResponse>($"{Endpoints.ONELOGIN_ROLES}/{id}", Endpoints.BaseApiVersion2);
         }
 
         /// <summary>
@@ -21,7 +21,7 @@
         /// <returns></returns>
         public async Task<ApiResponse<List<GetRoleResponse>>> ListRoles()
         {
-            return await GetResource<List<GetRoleResponse>>($"{Endpoints.ONELOGIN_ROLES}", Endpoints.BaseApi2);
+            return await GetResource<List<GetRoleResponse>>($"{Endpoints.ONELOGIN_ROLES}", Endpoints.BaseApiVersion2);
         }
 
         /// <summary>
@@ -33,7 +33,7 @@
         {
             try
             {
-                return await PostResource<GetIdResponse>(Endpoints.ONELOGIN_ROLES, request, Endpoints.BaseApi2);
+                return await PostResource<GetIdResponse>(Endpoints.ONELOGIN_ROLES, request, Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -51,7 +51,7 @@
         {
             try
             {
-                return await PutResource<GetIdResponse>($"{Endpoints.ONELOGIN_ROLES}/{roleId}", request, Endpoints.BaseApi2);
+                return await PutResource<GetIdResponse>($"{Endpoints.ONELOGIN_ROLES}/{roleId}", request, Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -68,7 +68,7 @@
         {
             try
             {
-                return await DeleteResource<EmptyResponse>($"{Endpoints.ONELOGIN_ROLES}/{roleId}", Endpoints.BaseApi2);
+                return await DeleteResource<EmptyResponse>($"{Endpoints.ONELOGIN_ROLES}/{roleId}", Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -83,7 +83,7 @@
         /// <returns></returns>
         public async Task<ApiResponse<List<GetRoleAppsResponse>>> ListRoleApps(int roleId, GetRoleAppsRequest request)
         {
-            return await GetResource<List<GetRoleAppsResponse>>($"{Endpoints.ONELOGIN_ROLES}/{roleId}/apps", Endpoints.BaseApi2);
+            return await GetResource<List<GetRoleAppsResponse>>($"{Endpoints.ONELOGIN_ROLES}/{roleId}/apps", Endpoints.BaseApiVersion2);
         }
 
         /// <summary>
@@ -95,7 +95,7 @@
         {
             try
             {
-                return await PutResource<List<GetIdResponse>>($"{Endpoints.ONELOGIN_ROLES}/{roleId}/apps", request, Endpoints.BaseApi2);
+                return await PutResource<List<GetIdResponse>>($"{Endpoints.ONELOGIN_ROLES}/{roleId}/apps", request, Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -110,7 +110,7 @@
         /// <returns></returns>
         public async Task<ApiResponse<List<GetRoleUsersAdminResponse>>> ListRoleUsers(int roleId)
         {
-            return await GetResource<List<GetRoleUsersAdminResponse>>($"{Endpoints.ONELOGIN_ROLES}/{roleId}/users", Endpoints.BaseApi2);
+            return await GetResource<List<GetRoleUsersAdminResponse>>($"{Endpoints.ONELOGIN_ROLES}/{roleId}/users", Endpoints.BaseApiVersion2);
         }
 
         /// <summary>
@@ -123,7 +123,7 @@
         {
             try
             {
-                return await PostResource<List<GetIdResponse>>($"{Endpoints.ONELOGIN_ROLES}/{roleId}/users", userIds, Endpoints.BaseApi2);
+                return await PostResource<List<GetIdResponse>>($"{Endpoints.ONELOGIN_ROLES}/{roleId}/users", userIds, Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -141,7 +141,7 @@
         {
             try
             {
-                return await DeleteResource<EmptyResponse>($"{Endpoints.ONELOGIN_ROLES}/{roleId}/users", Endpoints.BaseApi2, userIds);
+                return await DeleteResource<EmptyResponse>($"{Endpoints.ONELOGIN_ROLES}/{roleId}/users", Endpoints.BaseApiVersion2, userIds);
             }
             catch (Exception ex)
             {
@@ -172,7 +172,7 @@
             {
                 url += "?" + queryString; // Append the query string if there are any parameters
             }
-            return await GetResource<List<GetRoleUsersAdminResponse>>(url, Endpoints.BaseApi2);
+            return await GetResource<List<GetRoleUsersAdminResponse>>(url, Endpoints.BaseApiVersion2);
         }
 
         /// <summary>
@@ -185,7 +185,7 @@
         {
             try
             {
-                return await PostResource<List<GetIdResponse>>($"{Endpoints.ONELOGIN_ROLES}/{roleId}/admins", userIds, Endpoints.BaseApi2);
+                return await PostResource<List<GetIdResponse>>($"{Endpoints.ONELOGIN_ROLES}/{roleId}/admins", userIds, Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -203,7 +203,7 @@
         {
             try
             {
-                return await DeleteResource<EmptyResponse>($"{Endpoints.ONELOGIN_ROLES}/{roleId}/admins", Endpoints.BaseApi2, userIds);
+                return await DeleteResource<EmptyResponse>($"{Endpoints.ONELOGIN_ROLES}/{roleId}/admins", Endpoints.BaseApiVersion2, userIds);
             }
             catch (Exception ex)
             {

@@ -1,4 +1,4 @@
-﻿namespace OneLogin.Request
+﻿namespace OneLogin.Requests
 {
     public class VerifyFactorRequest
     {

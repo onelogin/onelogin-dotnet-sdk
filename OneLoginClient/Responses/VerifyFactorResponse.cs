@@ -1,4 +1,4 @@
-﻿namespace OneLogin.Response
+﻿namespace OneLogin.Responses
 {
     public class VerifyFactorResponse
     {

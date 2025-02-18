@@ -1,7 +1,4 @@
 ﻿
-using OneLogin.Request;
-using OneLogin.Response;
-
 namespace OneLogin
 {
     public partial class OneLoginClient
@@ -18,7 +15,7 @@ namespace OneLogin
         {
             try
             {
-                return await PostResource<GenerateSAMLAssertionResponse>($"{Endpoints.ONELOGIN_SAMLASSERTIONS}", request, Endpoints.BaseApi2);
+                return await PostResource<GenerateSAMLAssertionResponse>($"{Endpoints.ONELOGIN_SAMLASSERTIONS}", request, Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -37,7 +34,7 @@ namespace OneLogin
         {
             try
             {
-                return await PostResource<VerifyFactorResponse>($"{Endpoints.ONELOGIN_SAMLASSERTIONS}/verify_factor", request, Endpoints.BaseApi2);
+                return await PostResource<VerifyFactorResponse>($"{Endpoints.ONELOGIN_SAMLASSERTIONS}/verify_factor", request, Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {

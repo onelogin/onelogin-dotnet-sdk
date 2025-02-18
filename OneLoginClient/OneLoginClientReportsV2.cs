@@ -32,7 +32,7 @@ namespace OneLogin
         {
             try
             {
-                return await PostResource<ReportResponse>($"{Endpoints.ONELOGIN_REPORTS}/{Id}/run", request, Endpoints.BaseApi2);
+                return await PostResource<ReportResponse>($"{Endpoints.ONELOGIN_REPORTS}/{Id}/run", request, Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -51,7 +51,7 @@ namespace OneLogin
         {
             try
             {
-                return await PostResource<BackgroundReportResponse>($"{Endpoints.ONELOGIN_REPORTS}/{Id}/run_background", request, Endpoints.BaseApi2);
+                return await PostResource<BackgroundReportResponse>($"{Endpoints.ONELOGIN_REPORTS}/{Id}/run_background", request, Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
