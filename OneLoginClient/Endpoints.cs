@@ -48,5 +48,20 @@
         /// </summary>
         public const string ONELOGIN_SMARTMFA = "smart-mfa";
 
+        /// <summary>
+        /// https://developers.onelogin.com/api-docs/1/events/get-events
+        /// </summary>
+        public const string ONELOGIN_EVENTS = "events";
+
+        /// <summary>
+        /// https://api.<us_or_eu>.onelogin.com/api/1/invites/get_invite_link
+        /// </summary>
+        public const string ONELOGIN_INVITES = "invites";
+
+        /// <summary>
+        /// https://api.<us_or_eu>.onelogin.com/api/1/groups
+        /// </summary>
+        public const string ONELOGIN_GROUPS = "groups";
+
     }
 }
