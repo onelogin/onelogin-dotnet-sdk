@@ -54,14 +54,19 @@
         public const string ONELOGIN_EVENTS = "events";
 
         /// <summary>
-        /// https://api.<us_or_eu>.onelogin.com/api/1/invites/get_invite_link
+        /// https://api_domain/api/1/invites/get_invite_link
         /// </summary>
         public const string ONELOGIN_INVITES = "invites";
 
         /// <summary>
-        /// https://api.<us_or_eu>.onelogin.com/api/1/groups
+        /// https://api_domain/api/1/groups
         /// </summary>
         public const string ONELOGIN_GROUPS = "groups";
+
+        /// <summary>
+        /// https://developers.onelogin.com/api-docs/2/multi-factor-authentication/overview
+        /// </summary>
+        public const string ONELOGIN_MFA = "mfa/"+ONELOGIN_USERS;
 
     }
 }

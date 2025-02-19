@@ -1,8 +1,4 @@
-﻿using System.Threading.Tasks;
-using OneLogin.Requests;
-using OneLogin.Responses;
-
-namespace OneLogin
+﻿namespace OneLogin
 {
     public partial class OneLoginClient
     {

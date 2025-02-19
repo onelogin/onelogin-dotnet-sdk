@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Runtime.Serialization;
-
+﻿
 namespace OneLogin.Responses
 {
     /// <summary>

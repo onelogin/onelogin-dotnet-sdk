@@ -1,5 +1,4 @@
 ﻿
-
 namespace OneLogin.Responses
 {
     public class BaseErrorResponse
