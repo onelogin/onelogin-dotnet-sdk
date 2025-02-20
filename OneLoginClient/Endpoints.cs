@@ -68,5 +68,11 @@
         /// </summary>
         public const string ONELOGIN_MFA = "mfa/"+ONELOGIN_USERS;
 
+        /// <summary>
+        /// https://<subdomain>/api/2/api_authorizations
+        /// </summary>
+        public const string ONELOGIN_APIAUTHORIZATIONS = "api_authorizations";
+
+
     }
 }
