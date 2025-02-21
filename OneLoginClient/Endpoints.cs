@@ -73,6 +73,16 @@
         /// </summary>
         public const string ONELOGIN_APIAUTHORIZATIONS = "api_authorizations";
 
+        /// <summary>
+        /// https://<subdomain>/api/2/risk
+        /// </summary>
+        public const string ONELOGIN_VIGILANCEAI = "risk";
+
+        /// <summary>
+        /// https://<subdomain>/api/2/risk/rules
+        /// </summary>
+        public const string ONELOGIN_VIGILANCEAI_RULES = "risk/rules";
+
 
     }
 }
