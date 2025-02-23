@@ -1,6 +1,4 @@
-﻿using OneLogin.Responses;
-using static System.Net.WebRequestMethods;
-
+﻿
 namespace OneLogin
 {
     public partial class OneLoginClient
