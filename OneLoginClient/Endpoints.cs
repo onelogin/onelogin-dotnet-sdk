@@ -83,6 +83,16 @@
         /// </summary>
         public const string ONELOGIN_VIGILANCEAI_RULES = "risk/rules";
 
+        /// <summary>
+        /// https://<subdomain>/api/2/hooks
+        /// </summary>
+        public const string ONELOGIN_SMARTHOOKS = "hooks";
+
+        /// <summary>
+        /// https://<subdomain>/api/2/hooks/envs
+        /// </summary>
+        public const string ONELOGIN_SMARTHOOKSENVS = ONELOGIN_SMARTHOOKS+"/envs";
+
 
     }
 }
