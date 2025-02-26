@@ -66,7 +66,7 @@
         /// <summary>
         /// https://developers.onelogin.com/api-docs/2/multi-factor-authentication/overview
         /// </summary>
-        public const string ONELOGIN_MFA = "mfa/"+ONELOGIN_USERS;
+        public const string ONELOGIN_MFA = "mfa/" + ONELOGIN_USERS;
 
         /// <summary>
         /// https://<subdomain>/api/2/api_authorizations
@@ -91,8 +91,12 @@
         /// <summary>
         /// https://<subdomain>/api/2/hooks/envs
         /// </summary>
-        public const string ONELOGIN_SMARTHOOKSENVS = ONELOGIN_SMARTHOOKS+"/envs";
+        public const string ONELOGIN_SMARTHOOKSENVS = ONELOGIN_SMARTHOOKS + "/envs";
 
+        /// <summary>
+        /// https://<subdomain>/api/1/privileges
+        /// </summary>
+        public const string ONELOGIN_PRIVILEGES = "privileges";
 
     }
 }
