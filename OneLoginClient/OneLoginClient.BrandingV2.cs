@@ -101,7 +101,7 @@ namespace OneLogin
         /// <param name="brandId">Unique identifier for the branding object..</param>
         /// <param name="request"></param>
         /// <returns>Returns the serialized <see cref="BrandingUpdateLookupMessagesResponse"/> as an asynchronous operation.</returns>
-        public async Task<ApiResponse<BrandingUpdateLookupMessagesResponse>> UpdateCustomMessage(long brandId, BrandingUpdateLookupMessagesResponse request)
+        public async Task<ApiResponse<BrandingUpdateLookupMessagesResponse>> UpdateCustomMessage(long brandId, BrandingUpdateLookupMessagesRequest request)
         {
             return await PutResource<BrandingUpdateLookupMessagesResponse>($"{Endpoints.ONELOGIN_BRANDING}/{brandId}/{Endpoints.ONELOGIN_CUSTOM_ERROR_MESSAGES}", request, Endpoints.BaseApiVersion2);
         }

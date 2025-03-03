@@ -1,31 +1,20 @@
-﻿namespace OneLogin.Responses
+﻿namespace OneLogin.Requests
 {
-    public class BrandingUpdateLookupMessagesResponse
+    public class BrandingUpdateLookupMessagesRequest
     {
-        /// <summary>
-        /// Gets or sets the unique identifier for the custom error message (optional).
-        /// </summary>
-        [JsonPropertyName("id")]
-        public int Id { get; set; }
-
         /// <summary>
         /// Gets or sets the type ID for the custom error message (optional).
         /// Acceptable values: 9
         /// </summary>
         [JsonPropertyName("type_id")]
-        public int? TypeId { get; set; }
-
-        // <summary>
-        /// Gets or sets the account identifier associated with the template configuration.
-        /// </summary>
-        [JsonPropertyName("account_id")]
-        public int AccountId { get; set; }
+        public int TypeId { get; set; }
 
         /// <summary>
-        /// Gets or sets the brand identifier associated with this email template configuration.
+        /// Gets or sets the type name for the custom error message (optional).
+        /// Acceptable values: MESSAGE_TYPE_NO_ACCESS_APP
         /// </summary>
-        [JsonPropertyName("brand_id")]
-        public int BrandId { get; set; }
+        [JsonPropertyName("type_name")]
+        public string TypeName { get; set; }
 
         /// <summary>
         /// Gets or sets the locale for the custom error message (optional).
@@ -51,4 +40,5 @@
         [JsonPropertyName("message")]
         public string Message { get; set; }
     }
+
 }
