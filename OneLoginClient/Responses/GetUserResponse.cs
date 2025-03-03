@@ -4,9 +4,7 @@ namespace OneLogin.Responses
     /// <summary>
     /// This call returns up to 50 users per page.
     /// </summary>
-    /// <summary>
-    /// A user of the OneLogin platform.
-    /// </summary>
+    
     public class GetUserResponse
     {
         /// <summary>
