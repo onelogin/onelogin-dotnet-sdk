@@ -3,7 +3,13 @@
     public class GetIdResponse
     {
         [JsonPropertyName("id")]
-        public int Id { get; set; }
+        public long Id { get; set; }
+
+    }
+    public class GetStringIdResponse
+    {
+        [JsonPropertyName("id")]
+        public string Id { get; set; }
 
     }
 }
