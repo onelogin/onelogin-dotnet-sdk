@@ -2,19 +2,18 @@
 namespace OneLogin
 {
     /// <summary>
-    /// The App Rules API can be used to list, create, update, re-order, and delete mapping rules for a OneLogin application.
-    /// App Rules in OneLogin enable you to automate changes to parameters, 
-    /// user attributes, and application entitlements based on conditions that you define.For example, 
-    /// you might use rules to map roles with their equivalent entitlement in a application that is accessed via SSO.
+    /// The User Mappings API can be used to list, create, update, re-order, and delete user mappings.
+    /// Mappings in OneLogin enable you to automate changes to user attributes, roles, and groups, based on conditions that you define. 
+    /// Typically, you use mappings to grant application access based on user attributes stored in third-party directories.
     /// </summary>
     public partial class OneLoginClient
     {
         /// <summary>
-        /// Use this API to return a list of rules that been defined for an application. 
-        /// A powerful set of filters can be used to return mappings that contain specific conditions or actions.
+        /// Use this API to return a list of user mappings.
+        /// By default this endpoint only returns the mappings that are currently enabled. To return disabled mappings set the enabled query parameter to false
         /// </summary>
         /// <returns></returns>
-        public async Task<ApiResponse<List<AppRulesResponse>>> ListAppRules(
+        public async Task<ApiResponse<List<UserMappingResponse>>> ListUserMappings(
             long appId,
             string? has_condition = null,
             string? has_condition_type = null,
@@ -42,46 +41,45 @@ namespace OneLogin
                     .Select(kv => $"{kv.Key}={kv.Value}"));
 
                 // Construct the URL with the query string
-                var url = $"{Endpoints.ONELOGIN_APPS}/{appId}/rules/{(string.IsNullOrEmpty(queryString) ? "" : "?" + queryString)}";
+                var url = $"{Endpoints.ONELOGIN_MAPPINGS}/{(string.IsNullOrEmpty(queryString) ? "" : "?" + queryString)}";
 
                 // Make the request to the API
-                return await GetResource<List<AppRulesResponse>>(url, Endpoints.BaseApiVersion2);
+                return await GetResource<List<UserMappingResponse>>(url, Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
                 // Handle exceptions and return an error response
-                return new ApiResponse<List<AppRulesResponse>>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+                return new ApiResponse<List<UserMappingResponse>>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
             }
         }
 
         /// <summary>
-        /// Use this API to return a single app rule configuration.
+        /// Use this API to return a single User Mapping configuration.
         /// </summary>
-        /// <param name="appId">The id of the application that where the rules apply.</param>
-        /// <param name="id">The id of the app rule to locate.</param>
+        /// <param name="id">The id of the user mapping to locate.</param>
         /// <returns></returns>
-        public async Task<ApiResponse<AppRulesResponse>> GetAppRule(long appId, long id)
+        public async Task<ApiResponse<UserMappingResponse>> GetUserMapping(long id)
         {
             try
             {
-                return await GetResource<AppRulesResponse>($"{Endpoints.ONELOGIN_APPS}/{appId}/rules/{id}", Endpoints.BaseApiVersion2);
+                return await GetResource<UserMappingResponse>($"{Endpoints.ONELOGIN_MAPPINGS}/{id}", Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
-                return new ApiResponse<AppRulesResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+                return new ApiResponse<UserMappingResponse>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
             }
         }
 
         /// <summary>
-        /// Use this API to create an a new App Rule.
+        /// Use this API to create an a new User Mapping.
         /// </summary>
         /// <param name="request">The request object.</param>
         /// <returns></returns>
-        public async Task<ApiResponse<GetIdResponse>> CreateAppRule(long appId, AppRulesRequest request)
+        public async Task<ApiResponse<GetIdResponse>> CreateUserMapping(UserMappingRequest request)
         {
             try
             {
-                return await PostResource<GetIdResponse>($"{Endpoints.ONELOGIN_APPS}/{appId}/rules", request, Endpoints.BaseApiVersion2);
+                return await PostResource<GetIdResponse>($"{Endpoints.ONELOGIN_MAPPINGS}", request, Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -90,17 +88,34 @@ namespace OneLogin
         }
 
         /// <summary>
-        /// Use this API to update an existing App Rule.
+        /// Use this API to create an a new User Mapping.
         /// </summary>
-        /// <param name="appId">id of the app.</param>
-        /// <param name="id">The id of the app rule to locate.</param>
+        /// <param name="id">The id of the user mapping to locate.</param>
         /// <param name="request">The request object.</param>
         /// <returns></returns>
-        public async Task<ApiResponse<GetIdResponse>> UpdateAppRule(long appId, long id, AppRulesRequest request)
+        public async Task<ApiResponse<List<UserMappingDryRunResponse>>> DryRunUserMapping(long id,List<int> request)
         {
             try
             {
-                return await PutResource<GetIdResponse>($"{Endpoints.ONELOGIN_APPS}/{appId}/rules/{id}", request, Endpoints.BaseApiVersion2);
+                return await PostResource<List<UserMappingDryRunResponse>>($"{Endpoints.ONELOGIN_MAPPINGS}/{id}/dryrun", request, Endpoints.BaseApiVersion2);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<List<UserMappingDryRunResponse>>(status: new BaseErrorResponse { Message = ex.Message, StatusCode = 500 });
+            }
+        }
+
+        /// <summary>
+        /// Use this API to update an existing User Mapping.
+        /// </summary>
+        /// <param name="id">The id of the user mapping to locate.</param>
+        /// <param name="request">The request object.</param>
+        /// <returns></returns>
+        public async Task<ApiResponse<GetIdResponse>> UpdateUserMapping(long id, UserMappingRequest request)
+        {
+            try
+            {
+                return await PutResource<GetIdResponse>($"{Endpoints.ONELOGIN_MAPPINGS}/{id}", request, Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -109,16 +124,15 @@ namespace OneLogin
         }
 
         /// <summary>
-        /// Use this API to delete a App Rule.
+        /// Use this API to delete a User Mapping.
         /// </summary>
-        /// <param name="appId">The id of the application that where the rules apply. </param>
-        /// <param name="id">The id of the app rule to locate.</param>
+        /// <param name="id">The id of the user mapping to locate.</param>
         /// <returns></returns>
-        public async Task<ApiResponse<EmptyResponse>> DeleteAppRule(long appId, long id)
+        public async Task<ApiResponse<EmptyResponse>> DeleteUserMapping(long id)
         {
             try
             {
-                return await DeleteResource<EmptyResponse>($"{Endpoints.ONELOGIN_APPS}/{appId}/rules/{id}", Endpoints.BaseApiVersion2);
+                return await DeleteResource<EmptyResponse>($"{Endpoints.ONELOGIN_MAPPINGS}/{id}", Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -127,16 +141,15 @@ namespace OneLogin
         }
 
         /// <summary>
-        /// Use this API to return a list of the condition types that can be used to match users when app rules are run.
-        /// Use the Condition Value when creating or updating App Rules.
+        /// Use this API to return a list of the condition types that can be used to match users when mappings are run.
+        /// Use the Condition Value when creating or updating User Mappings.
         /// </summary>
-        /// <param name="appId">The id of the application that where the rules apply.</param>
         /// <returns></returns>
-        public async Task<ApiResponse<List<NameValueResponse>>> ListConditions(long appId)
+        public async Task<ApiResponse<List<NameValueResponse>>> ListUserMappingConditions()
         {
             try
             {
-                return await GetResource<List<NameValueResponse>>($"{Endpoints.ONELOGIN_APPS}/{appId}/rules/conditions", Endpoints.BaseApiVersion2);
+                return await GetResource<List<NameValueResponse>>($"{Endpoints.ONELOGIN_MAPPINGS}/conditions", Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -147,14 +160,13 @@ namespace OneLogin
         /// <summary>
         /// Use this API to return a list of possible operators for a given condition value.
         /// </summary>
-        /// <param name="appId">The id of the application that where the rules apply.</param>
         /// <param name="conditionValue">The value for the selected condition</param>
         /// <returns></returns>
-        public async Task<ApiResponse<List<NameValueResponse>>> ListConditionOperators(long appId, string? conditionValue)
+        public async Task<ApiResponse<List<NameValueResponse>>> ListUserMappingConditionOperators(string? conditionValue)
         {
             try
             {
-                return await GetResource<List<NameValueResponse>>($"{Endpoints.ONELOGIN_APPS}/{appId}/rules/conditions/{conditionValue}/operators", Endpoints.BaseApiVersion2);
+                return await GetResource<List<NameValueResponse>>($"{Endpoints.ONELOGIN_MAPPINGS}/conditions/{conditionValue}/operators", Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -165,14 +177,13 @@ namespace OneLogin
         /// <summary>
         /// Use this API to return a list of possible values to compare to a condition type.
         /// </summary>
-        /// <param name="appId">The id of the application that where the rules apply.</param>
         /// <param name="conditionValue">The value for the selected condition</param>
         /// <returns></returns>
-        public async Task<ApiResponse<List<NameValueResponse>>> ListConditionValues(long appId, string? conditionValue)
+        public async Task<ApiResponse<List<NameValueResponse>>> ListUserMappingConditionValues(string? conditionValue)
         {
             try
             {
-                return await GetResource<List<NameValueResponse>>($"{Endpoints.ONELOGIN_APPS}/{appId}/rules/conditions/{conditionValue}/values", Endpoints.BaseApiVersion2);
+                return await GetResource<List<NameValueResponse>>($"{Endpoints.ONELOGIN_MAPPINGS}/conditions/{conditionValue}/values", Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -181,15 +192,15 @@ namespace OneLogin
         }
 
         /// <summary>
-        /// Use this API to return a list of the actions that can be applied when an App Rule runs.
+        /// Use this API to return a list of the actions that can be applied when a mapping runs.
+        /// Use the Action Value when creating or updating User Mappings.
         /// </summary>
-        /// <param name="appId">The id of the application that where the rules apply.</param>
         /// <returns></returns>
-        public async Task<ApiResponse<List<NameValueResponse>>> ListActions(long appId)
+        public async Task<ApiResponse<List<NameValueResponse>>> ListUserMappingActions(long appId)
         {
             try
             {
-                return await GetResource<List<NameValueResponse>>($"{Endpoints.ONELOGIN_APPS}/{appId}/rules/actions", Endpoints.BaseApiVersion2);
+                return await GetResource<List<NameValueResponse>>($"{Endpoints.ONELOGIN_MAPPINGS}/actions", Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -200,14 +211,13 @@ namespace OneLogin
         /// <summary>
         /// Use this API to return a list of possible values to set using a given action.
         /// </summary>
-        /// <param name="appId">The id of the application that where the rules apply.</param>
         /// <param name="actionValue">The value for the selected action. For a complete list of possible action values see List</param>
         /// <returns></returns>
-        public async Task<ApiResponse<List<NameValueResponse>>> ListActionValues(long appId, string actionValue)
+        public async Task<ApiResponse<List<NameValueResponse>>> ListUserMappingActionValues( string actionValue)
         {
             try
             {
-                return await GetResource<List<NameValueResponse>>($"{Endpoints.ONELOGIN_APPS}/{appId}/rules/actions/{actionValue}/values", Endpoints.BaseApiVersion2);
+                return await GetResource<List<NameValueResponse>>($"{Endpoints.ONELOGIN_MAPPINGS}/actions/{actionValue}/values", Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {
@@ -216,17 +226,16 @@ namespace OneLogin
         }
 
         /// <summary>
-        /// Rules can be reordered individually by setting the position attribute when performing an Update App Rule request.
-        /// However if you need to update a lot of rules then this could result in a lot of requests so you should consider using this Bulk Sort endpoint instead.
+        /// Mappings can be reordered individually by setting the position attribute when performing an Update Mapping request.
+        /// However if you need to update a lot of mappings then this could result in a lot of requests so you should consider using this Bulk Sort endpoint instead.
         /// </summary>
-        /// <param name="appId">id of the app.</param>
         /// <param name="request">The request object.</param>
         /// <returns></returns>
-        public async Task<ApiResponse<List<long>>> BulkSortAppRules(long appId, List<long> request)
+        public async Task<ApiResponse<List<long>>> BulkSortUserMappings(List<long> request)
         {
             try
             {
-                return await PutResource<List<long>>($"{Endpoints.ONELOGIN_APPS}/{appId}/rules/sort", request, Endpoints.BaseApiVersion2);
+                return await PutResource<List<long>>($"{Endpoints.ONELOGIN_MAPPINGS}/sort", request, Endpoints.BaseApiVersion2);
             }
             catch (Exception ex)
             {

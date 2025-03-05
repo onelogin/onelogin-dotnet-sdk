@@ -4,7 +4,7 @@ namespace OneLogin.Responses
     /// <summary>
     /// Response message containing the status of the request.
     /// </summary>
-    public class AppRulesResponse : RulesMappingResponse
+    public class UserMappingResponse : RulesMappingResponse
     {
     }
 }

@@ -108,5 +108,10 @@
         /// </summary>
         public const string ONELOGIN_CUSTOM_ERROR_MESSAGES = "custom_error_messages";
 
+        /// <summary>
+        /// https://api_domain/api/2/mappings
+        /// </summary>
+        public const string ONELOGIN_MAPPINGS = "mappings";
+
     }
 }
