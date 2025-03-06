@@ -113,5 +113,10 @@
         /// </summary>
         public const string ONELOGIN_MAPPINGS = "mappings";
 
+        /// <summary>
+        /// https://api_domain/client/apps/embed2
+        /// </summary>
+        public const string ONELOGIN_EMBEDAPPS = "/client/apps/embed2";
+
     }
 }

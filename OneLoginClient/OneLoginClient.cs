@@ -312,6 +312,31 @@ namespace OneLogin
             }
             return JsonSerializer.Deserialize<T>(responseBody);
         }
-        #endregion Private Methods for Version 1 API output
+        #endregion Private methods for Version 1 API output
+
+        private async Task<string> GetResourceAPIS<T>(string url)
+        {
+            if (string.IsNullOrWhiteSpace(url))
+            {
+                throw new ArgumentException(nameof(url));
+            }
+
+            var token = await GenerateTokens();
+            if (token?.Data?.AccessToken == null)
+            {
+                throw new UnauthorizedAccessException("Unauthorized");
+            }
+
+            using var client = new HttpClient { BaseAddress = new Uri(_api_domain) };
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.Data.AccessToken);
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
+
+            var fullUrl = _api_domain + url;
+            var response = await client.GetAsync(fullUrl);
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsStringAsync();
+        }
     }
 }
