@@ -98,5 +98,15 @@
         /// </summary>
         public const string ONELOGIN_PRIVILEGES = "privileges";
 
+        /// <summary>
+        /// https://<subdomain>/api/2/branding/brands
+        /// </summary>
+        public const string ONELOGIN_BRANDING = "branding/brands";
+
+        /// <summary>
+        /// https://<subdomain>/api/2/branding/custom_error_messages
+        /// </summary>
+        public const string ONELOGIN_CUSTOM_ERROR_MESSAGES = "custom_error_messages";
+
     }
 }
