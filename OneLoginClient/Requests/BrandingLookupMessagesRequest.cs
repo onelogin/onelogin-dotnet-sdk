@@ -1,4 +1,4 @@
-﻿namespace OneLogin.Responses
+﻿namespace OneLogin.Requests
 {
     public class BrandingLookupMessagesRequest
     {
