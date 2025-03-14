@@ -69,54 +69,59 @@
         public const string ONELOGIN_MFA = "mfa/" + ONELOGIN_USERS;
 
         /// <summary>
-        /// https://<subdomain>/api/2/api_authorizations
+        /// https://<api_domain>/api/2/api_authorizations
         /// </summary>
         public const string ONELOGIN_APIAUTHORIZATIONS = "api_authorizations";
 
         /// <summary>
-        /// https://<subdomain>/api/2/risk
+        /// https://<api_domain>/api/2/risk
         /// </summary>
         public const string ONELOGIN_VIGILANCEAI = "risk";
 
         /// <summary>
-        /// https://<subdomain>/api/2/risk/rules
+        /// https://<api_domain>/api/2/risk/rules
         /// </summary>
         public const string ONELOGIN_VIGILANCEAI_RULES = "risk/rules";
 
         /// <summary>
-        /// https://<subdomain>/api/2/hooks
+        /// https://<api_domain>/api/2/hooks
         /// </summary>
         public const string ONELOGIN_SMARTHOOKS = "hooks";
 
         /// <summary>
-        /// https://<subdomain>/api/2/hooks/envs
+        /// https://<api_domain>/api/2/hooks/envs
         /// </summary>
         public const string ONELOGIN_SMARTHOOKSENVS = ONELOGIN_SMARTHOOKS + "/envs";
 
         /// <summary>
-        /// https://<subdomain>/api/1/privileges
+        /// https://<api_domain>/api/1/privileges
         /// </summary>
         public const string ONELOGIN_PRIVILEGES = "privileges";
 
         /// <summary>
-        /// https://<subdomain>/api/2/branding/brands
+        /// https://<api_domain>/api/2/branding/brands
         /// </summary>
         public const string ONELOGIN_BRANDING = "branding/brands";
 
         /// <summary>
-        /// https://<subdomain>/api/2/branding/custom_error_messages
+        /// https://<api_domain>/api/2/branding/custom_error_messages
         /// </summary>
         public const string ONELOGIN_CUSTOM_ERROR_MESSAGES = "custom_error_messages";
 
         /// <summary>
-        /// https://api_domain/api/2/mappings
+        /// https://<api_domain>/api/2/mappings
         /// </summary>
         public const string ONELOGIN_MAPPINGS = "mappings";
 
         /// <summary>
-        /// https://api_domain/client/apps/embed2
+        /// https://<api_domain>/client/apps/embed2
         /// </summary>
         public const string ONELOGIN_EMBEDAPPS = "/client/apps/embed2";
+
+        /// <summary>
+        /// https://<api_domain>/api/1/login
+        /// </summary>
+        public const string ONELOGIN_LOGINPAGES = "login";
 
     }
 }
