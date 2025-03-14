@@ -23,7 +23,7 @@
 
         /// <summary>
         /// Optional. A comma separated list of user fields to return.
-        /// If this attribute is ommited then by default the users id, firstname, lastname, email, and username will be returned.
+        /// If this attribute is ommitted then by default the users id, firstname, lastname, email, and username will be returned.
         /// </summary>
         [JsonPropertyName("fields")]
         public string? fields { get; set; }
