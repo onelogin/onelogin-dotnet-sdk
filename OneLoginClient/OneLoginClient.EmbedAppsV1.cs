@@ -7,7 +7,7 @@ namespace OneLogin
         /// Lists apps accessible by a OneLogin user.
         /// Use the response message to embed users’ OneLogin apps in their views of your company intranet, for example.
         /// </summary>
-        /// <param name="email">rovide the email of the user for which you want to return a list of embeddable apps.</param>
+        /// <param name="email">Provide the email of the user for which you want to return a list of embeddable apps.</param>
         /// <param name="token">Provide your embedding token. To get your embedding token, go to OneLogin and navigate to Settings > Embedding.</param>
         /// <returns>Returns the serialized<see cref = "string" /> as an asynchronous operation.</returns>
         public async Task<string> ListAppsToEmbedForUser(
