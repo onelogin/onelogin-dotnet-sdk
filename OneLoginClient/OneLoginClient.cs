@@ -204,53 +204,6 @@ namespace OneLogin
         #endregion Private Methods for Version 2 API output
 
         #region Private methods for Version 1 API output
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="pages"></param>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public async Task<List<T>> GetNextPages<T>(T source, int? pages = null) where T : IPageable
-        {
-            var results = new List<T>();
-            var isTrue = Uri.IsWellFormedUriString(source.Pagination.NextLink, UriKind.Absolute);
-            var pageCount = 1;
-            var nextLink = source.Pagination.NextLink;
-            while (isTrue && pageCount <= pages)
-            {
-                var result = await GetResourceV1<T>(nextLink, Endpoints.BaseApiVersion1);
-                results.Add(result);
-                nextLink = result.Pagination.NextLink;
-                isTrue = Uri.IsWellFormedUriString(nextLink, UriKind.Absolute);
-                pageCount++;
-            }
-
-            return results;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="pages"></param>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public async Task<List<T>> GetPreviousPages<T>(T source, int? pages = null) where T : IPageable
-        {
-            var results = new List<T>();
-            var isTrue = Uri.IsWellFormedUriString(source.Pagination.PreviousLink, UriKind.Absolute);
-            var pageCount = 1;
-            while (isTrue && pageCount <= pages)
-            {
-                var result = await GetResourceV1<T>(source.Pagination.PreviousLink, Endpoints.BaseApiVersion1);
-                results.Add(result);
-                isTrue = Uri.IsWellFormedUriString(result.Pagination.PreviousLink, UriKind.Absolute);
-                pageCount++;
-            }
-
-            return results;
-        }
 
         private async Task<T> GetResourceV1<T>(string url, string baseApiVersion)
         {
@@ -263,16 +216,6 @@ namespace OneLogin
         private async Task<T> PostResourceV1<T>(string url, object request, string baseApiVersion)
         {
             return await SendResourceRequestV1<T>(url, request, baseApiVersion, HttpMethod.Post);
-        }
-
-        private async Task<T> PutResourceV1<T>(string url, object request, string baseApiVersion)
-        {
-            return await SendResourceRequestV1<T>(url, request, baseApiVersion, HttpMethod.Put);
-        }
-
-        private async Task<T> DeleteResourceV1<T>(string url, string baseApiVersion)
-        {
-            return await SendResourceRequestV1<T>(url, null, baseApiVersion, HttpMethod.Delete);
         }
 
         private async Task<T> SendResourceRequestV1<T>(string url, object? request, string baseApiVersion, HttpMethod method)
@@ -312,7 +255,6 @@ namespace OneLogin
             }
             return JsonSerializer.Deserialize<T>(responseBody);
         }
-        #endregion Private methods for Version 1 API output
 
         private async Task<string> GetResourceAPIS<T>(string url)
         {
@@ -338,5 +280,8 @@ namespace OneLogin
 
             return await response.Content.ReadAsStringAsync();
         }
+
+        #endregion Private methods for Version 1 API output
+
     }
 }

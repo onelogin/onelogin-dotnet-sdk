@@ -19,7 +19,6 @@ namespace OneLogin
         /// </summary>
         /// <param name="id">Set to the group’s ID with .xml appended. For example, 123456.xml. If you don’t know the group’s id, use the Get all groups API call to return all groups and their id values.</param>
         /// <returns></returns>
-        //todo: onelogin documentation is wrong.
         public async Task<GetGroupsResponse> GetGroup(int id)
         {
             return await GetResourceV1<GetGroupsResponse>($"{Endpoints.ONELOGIN_GROUPS}/{id}", Endpoints.BaseApiVersion1);
