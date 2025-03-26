@@ -11,15 +11,16 @@ Master repo:  https://github.com/onelogin/onelogin-dotnet-sdk/tree/develop
 # Quickstart
 
 ## Including OneLogin Dot Net SDK
-The OneLogin API is avaiable through [NuGet]():
+The OneLogin API is avaiable through [NuGet](https://www.nuget.org/packages/OneloginApi.Dotnet.Nuget/):
 
 ```
-> Install-Package OneLoginClient
+> Install-Package OneloginApi.Dotnet.Nuget
+
 ```
 
 ## Status
 
-[![Nuget](https://img.shields.io/nuget/v/OneLoginClient?style=for-the-badge)]()
+[![Nuget](https://img.shields.io/nuget/v/OneloginApi.Dotnet.Nuget?style=for-the-badge)]()
 
 ## Supported Plattforms
 OneLogin API is built on top of the new [.NET Standard](https://github.com/dotnet/standard) targeting netstandard versions 8.0 - therefore it should work on the following plaforms:
@@ -29,3 +30,25 @@ OneLogin API is built on top of the new [.NET Standard](https://github.com/dotne
 * Windows 8.0 and newer
 * Windows Phone (WinRT, not Silverlight)
 * Mono / Xamarin
+
+## Getting started
+
+You'll need a OneLogin account and a set of API credentials before you get started.
+
+If you don't have an account you can [sign up for a free developer account here](https://www.onelogin.com/developer-signup).
+
+|||
+|---|---|
+|client_id|Required: A valid OneLogin API client_id|
+|client_secret|Required: A valid OneLogin API client_secret|
+|api_domain| Required: It should look like youraccountname.onelogin.com) |
+
+```dotnet
+using OneLogin;
+
+var client = new OneLoginClient("client_id", "client_secret", "api_domain");
+
+
+# Now you can make requests
+var list_users = await client.ListUsers();
+```
