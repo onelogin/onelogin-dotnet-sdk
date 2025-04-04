@@ -37,7 +37,6 @@ You'll need a OneLogin account and a set of API credentials before you get start
 
 If you don't have an account you can [sign up for a free developer account here](https://www.onelogin.com/developer-signup).
 
-|||
 |---|---|
 |client_id|Required: A valid OneLogin API client_id|
 |client_secret|Required: A valid OneLogin API client_secret|
