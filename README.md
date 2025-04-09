@@ -89,6 +89,7 @@ list_users
 
 **Query Parameters**
 
+```
 +-------------------------+--------------------------------------------+
 | Name/Type               | Description                                |
 +=========================+============================================+
@@ -163,6 +164,7 @@ list_users
 |                         | e.g.                                       |
 |                         |  id,firstname,lastname,profile_picture_url |
 +-------------------------+--------------------------------------------+
+```
 
 **HTTP request headers**
 
@@ -172,7 +174,7 @@ charset=utf-8)
 **Accept:** application/json
 
 **HTTP response details**
-
+```
   -----------------------------------------------------------------------
   **Status    **Description**           **Response Headers**
   Code**                                
@@ -185,7 +187,7 @@ charset=utf-8)
 
   422         Unprocessable Entity      **-**
   -----------------------------------------------------------------------
-
+```
 **Examples:**
 
 **Success Response**
@@ -263,7 +265,7 @@ get_user
 **GET** /api/2/users/:id
 
 **Resource Parameters**
-
+```
 +-----------+----------------------------------------------------------+
 | Name/Type | Description                                              |
 +===========+==========================================================+
@@ -273,7 +275,7 @@ get_user
 |           |                                                          |
 | integer   |                                                          |
 +-----------+----------------------------------------------------------+
-
+```
 **HTTP request headers**
 
 **Content-Type:** not defined (recommended: application/json;
@@ -282,7 +284,7 @@ charset=utf-8)
 **Accept:** application/json
 
 **HTTP response details**
-
+```
   -----------------------------------------------------------------------
   **Status    **Description**           **Response Headers**
   Code**                                
@@ -293,7 +295,7 @@ charset=utf-8)
 
   404         Not Found                 **-**
   -----------------------------------------------------------------------
-
+```
 **Examples:**
 
 **Success Response**
@@ -393,7 +395,7 @@ get_user_apps
 **GET** /api/2/users/:id/apps
 
 **Resource Parameters**
-
+```
 +-----------+----------------------------------------------------------+
 | Name/Type | Description                                              |
 +===========+==========================================================+
@@ -403,9 +405,9 @@ get_user_apps
 |           |                                                          |
 | integer   |                                                          |
 +-----------+----------------------------------------------------------+
-
+```
 **Query Parameters**
-
+```
 +-----------+----------------------------------------------------------+
 | Name/Type | Description                                              |
 +==========:+==========================================================+
@@ -415,7 +417,7 @@ get_user_apps
 |           |                                                          |
 | boolean   |                                                          |
 +-----------+----------------------------------------------------------+
-
+```
 **HTTP request headers**
 
 **Content-Type:** not defined (recommended: application/json;
@@ -424,7 +426,7 @@ charset=utf-8)
 **Accept:** application/json
 
 **HTTP response details**
-
+```
   -----------------------------------------------------------------------
   **Status    **Description**           **Response Headers**
   Code**                                
@@ -435,7 +437,7 @@ charset=utf-8)
 
   404         Not Found                 **-**
   -----------------------------------------------------------------------
-
+```
 **Examples:**
 
 **Success Response**
@@ -482,7 +484,7 @@ create_user
 **POST** /api/2/users
 
 **Query Parameters**
-
+```
 +-----------+----------------------------------------------------------+
 | Name/Type | Description                                              |
 +===========+==========================================================+
@@ -501,7 +503,7 @@ create_user
 | *validate |                                                          |
 | _policy** | Defaults to **true**.                                    |
 +-----------+----------------------------------------------------------+
-
+```
 **HTTP request headers**
 
 **Content-Type:** not defined (recommended: application/json;
@@ -510,7 +512,7 @@ charset=utf-8)
 **Accept:** application/json
 
 **HTTP response details**
-
+```
   -----------------------------------------------------------------------
   **Status    **Description**           **Response Headers**
   Code**                                
@@ -523,7 +525,7 @@ charset=utf-8)
 
   422         Unprocessable Entity      **-**
   -----------------------------------------------------------------------
-
+```
 **Examples:**
 
 **Success Response**
@@ -624,7 +626,7 @@ update_user
 **PUT** /api/2/users/:id
 
 **Resource Parameters**
-
+```
 +-----------+----------------------------------------------------------+
 | Name/Type | Description                                              |
 +===========+==========================================================+
@@ -634,9 +636,9 @@ update_user
 |           |                                                          |
 | integer   |                                                          |
 +-----------+----------------------------------------------------------+
-
+```
 **Query Parameters**
-
+```
 +-----------+----------------------------------------------------------+
 | Name/Type | Description                                              |
 +===========+==========================================================+
@@ -655,9 +657,9 @@ update_user
 | *validate |                                                          |
 | _policy** | Defaults to **true**                                     |
 +-----------+----------------------------------------------------------+
-
+```
 **Request Parameters**
-
+```
 +----------------+-----+-----------------------------------------------+
 | Name           | T   | Description                                   |
 |                | ype |                                               |
@@ -791,7 +793,7 @@ update_user
 | **custo        | obj | An object to contain any other custom         |
 | m_attributes** | ect | attributes you have configured.               |
 +----------------+-----+-----------------------------------------------+
-
+```
 **HTTP request headers**
 
 **Content-Type:** not defined (recommended: application/json;
@@ -800,7 +802,7 @@ charset=utf-8)
 **Accept:** application/json
 
 **HTTP response details**
-
+```
   -----------------------------------------------------------------------
   **Status    **Description**           **Response Headers**
   Code**                                
@@ -815,7 +817,7 @@ charset=utf-8)
 
   422         Unprocessable Entity      
   -----------------------------------------------------------------------
-
+```
 **Examples:**
 
 **Success Response**
@@ -915,7 +917,7 @@ delete_user
 **DEL** /api/2/users/:id
 
 **Resource Parameters**
-
+```
 +-----------+----------------------------------------------------------+
 | Name/Type | Description                                              |
 +===========+==========================================================+
@@ -925,7 +927,7 @@ delete_user
 |           |                                                          |
 | integer   |                                                          |
 +-----------+----------------------------------------------------------+
-
+```
 **HTTP request headers**
 
 **Content-Type:** not defined (recommended: application/json;
@@ -934,7 +936,7 @@ charset=utf-8)
 **Accept:** application/json
 
 **HTTP response details**
-
+```
   -----------------------------------------------------------------------
   **Status    **Description**           **Response Headers**
   Code**                                
@@ -945,7 +947,7 @@ charset=utf-8)
 
   404         Not Found                 **-**
   -----------------------------------------------------------------------
-
+```
 **Examples:**
 
 **Success Response**
@@ -988,7 +990,7 @@ charset=utf-8)
 **Accept:** application/json
 
 **HTTP response details**
-
+```
   -----------------------------------------------------------------------
   **Status    **Description**           **Response Headers**
   Code**                                
@@ -1001,7 +1003,7 @@ charset=utf-8)
 
   422         Unprocessable Entity      **-**
   -----------------------------------------------------------------------
-
+```
 **Example:**
 
 **Success Response**
@@ -1039,7 +1041,7 @@ get_custom_attribute
 **GET** /api/2/custom_attributes/:id
 
 **Resource Parameters**
-
+```
 +-----------+----------------------------------------------------------+
 | Name/Type | Description                                              |
 +===========+==========================================================+
@@ -1049,7 +1051,7 @@ get_custom_attribute
 |           |                                                          |
 | integer   |                                                          |
 +-----------+----------------------------------------------------------+
-
+```
 **HTTP request headers**
 
 **Content-Type:** not defined (recommended: application/json;
@@ -1058,7 +1060,7 @@ charset=utf-8)
 **Accept:** application/json
 
 **HTTP response details**
-
+```
   -----------------------------------------------------------------------
   **Status    **Description**           **Response Headers**
   Code**                                
@@ -1069,7 +1071,7 @@ charset=utf-8)
 
   404         Not Found                 **-**
   -----------------------------------------------------------------------
-
+```
 **Examples:**
 
 **Success Response**
@@ -1109,7 +1111,7 @@ create_custom_attribute
 **POST** /api/2/custom_attributes
 
 **Request Parameters**
-
+```
 +------------------+---------------------------------------------------+
 | Name/Type        | Description                                       |
 +==================+===================================================+
@@ -1123,7 +1125,7 @@ create_custom_attribute
 |                  |                                                   |
 | string           |                                                   |
 +------------------+---------------------------------------------------+
-
+```
 **HTTP request headers**
 
 **Content-Type:** not defined (recommended: application/json;
@@ -1132,7 +1134,7 @@ charset=utf-8)
 **Accept:** application/json
 
 **HTTP response details**
-
+```
   -----------------------------------------------------------------------
   **Status    **Description**           **Response Headers**
   Code**                                
@@ -1145,7 +1147,7 @@ charset=utf-8)
 
   422         Unprocessable Entity      **-**
   -----------------------------------------------------------------------
-
+```
 **Examples:**
 
 **Success Response**
@@ -1186,7 +1188,7 @@ update_custom_attribute
 **PUT** /api/2/custom_attributes/:id
 
 **Resource Parameters**
-
+```
 +-----------+----------------------------------------------------------+
 | Name/Type | Description                                              |
 +===========+==========================================================+
@@ -1196,9 +1198,9 @@ update_custom_attribute
 |           |                                                          |
 | integer   |                                                          |
 +-----------+----------------------------------------------------------+
-
+```
 **Request Parameters**
-
+```
 +------------------+---------------------------------------------------+
 | Name/Type        | Description                                       |
 +==================+===================================================+
@@ -1212,7 +1214,7 @@ update_custom_attribute
 |                  |                                                   |
 | string           |                                                   |
 +------------------+---------------------------------------------------+
-
+```
 **HTTP request headers**
 
 **Content-Type:** not defined (recommended: application/json;
@@ -1221,7 +1223,7 @@ charset=utf-8)
 **Accept:** application/json
 
 **HTTP response details**
-
+```
   -----------------------------------------------------------------------
   **Status    **Description**           **Response Headers**
   Code**                                
@@ -1229,7 +1231,7 @@ charset=utf-8)
   200         Successful response       **-**
 
   -----------------------------------------------------------------------
-
+```
 **Examples:**
 
 **Success Response**
@@ -1270,7 +1272,7 @@ delete_custom_attribute
 **DEL** /api/2/custom_attributes/:id
 
 **Resource Parameters**
-
+```
 +------------------+---------------------------------------------------+
 | Name/Type        | Description                                       |
 +==================+===================================================+
@@ -1279,7 +1281,7 @@ delete_custom_attribute
 |                  |                                                   |
 | integer          |                                                   |
 +------------------+---------------------------------------------------+
-
+```
 **HTTP request headers**
 
 **Content-Type:** not defined (recommended: application/json;
@@ -1288,7 +1290,7 @@ charset=utf-8)
 **Accept:** application/json
 
 **HTTP response details**
-
+```
   -----------------------------------------------------------------------
   **Status    **Description**           **Response Headers**
   Code**                                
@@ -1299,7 +1301,7 @@ charset=utf-8)
 
   404         Not Found                 **-**
   -----------------------------------------------------------------------
-
+```
 **Examples:**
 
 **Success Response**
@@ -1335,7 +1337,7 @@ get_role
 **GET** /api/2/roles/:id
 
 **Resource Parameters**
-
+```
 +------------------+---------------------------------------------------+
 | Name/Type        | Description                                       |
 +==================+===================================================+
@@ -1344,7 +1346,7 @@ get_role
 |                  |                                                   |
 | integer          |                                                   |
 +------------------+---------------------------------------------------+
-
+```
 **HTTP request headers**
 
 **Content-Type:** not defined (recommended: application/json;
@@ -1353,7 +1355,7 @@ charset=utf-8)
 **Accept:** application/json
 
 **HTTP response details**
-
+```
   -----------------------------------------------------------------------
   **Status    **Description**           **Response Headers**
   Code**                                
@@ -1364,7 +1366,7 @@ charset=utf-8)
 
   404         Not Found                 **-**
   -----------------------------------------------------------------------
-
+```
 **Examples:**
 
 **Success Response**
@@ -1408,7 +1410,7 @@ list_roles
 **GET** /api/2/roles
 
 **Query Parameters**
-
+```
 +-----------+----------------------------------------------------------+
 | Name/Type | Description                                              |
 +===========+==========================================================+
@@ -1431,7 +1433,7 @@ list_roles
 |           | Valid options are apps, users, admins.                   |
 | string    |                                                          |
 +-----------+----------------------------------------------------------+
-
+```
 **HTTP request headers**
 
 **Content-Type:** not defined (recommended: application/json;
@@ -1440,7 +1442,7 @@ charset=utf-8)
 **Accept:** application/json
 
 **HTTP response details**
-
+```
   -----------------------------------------------------------------------
   **Status    **Description**           **Response Headers**
   Code**                                
@@ -1449,7 +1451,7 @@ charset=utf-8)
 
   401         Unauthorized              **-**
   -----------------------------------------------------------------------
-
+```
 **Examples:**
 
 **Success Response**
@@ -1493,7 +1495,7 @@ create_roles
 **POST** /api/2/roles
 
 **Request Parameters**
-
+```
 +-----------+----------------------------------------------------------+
 | Name/Type | Description                                              |
 +===========+==========================================================+
@@ -1515,7 +1517,7 @@ create_roles
 |           |                                                          |
 | array     |                                                          |
 +-----------+----------------------------------------------------------+
-
+```
 **HTTP request headers**
 
 **Content-Type:** not defined (recommended: application/json;
@@ -1524,7 +1526,7 @@ charset=utf-8)
 **Accept:** application/json
 
 **HTTP response details**
-
+```
   -----------------------------------------------------------------------
   **Status    **Description**           **Response Headers**
   Code**                                
@@ -1533,7 +1535,7 @@ charset=utf-8)
 
   401         Unauthorized              
   -----------------------------------------------------------------------
-
+```
 **Examples:**
 
 **Success Response**
@@ -1559,7 +1561,7 @@ update_role
 **PUT** /api/2/roles/:id
 
 **Request Parameters**
-
+```
 +-----------+----------------------------------------------------------+
 | Name/Type | Description                                              |
 +===========+==========================================================+
@@ -1568,7 +1570,7 @@ update_role
 |           |                                                          |
 | string    |                                                          |
 +-----------+----------------------------------------------------------+
-
+```
 **HTTP request headers**
 
 **Content-Type:** not defined (recommended: application/json;
@@ -1577,7 +1579,7 @@ charset=utf-8)
 **Accept:** application/json
 
 **HTTP response details**
-
+```
   -----------------------------------------------------------------------
   **Status    **Description**           **Response Headers**
   Code**                                
@@ -1588,7 +1590,7 @@ charset=utf-8)
 
   422         Unprocessable Entity      
   -----------------------------------------------------------------------
-
+```
 **Examples:**
 
 **Success Response**
@@ -1612,7 +1614,7 @@ delete_role
 **DEL** /api/2/roles/:id
 
 **Resource Parameters**
-
+```
 +------------------+---------------------------------------------------+
 | Name/Type        | Description                                       |
 +==================+===================================================+
@@ -1621,7 +1623,7 @@ delete_role
 |                  |                                                   |
 | integer          |                                                   |
 +------------------+---------------------------------------------------+
-
+```
 **HTTP request headers**
 
 **Content-Type:** not defined (recommended: application/json;
@@ -1630,7 +1632,7 @@ charset=utf-8)
 **Accept:** application/json
 
 **HTTP response details**
-
+```
   -----------------------------------------------------------------------
   **Status    **Description**           **Response Headers**
   Code**                                
@@ -1641,7 +1643,7 @@ charset=utf-8)
 
   404         Not Found                 
   -----------------------------------------------------------------------
-
+```
 **Examples:**
 
 **Success Response**
@@ -1674,14 +1676,14 @@ list_role_apps
 
 **Request Parameters**
 
-+------------------+---------------------------------------------------+
++----```--------------+---------------------------------------------------+
 | Name/Type        | Description                                       |
 +==================+===================================================+
 | **assigned**     | Optional. Defaults to true. Returns all apps not  |
 |                  | yet assigned to the role.                         |
 | boolean          |                                                   |
 +------------------+---------------------------------------------------+
-
+```
 **HTTP request headers**
 
 **Content-Type:** not defined (recommended: application/json;
@@ -1690,7 +1692,7 @@ charset=utf-8)
 **Accept:** application/json
 
 **HTTP response details**
-
+```
   -----------------------------------------------------------------------
   **Status    **Description**           **Response Headers**
   Code**                                
@@ -1701,7 +1703,7 @@ charset=utf-8)
 
   404         Not Found                 **-**
   -----------------------------------------------------------------------
-
+```
 **Examples:**
 
 **Success Response**
@@ -1743,7 +1745,7 @@ set_role_apps
 **PUT** /api/2/roles/:id/apps
 
 **Request Parameters**
-
+```
 +-------------+--------------------------------------------------------+
 | Name/Type   | Description                                            |
 +=============+========================================================+
@@ -1752,7 +1754,7 @@ set_role_apps
 |             | complete list in your request. Don't submit a partial  |
 | array       | list of app IDs, to add or remove, in your request.    |
 +-------------+--------------------------------------------------------+
-
+```
 **HTTP request headers**
 
 **Content-Type:** not defined (recommended: application/json;
@@ -1761,7 +1763,7 @@ charset=utf-8)
 **Accept:** application/json
 
 **HTTP response details**
-
+```
   -----------------------------------------------------------------------
   **Status    **Description**           **Response Headers**
   Code**                                
@@ -1772,7 +1774,7 @@ charset=utf-8)
 
   404         Not Found                 
   -----------------------------------------------------------------------
-
+```
 **Examples:**
 
 **Success Response**
@@ -1804,7 +1806,7 @@ list_role_users
 **GET** /api/2/roles/:id/users
 
 **Request Parameters**
-
+```
 +------------------+---------------------------------------------------+
 | Name/Type        | Description                                       |
 +==================+===================================================+
@@ -1818,7 +1820,7 @@ list_role_users
 |                  |                                                   |
 | boolean          |                                                   |
 +------------------+---------------------------------------------------+
-
+```
 **HTTP request headers**
 
 **Content-Type:** not defined (recommended: application/json;
@@ -1827,7 +1829,7 @@ charset=utf-8)
 **Accept:** application/json
 
 **HTTP response details**
-
+```
   -----------------------------------------------------------------------
   **Status    **Description**           **Response Headers**
   Code**                                
@@ -1838,7 +1840,7 @@ charset=utf-8)
 
   404         Not Found                 **-**
   -----------------------------------------------------------------------
-
+```
 **Examples:**
 
 **Success Response**
@@ -1886,7 +1888,7 @@ add_role_users
 **POST** /api/2/roles/:id/users
 
 **Request Parameters**
-
+```
 +--------------+-------------------------------------------------------+
 | Name/Type    | Description                                           |
 +==============+=======================================================+
@@ -1895,7 +1897,7 @@ add_role_users
 |              |                                                       |
 | array        |                                                       |
 +--------------+-------------------------------------------------------+
-
+```
 **HTTP request headers**
 
 **Content-Type:** not defined (recommended: application/json;
@@ -1904,7 +1906,7 @@ charset=utf-8)
 **Accept:** application/json
 
 **HTTP response details**
-
+```
   -----------------------------------------------------------------------
   **Status    **Description**           **Response Headers**
   Code**                                
@@ -1915,7 +1917,7 @@ charset=utf-8)
 
   422         Unprocessable Entity      **-**
   -----------------------------------------------------------------------
-
+```
 **Examples:**
 
 **Success Response**
@@ -1949,7 +1951,7 @@ delete_role_users
 **DEL** /api/2/roles/:id/users
 
 **Request Parameters**
-
+```
 +--------------+-------------------------------------------------------+
 | Name/Type    | Description                                           |
 +==============+=======================================================+
@@ -1958,7 +1960,7 @@ delete_role_users
 |              |                                                       |
 | array        |                                                       |
 +--------------+-------------------------------------------------------+
-
+```
 **HTTP request headers**
 
 **Content-Type:** not defined (recommended: application/json;
@@ -1967,7 +1969,7 @@ charset=utf-8)
 **Accept:** application/json
 
 **HTTP response details**
-
+```
   -----------------------------------------------------------------------
   **Status    **Description**           **Response Headers**
   Code**                                
@@ -1978,7 +1980,7 @@ charset=utf-8)
 
   404         Not Found                 **-**
   -----------------------------------------------------------------------
-
+```
 **Examples:**
 
 **Success Response**
@@ -2014,7 +2016,7 @@ list_role_admins
 **GET** /api/2/roles/:id/admins
 
 **Request Parameters**
-
+```
 +------------------+---------------------------------------------------+
 | Name/Type        | Description                                       |
 +==================+===================================================+
@@ -2028,7 +2030,7 @@ list_role_admins
 |                  |                                                   |
 | boolean          |                                                   |
 +------------------+---------------------------------------------------+
-
+```
 **HTTP request headers**
 
 **Content-Type:** not defined (recommended: application/json;
@@ -2037,7 +2039,7 @@ charset=utf-8)
 **Accept:** application/json
 
 **HTTP response details**
-
+```
   -----------------------------------------------------------------------
   **Status    **Description**           **Response Headers**
   Code**                                
@@ -2048,7 +2050,7 @@ charset=utf-8)
 
   404         Not Found                 **-**
   -----------------------------------------------------------------------
-
+```
 **Examples:**
 
 **Success Response**
@@ -2075,7 +2077,7 @@ add_role_admins
 **POST** /api/2/roles/:id/admins
 
 **Request Parameters**
-
+```
 +--------------+-------------------------------------------------------+
 | Name/Type    | Description                                           |
 +==============+=======================================================+
@@ -2084,7 +2086,7 @@ add_role_admins
 |              |                                                       |
 | array        |                                                       |
 +--------------+-------------------------------------------------------+
-
+```
 **HTTP request headers**
 
 **Content-Type:** not defined (recommended: application/json;
@@ -2093,7 +2095,7 @@ charset=utf-8)
 **Accept:** application/json
 
 **HTTP response details**
-
+```
   -----------------------------------------------------------------------
   **Status    **Description**           **Response Headers**
   Code**                                
@@ -2102,7 +2104,7 @@ charset=utf-8)
 
   401         Unauthorized              **-**
   -----------------------------------------------------------------------
-
+```
 **Method**
 
 delete_role_admins
@@ -2112,7 +2114,7 @@ delete_role_admins
 **DEL** /api/2/roles/:id/admins
 
 **Request Parameters**
-
+```
 +--------------+-------------------------------------------------------+
 | Name/Type    | Description                                           |
 +==============+=======================================================+
@@ -2121,7 +2123,7 @@ delete_role_admins
 |              |                                                       |
 | array        |                                                       |
 +--------------+-------------------------------------------------------+
-
+```
 **HTTP request headers**
 
 **Content-Type:** not defined (recommended: application/json;
@@ -2130,7 +2132,7 @@ charset=utf-8)
 **Accept:** application/json
 
 **HTTP response details**
-
+```
   -----------------------------------------------------------------------
   **Status    **Description**           **Response Headers**
   Code**                                
@@ -2141,7 +2143,7 @@ charset=utf-8)
 
   404         Not Found                 **-**
   -----------------------------------------------------------------------
-
+```
 **Examples:**
 
 **Success Response**
