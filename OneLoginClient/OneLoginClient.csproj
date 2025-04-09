@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageId>OneloginApi.Dotnet.Nuget</PackageId>
+    <Description>This is a portable library for consuming the OneLogin REST-API and accessing all the features of the Onelogin API /1 and API/2 in (almost) any C# application. This is the Url for more info about the API versions : https://developers.onelogin.com/api-docs/2/getting-started/dev-overview</Description>
+    <PackageProjectUrl>https://www.nuget.org/packages/OneloginApi.Dotnet.Nuget/</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/onelogin/onelogin-dotnet-sdk/tree/develop</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <AssemblyName>OneloginApi.Dotnet.Nuget</AssemblyName>
+    <Company>onelogin by ONE IDENTITY</Company>
+    <Version>2.0.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.1" />
+    <PackageReference Include="System.Text.Json" Version="9.0.1" />
+  </ItemGroup>
+
+</Project>
